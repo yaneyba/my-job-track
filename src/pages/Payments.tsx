@@ -51,7 +51,7 @@ const Payments: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [dataProvider]);
 
   useEffect(() => {
     loadPaymentData();

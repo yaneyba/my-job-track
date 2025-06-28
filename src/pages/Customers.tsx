@@ -51,7 +51,7 @@ const Customers: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [dataProvider]);
 
   useEffect(() => {
     loadCustomers();

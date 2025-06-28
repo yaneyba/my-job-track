@@ -58,7 +58,7 @@ const AddJob: React.FC = () => {
     } catch (error) {
       console.error('Failed to load customers:', error);
     }
-  }, []);
+  }, [dataProvider]);
 
   useEffect(() => {
     loadCustomers();

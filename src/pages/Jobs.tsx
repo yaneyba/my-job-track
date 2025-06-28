@@ -56,7 +56,7 @@ const Jobs: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [dataProvider]);
 
   useEffect(() => {
     loadJobs();

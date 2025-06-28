@@ -74,7 +74,7 @@ const JobDetails: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [id, navigate]);
+  }, [id, navigate, dataProvider]);
 
   useEffect(() => {
     if (id) {

@@ -4,6 +4,8 @@ import { Job } from '../types';
 import { DataProviderFactory } from '../data/DataProviderFactory';
 import JobCard from '../components/Job/JobCard';
 import Breadcrumbs from '../components/UI/Breadcrumbs';
+import Pagination from '../components/UI/Pagination';
+import { usePagination } from '../hooks/usePagination';
 import { DollarSign, AlertCircle } from 'lucide-react';
 
 const Payments: React.FC = () => {
@@ -18,6 +20,22 @@ const Payments: React.FC = () => {
     { label: 'Home', href: '/app' },
     { label: 'Payments', current: true }
   ];
+
+  // Get current data based on active tab
+  const currentData = activeTab === 'unpaid' ? unpaidJobs : paidJobs;
+
+  // Pagination hook
+  const {
+    currentPage,
+    totalPages,
+    totalItems,
+    itemsPerPage,
+    paginatedData,
+    goToPage
+  } = usePagination({
+    data: currentData,
+    itemsPerPage: 10 // Show 10 jobs per page
+  });
 
   useEffect(() => {
     loadPaymentData();
@@ -120,10 +138,10 @@ const Payments: React.FC = () => {
       </div>
 
       {/* Job List */}
-      <div className="space-y-4">
-        {activeTab === 'unpaid' ? (
-          unpaidJobs.length > 0 ? (
-            unpaidJobs.map((job) => (
+      {currentData.length > 0 ? (
+        <>
+          <div className="space-y-4 mb-8">
+            {paginatedData.map((job) => (
               <JobCard
                 key={job.id}
                 job={job}
@@ -131,32 +149,27 @@ const Payments: React.FC = () => {
                 onPaymentStatusChange={handleJobPaymentStatusChange}
                 showQRButton={false}
               />
-            ))
-          ) : (
-            <div className="bg-white rounded-lg p-8 text-center shadow-sm border border-gray-200">
-              <DollarSign className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-              <p className="text-gray-600">All jobs are paid up!</p>
-            </div>
-          )
-        ) : (
-          paidJobs.length > 0 ? (
-            paidJobs.map((job) => (
-              <JobCard
-                key={job.id}
-                job={job}
-                onClick={() => navigate(`/app/jobs/${job.id}`)}
-                onPaymentStatusChange={handleJobPaymentStatusChange}
-                showQRButton={false}
-              />
-            ))
-          ) : (
-            <div className="bg-white rounded-lg p-8 text-center shadow-sm border border-gray-200">
-              <DollarSign className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-              <p className="text-gray-600">No paid jobs yet</p>
-            </div>
-          )
-        )}
-      </div>
+            ))}
+          </div>
+
+          {/* Pagination */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            itemsPerPage={itemsPerPage}
+            onPageChange={goToPage}
+            className="mt-8"
+          />
+        </>
+      ) : (
+        <div className="bg-white rounded-lg p-8 text-center shadow-sm border border-gray-200">
+          <DollarSign className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+          <p className="text-gray-600">
+            {activeTab === 'unpaid' ? 'All jobs are paid up!' : 'No paid jobs yet'}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

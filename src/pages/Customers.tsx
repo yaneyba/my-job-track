@@ -7,6 +7,8 @@ import CustomerCard from '../components/Customer/CustomerCard';
 import QuickActionButton from '../components/UI/QuickActionButton';
 import QRCodeDisplay from '../components/QR/QRCodeDisplay';
 import Breadcrumbs from '../components/UI/Breadcrumbs';
+import Pagination from '../components/UI/Pagination';
+import { usePagination } from '../hooks/usePagination';
 import { Plus, Users, CheckCircle, X } from 'lucide-react';
 
 const Customers: React.FC = () => {
@@ -24,6 +26,19 @@ const Customers: React.FC = () => {
     { label: 'Home', href: '/app' },
     { label: 'Customers', current: true }
   ];
+
+  // Pagination hook
+  const {
+    currentPage,
+    totalPages,
+    totalItems,
+    itemsPerPage,
+    paginatedData,
+    goToPage
+  } = usePagination({
+    data: filteredCustomers,
+    itemsPerPage: 12 // Show 12 customers per page
+  });
 
   useEffect(() => {
     loadCustomers();
@@ -100,6 +115,11 @@ const Customers: React.FC = () => {
           <h1 className="text-2xl font-bold text-gray-900">Customers</h1>
           <p className="text-gray-600">
             {customers.length} customer{customers.length !== 1 ? 's' : ''} total
+            {searchQuery && filteredCustomers.length !== customers.length && (
+              <span className="text-blue-600 ml-1">
+                • {filteredCustomers.length} matching search
+              </span>
+            )}
           </p>
         </div>
         <QuickActionButton
@@ -120,16 +140,28 @@ const Customers: React.FC = () => {
 
       {/* Customer List */}
       {filteredCustomers.length > 0 ? (
-        <div className="space-y-4">
-          {filteredCustomers.map((customer) => (
-            <CustomerCard
-              key={customer.id}
-              customer={customer}
-              onClick={() => navigate(`/app/customers/${customer.id}`)}
-              onQRCodeClick={() => setSelectedQRCustomer(customer)}
-            />
-          ))}
-        </div>
+        <>
+          <div className="space-y-4 mb-8">
+            {paginatedData.map((customer) => (
+              <CustomerCard
+                key={customer.id}
+                customer={customer}
+                onClick={() => navigate(`/app/customers/${customer.id}`)}
+                onQRCodeClick={() => setSelectedQRCustomer(customer)}
+              />
+            ))}
+          </div>
+
+          {/* Pagination */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            itemsPerPage={itemsPerPage}
+            onPageChange={goToPage}
+            className="mt-8"
+          />
+        </>
       ) : (
         <div className="bg-white rounded-lg p-8 text-center shadow-sm border border-gray-200">
           <Users className="h-12 w-12 text-gray-400 mx-auto mb-3" />

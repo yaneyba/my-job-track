@@ -6,6 +6,8 @@ import JobCard from '../components/Job/JobCard';
 import QuickActionButton from '../components/UI/QuickActionButton';
 import QRCodeDisplay from '../components/QR/QRCodeDisplay';
 import Breadcrumbs from '../components/UI/Breadcrumbs';
+import Pagination from '../components/UI/Pagination';
+import { usePagination } from '../hooks/usePagination';
 import { Plus, Calendar, CheckCircle, X } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 
@@ -23,6 +25,22 @@ const Jobs: React.FC = () => {
     { label: 'Home', href: '/app' },
     { label: 'Jobs', current: true }
   ];
+
+  // Filter jobs based on selected filter
+  const filteredJobs = filter === 'all' ? jobs : jobs.filter(job => job.status === filter);
+
+  // Pagination hook
+  const {
+    currentPage,
+    totalPages,
+    totalItems,
+    itemsPerPage,
+    paginatedData,
+    goToPage
+  } = usePagination({
+    data: filteredJobs,
+    itemsPerPage: 10 // Show 10 jobs per page
+  });
 
   useEffect(() => {
     loadJobs();
@@ -70,8 +88,6 @@ const Jobs: React.FC = () => {
     loadJobs();
   };
 
-  const filteredJobs = filter === 'all' ? jobs : jobs.filter(job => job.status === filter);
-
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -109,6 +125,11 @@ const Jobs: React.FC = () => {
           <h1 className="text-2xl font-bold text-gray-900">Jobs</h1>
           <p className="text-gray-600">
             {jobs.length} job{jobs.length !== 1 ? 's' : ''} total
+            {filter !== 'all' && (
+              <span className="text-blue-600 ml-1">
+                • {filteredJobs.length} {filter.replace('-', ' ')}
+              </span>
+            )}
           </p>
         </div>
         <QuickActionButton
@@ -143,18 +164,30 @@ const Jobs: React.FC = () => {
 
       {/* Job List */}
       {filteredJobs.length > 0 ? (
-        <div className="space-y-4">
-          {filteredJobs.map((job) => (
-            <JobCard
-              key={job.id}
-              job={job}
-              onClick={() => navigate(`/app/jobs/${job.id}`)}
-              onQRCodeClick={() => setSelectedQRJob(job)}
-              onStatusChange={handleJobStatusChange}
-              onPaymentStatusChange={handleJobPaymentStatusChange}
-            />
-          ))}
-        </div>
+        <>
+          <div className="space-y-4 mb-8">
+            {paginatedData.map((job) => (
+              <JobCard
+                key={job.id}
+                job={job}
+                onClick={() => navigate(`/app/jobs/${job.id}`)}
+                onQRCodeClick={() => setSelectedQRJob(job)}
+                onStatusChange={handleJobStatusChange}
+                onPaymentStatusChange={handleJobPaymentStatusChange}
+              />
+            ))}
+          </div>
+
+          {/* Pagination */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            itemsPerPage={itemsPerPage}
+            onPageChange={goToPage}
+            className="mt-8"
+          />
+        </>
       ) : (
         <div className="bg-white rounded-lg p-8 text-center shadow-sm border border-gray-200">
           <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-3" />

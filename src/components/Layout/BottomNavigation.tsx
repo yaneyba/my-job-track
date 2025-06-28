@@ -23,7 +23,7 @@ const BottomNavigation: React.FC = () => {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-2 py-2 z-50">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-800 border-t border-gray-200 dark:border-dark-700 px-2 py-2 z-50 transition-colors duration-200">
       <div className="flex justify-around max-w-md mx-auto">
         {navItems.map(({ to, icon: Icon, label, exact }) => (
           <NavLink
@@ -31,8 +31,8 @@ const BottomNavigation: React.FC = () => {
             to={to}
             className={`flex flex-col items-center py-2 px-2 rounded-lg transition-colors min-w-0 ${
               isActive(to, exact)
-                ? 'text-blue-600 bg-blue-50'
-                : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'
+                ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-dark-700'
             }`}
           >
             <Icon size={20} />

@@ -1,3 +1,79 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Dark mode transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* Custom scrollbar for dark mode */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-dark-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-dark-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400 dark:bg-dark-500;
+}
+
+/* Focus styles for dark mode */
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  @apply ring-blue-500 border-blue-500;
+}
+
+/* Selection styles for dark mode */
+.dark ::selection {
+  @apply bg-blue-600 text-white;
+}
+
+/* Ensure proper contrast for form elements in dark mode */
+.dark input,
+.dark textarea,
+.dark select {
+  @apply bg-dark-700 border-dark-600 text-white placeholder-gray-400;
+}
+
+.dark input:hover,
+.dark textarea:hover,
+.dark select:hover {
+  @apply border-dark-500;
+}
+
+/* Button focus styles for dark mode */
+.dark button:focus-visible {
+  @apply ring-2 ring-blue-500 ring-offset-2 ring-offset-dark-800;
+}
+
+/* Ensure proper text contrast in dark mode */
+.dark .text-gray-900 {
+  @apply text-white;
+}
+
+.dark .text-gray-800 {
+  @apply text-gray-100;
+}
+
+.dark .text-gray-700 {
+  @apply text-gray-200;
+}
+
+.dark .text-gray-600 {
+  @apply text-gray-300;
+}
+
+.dark .text-gray-500 {
+  @apply text-gray-400;
+}

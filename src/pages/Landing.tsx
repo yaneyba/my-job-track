@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '@/contexts/ThemeContext';
+import ThemeToggle from '@/components/UI/ThemeToggle';
 import { 
   Users, 
   Calendar, 
@@ -125,14 +127,20 @@ const Landing: React.FC = () => {
               <span className="text-xl font-bold text-gray-900 dark:text-white">MyJobTrack</span>
             </div>
 
-            {/* Sign In Button */}
-            <button
-              onClick={() => navigate('/login')}
-              className="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 border border-gray-300 dark:border-dark-600 hover:border-blue-300 dark:hover:border-blue-500 rounded-lg"
-            >
-              <LogIn className="h-4 w-4 mr-2" />
-              Sign In
-            </button>
+            {/* Right Side Actions */}
+            <div className="flex items-center space-x-4">
+              {/* Theme Toggle */}
+              <ThemeToggle size="sm" />
+              
+              {/* Sign In Button */}
+              <button
+                onClick={() => navigate('/login')}
+                className="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 border border-gray-300 dark:border-dark-600 hover:border-blue-300 dark:hover:border-blue-500 rounded-lg"
+              >
+                <LogIn className="h-4 w-4 mr-2" />
+                Sign In
+              </button>
+            </div>
           </div>
         </div>
       </nav>

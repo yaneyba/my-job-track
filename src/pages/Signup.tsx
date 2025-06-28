@@ -127,7 +127,7 @@ const Signup: React.FC = () => {
         <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-green-600 to-blue-600 p-12 flex-col justify-center">
           <div className="max-w-md">
             {/* Logo */}
-            <div className="flex items-center mb-8">
+            <Link to="/" className="flex items-center mb-8 hover:opacity-80 transition-opacity">
               <div className="bg-white/20 p-3 rounded-xl mr-4">
                 <Calendar className="h-8 w-8 text-white" />
               </div>
@@ -135,7 +135,7 @@ const Signup: React.FC = () => {
                 <h1 className="text-3xl font-bold text-white">MyJobTrack</h1>
                 <p className="text-blue-100">Simple Job Tracking</p>
               </div>
-            </div>
+            </Link>
 
             {/* Benefits */}
             <div className="space-y-6">
@@ -176,7 +176,7 @@ const Signup: React.FC = () => {
           <div className="w-full max-w-md">
             {/* Mobile Logo */}
             <div className="lg:hidden text-center mb-8">
-              <div className="flex items-center justify-center mb-4">
+              <Link to="/" className="flex items-center justify-center mb-4 hover:opacity-80 transition-opacity">
                 <div className="bg-blue-600 p-3 rounded-xl mr-3">
                   <Calendar className="h-8 w-8 text-white" />
                 </div>
@@ -184,7 +184,7 @@ const Signup: React.FC = () => {
                   <h1 className="text-2xl font-bold text-gray-900 dark:text-white">MyJobTrack</h1>
                   <p className="text-gray-600 dark:text-gray-400 text-sm">Simple Job Tracking</p>
                 </div>
-              </div>
+              </Link>
             </div>
 
             {/* Form Header */}

@@ -1,4 +1,4 @@
-import { Customer, Job, DashboardStats } from '../../types';
+import { Customer, Job, DashboardStats } from '@/types';
 import { IDataProvider } from './IDataProvider';
 import { isToday, startOfWeek, endOfWeek, isWithinInterval, parseISO } from 'date-fns';
 import QRCode from 'qrcode';

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Job } from '../types';
-import { DataProviderFactory } from '../data/providers/DataProviderFactory';
-import JobCard from '../components/Job/JobCard';
-import Breadcrumbs from '../components/UI/Breadcrumbs';
-import Pagination from '../components/UI/Pagination';
-import { usePagination } from '../hooks/usePagination';
+import { Job } from '@/types';
+import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
+import JobCard from '@/components/Job/JobCard';
+import Breadcrumbs from '@/components/UI/Breadcrumbs';
+import Pagination from '@/components/UI/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { DollarSign, AlertCircle } from 'lucide-react';
 
 const Payments: React.FC = () => {

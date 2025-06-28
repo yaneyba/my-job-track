@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { DataProviderFactory } from '../data/providers/DataProviderFactory';
+import { useAuth } from '@/contexts/AuthContext';
+import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 
 export const useSampleData = () => {
   const { isAuthenticated, user } = useAuth();

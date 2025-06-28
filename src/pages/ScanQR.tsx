@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import QRScanner from '../components/QR/QRScanner';
-import Breadcrumbs from '../components/UI/Breadcrumbs';
+import QRScanner from '@/components/QR/QRScanner';
+import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import { 
   QrCode, 
   Camera, 

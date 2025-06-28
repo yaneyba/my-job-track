@@ -1,4 +1,4 @@
-import { Customer, Job, DashboardStats } from '../types';
+import { Customer, Job, DashboardStats } from '@/types';
 
 export interface IDataProvider {
   // Customer methods

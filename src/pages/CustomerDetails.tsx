@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Customer, Job } from '../types';
-import { DataProviderFactory } from '../data/providers/DataProviderFactory';
-import Breadcrumbs from '../components/UI/Breadcrumbs';
-import JobCard from '../components/Job/JobCard';
-import QRCodeDisplay from '../components/QR/QRCodeDisplay';
+import { Customer, Job } from '@/types';
+import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
+import Breadcrumbs from '@/components/UI/Breadcrumbs';
+import JobCard from '@/components/Job/JobCard';
+import QRCodeDisplay from '@/components/QR/QRCodeDisplay';
 import {
   ArrowLeft,
   Edit3,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DataProviderFactory } from '../../data/providers/DataProviderFactory';
+import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import QrScanner from 'qr-scanner';
 import { 
   X, 

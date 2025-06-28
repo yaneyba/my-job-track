@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DataProviderFactory } from '../data/providers/DataProviderFactory';
-import { Customer } from '../types';
+import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
+import { Customer } from '@/types';
 import { ArrowLeft, Calendar, User, Briefcase, DollarSign, FileText, Save, X, Plus } from 'lucide-react';
 import { format } from 'date-fns';
-import Breadcrumbs from '../components/UI/Breadcrumbs';
+import Breadcrumbs from '@/components/UI/Breadcrumbs';
 
 const AddJob: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);

@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DataProviderFactory } from '../data/providers/DataProviderFactory';
-import { useTheme } from '../contexts/ThemeContext';
-import Breadcrumbs from '../components/UI/Breadcrumbs';
-import ThemeToggle from '../components/UI/ThemeToggle';
+import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
+import { useTheme } from '@/contexts/ThemeContext';
+import Breadcrumbs from '@/components/UI/Breadcrumbs';
+import ThemeToggle from '@/components/UI/ThemeToggle';
 import {
   Settings as SettingsIcon,
   Download,

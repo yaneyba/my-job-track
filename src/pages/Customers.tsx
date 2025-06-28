@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Customer } from '@/types';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
@@ -40,6 +40,19 @@ const Customers: React.FC = () => {
     itemsPerPage: 12 // Show 12 customers per page
   });
 
+  const loadCustomers = useCallback(() => {
+    setLoading(true);
+    try {
+      const customerData = dataProvider.getCustomers();
+      setCustomers(customerData);
+      setFilteredCustomers(customerData);
+    } catch (error) {
+      console.error('Failed to load customers:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [dataProvider]);
+
   useEffect(() => {
     loadCustomers();
     
@@ -54,29 +67,7 @@ const Customers: React.FC = () => {
         setSuccessMessage('');
       }, 5000);
     }
-  }, [location.state]);
-
-  useEffect(() => {
-    if (searchQuery.trim()) {
-      const filtered = dataProvider.searchCustomers(searchQuery);
-      setFilteredCustomers(filtered);
-    } else {
-      setFilteredCustomers(customers);
-    }
-  }, [searchQuery, customers, dataProvider]);
-
-  const loadCustomers = () => {
-    setLoading(true);
-    try {
-      const customerData = dataProvider.getCustomers();
-      setCustomers(customerData);
-      setFilteredCustomers(customerData);
-    } catch (error) {
-      console.error('Failed to load customers:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [location.state, loadCustomers]);
 
   if (loading) {
     return (

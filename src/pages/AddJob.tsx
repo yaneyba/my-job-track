@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { Customer } from '@/types';
@@ -51,6 +51,15 @@ const AddJob: React.FC = () => {
     { label: 'Schedule Job', current: true }
   ];
 
+  const loadCustomers = useCallback(() => {
+    try {
+      const customerData = dataProvider.getCustomers();
+      setCustomers(customerData);
+    } catch (error) {
+      console.error('Failed to load customers:', error);
+    }
+  }, [dataProvider]);
+
   useEffect(() => {
     loadCustomers();
     // Set default date to today
@@ -58,16 +67,7 @@ const AddJob: React.FC = () => {
       ...prev,
       scheduledDate: format(new Date(), 'yyyy-MM-dd')
     }));
-  }, []);
-
-  const loadCustomers = () => {
-    try {
-      const customerData = dataProvider.getCustomers();
-      setCustomers(customerData);
-    } catch (error) {
-      console.error('Failed to load customers:', error);
-    }
-  };
+  }, [loadCustomers]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Job } from '@/types';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
@@ -37,11 +37,7 @@ const Payments: React.FC = () => {
     itemsPerPage: 10 // Show 10 jobs per page
   });
 
-  useEffect(() => {
-    loadPaymentData();
-  }, []);
-
-  const loadPaymentData = () => {
+  const loadPaymentData = useCallback(() => {
     setLoading(true);
     try {
       const allJobs = dataProvider.getJobs();
@@ -55,7 +51,11 @@ const Payments: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [dataProvider]);
+
+  useEffect(() => {
+    loadPaymentData();
+  }, [loadPaymentData]);
 
   const handleJobPaymentStatusChange = (jobId: string, paymentStatus: 'paid' | 'unpaid') => {
     dataProvider.updateJob(jobId, { paymentStatus });

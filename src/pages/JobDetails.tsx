@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Job, Customer } from '@/types';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
@@ -49,13 +49,7 @@ const JobDetails: React.FC = () => {
     { label: job?.serviceType || 'Job Details', current: true }
   ];
 
-  useEffect(() => {
-    if (id) {
-      loadJobDetails();
-    }
-  }, [id]);
-
-  const loadJobDetails = () => {
+  const loadJobDetails = useCallback(() => {
     setLoading(true);
     try {
       const jobData = dataProvider.getJob(id!);
@@ -80,12 +74,18 @@ const JobDetails: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, navigate, dataProvider]);
+
+  useEffect(() => {
+    if (id) {
+      loadJobDetails();
+    }
+  }, [id, loadJobDetails]);
 
   const handleStatusChange = (newStatus: Job['status']) => {
     if (!job) return;
     
-    const updates: any = { status: newStatus };
+    const updates: Partial<Job> = { status: newStatus };
     if (newStatus === 'completed') {
       updates.completedDate = new Date().toISOString();
     }

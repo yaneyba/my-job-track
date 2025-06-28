@@ -85,7 +85,7 @@ const Landing: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-dark-900 dark:via-dark-800 dark:to-dark-900 transition-colors duration-200">
+    <div className="min-h-screen bg-white dark:bg-dark-900 transition-colors duration-200">
       {/* Structured Data for SEO */}
       <script
         type="application/ld+json"
@@ -116,7 +116,7 @@ const Landing: React.FC = () => {
       />
 
       {/* Top Navigation Bar */}
-      <nav className="relative z-10 bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-dark-700 transition-colors duration-200">
+      <nav className="relative z-10 bg-white/95 dark:bg-dark-800/95 backdrop-blur-sm border-b border-gray-200 dark:border-dark-700 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -147,44 +147,54 @@ const Landing: React.FC = () => {
       
       {/* Hero Section */}
       <header className="relative overflow-hidden" role="banner">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 dark:from-blue-400/5 dark:to-purple-400/5"></div>
-        <div className="relative max-w-7xl mx-auto px-4 py-16 sm:py-24">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src="https://images.pexels.com/photos/416978/pexels-photo-416978.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop"
+            alt="Professional landscaper working on garden maintenance"
+            className="w-full h-full object-cover"
+          />
+          {/* Overlay for better text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-800/70 to-purple-900/80 dark:from-blue-950/90 dark:via-blue-900/80 dark:to-purple-950/90"></div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 py-24 sm:py-32">
           <div className="text-center">
             <div className="flex justify-center mb-8">
-              <div className="bg-blue-600 dark:bg-blue-500 p-4 rounded-2xl shadow-lg">
+              <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl shadow-lg border border-white/30">
                 <Calendar className="h-12 w-12 text-white" aria-hidden="true" />
               </div>
             </div>
-            <h1 className="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-200">
+            <h1 className="text-4xl sm:text-6xl font-bold text-white mb-6 drop-shadow-lg">
               <span itemProp="name">MyJobTrack</span>
               <span className="sr-only">- Simple CRM for Landscapers, Handymen & Service Pros</span>
             </h1>
-            <h2 className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed transition-colors duration-200">
-              <span className="text-green-600 dark:text-green-400 font-semibold">Dead Simple CRM</span> built for 
-              <span className="font-semibold"> Landscapers, Handymen & Contractors</span>
+            <h2 className="text-xl sm:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
+              <span className="text-green-300 font-semibold">Dead Simple CRM</span> built for 
+              <span className="font-semibold text-white"> Landscapers, Handymen & Contractors</span>
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto transition-colors duration-200">
-              Track jobs, manage customers, and get paid faster. <strong>No complexity, no learning curve</strong> - 
+            <p className="text-lg text-blue-50 mb-8 max-w-2xl mx-auto drop-shadow-md">
+              Track jobs, manage customers, and get paid faster. <strong className="text-white">No complexity, no learning curve</strong> - 
               just what you need to run your landscaping, handyman, or contracting business.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <button
                 onClick={() => navigate('/app')}
-                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center group"
+                className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-200 flex items-center group border-2 border-green-500 hover:border-green-400"
               >
                 Get Started Free
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </button>
               <button
                 onClick={() => navigate('/login')}
-                className="bg-white hover:bg-gray-50 dark:bg-dark-700 dark:hover:bg-dark-600 text-gray-700 dark:text-gray-200 px-8 py-4 rounded-xl text-lg font-semibold border-2 border-gray-200 dark:border-dark-600 hover:border-gray-300 dark:hover:border-dark-500 transition-all duration-200 flex items-center"
+                className="bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl text-lg font-semibold border-2 border-white/30 hover:border-white/50 transition-all duration-200 flex items-center backdrop-blur-sm"
               >
                 <LogIn className="mr-2 h-5 w-5" />
                 Sign In
               </button>
               <button
                 onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white px-4 py-2 text-lg font-medium transition-colors duration-200"
+                className="text-blue-100 hover:text-white px-4 py-2 text-lg font-medium transition-colors duration-200 underline decoration-2 underline-offset-4 decoration-blue-300 hover:decoration-white"
               >
                 Learn More
               </button>
@@ -345,13 +355,6 @@ const Landing: React.FC = () => {
             >
               Start Using MyJobTrack
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button
-              onClick={() => navigate('/login')}
-              className="bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl text-lg font-semibold border border-white/20 hover:border-white/30 transition-all duration-200 flex items-center"
-            >
-              <LogIn className="mr-2 h-5 w-5" />
-              Sign In
             </button>
             <p className="text-gray-400 dark:text-gray-500">
               No signup required • Works offline • Free forever

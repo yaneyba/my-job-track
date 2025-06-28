@@ -42,12 +42,12 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({
       title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
       aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
     >
-      <div className="relative">
+      <div className="relative flex items-center justify-center" style={{ width: iconSizes[size], height: iconSizes[size] }}>
         {/* Sun Icon */}
         <Sun 
           size={iconSizes[size]} 
           className={`
-            absolute inset-0 transition-all duration-300 transform
+            absolute transition-all duration-300 transform
             ${isDark ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}
           `}
         />
@@ -56,7 +56,7 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({
         <Moon 
           size={iconSizes[size]} 
           className={`
-            absolute inset-0 transition-all duration-300 transform
+            absolute transition-all duration-300 transform
             ${isDark ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'}
           `}
         />

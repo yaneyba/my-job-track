@@ -9,7 +9,8 @@ import {
   ArrowRight,
   Star,
   Shield,
-  Zap
+  Zap,
+  LogIn
 } from 'lucide-react';
 
 const Landing: React.FC = () => {
@@ -111,6 +112,30 @@ const Landing: React.FC = () => {
           })
         }}
       />
+
+      {/* Top Navigation Bar */}
+      <nav className="relative z-10 bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-dark-700 transition-colors duration-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <div className="flex items-center">
+              <div className="bg-blue-600 dark:bg-blue-500 p-2 rounded-lg mr-3">
+                <Calendar className="h-6 w-6 text-white" />
+              </div>
+              <span className="text-xl font-bold text-gray-900 dark:text-white">MyJobTrack</span>
+            </div>
+
+            {/* Sign In Button */}
+            <button
+              onClick={() => navigate('/login')}
+              className="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 border border-gray-300 dark:border-dark-600 hover:border-blue-300 dark:hover:border-blue-500 rounded-lg"
+            >
+              <LogIn className="h-4 w-4 mr-2" />
+              Sign In
+            </button>
+          </div>
+        </div>
+      </nav>
       
       {/* Hero Section */}
       <header className="relative overflow-hidden" role="banner">
@@ -143,8 +168,15 @@ const Landing: React.FC = () => {
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </button>
               <button
+                onClick={() => navigate('/login')}
+                className="bg-white hover:bg-gray-50 dark:bg-dark-700 dark:hover:bg-dark-600 text-gray-700 dark:text-gray-200 px-8 py-4 rounded-xl text-lg font-semibold border-2 border-gray-200 dark:border-dark-600 hover:border-gray-300 dark:hover:border-dark-500 transition-all duration-200 flex items-center"
+              >
+                <LogIn className="mr-2 h-5 w-5" />
+                Sign In
+              </button>
+              <button
                 onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-                className="bg-white hover:bg-gray-50 dark:bg-dark-700 dark:hover:bg-dark-600 text-gray-700 dark:text-gray-200 px-8 py-4 rounded-xl text-lg font-semibold border-2 border-gray-200 dark:border-dark-600 hover:border-gray-300 dark:hover:border-dark-500 transition-all duration-200"
+                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white px-4 py-2 text-lg font-medium transition-colors duration-200"
               >
                 Learn More
               </button>
@@ -305,6 +337,13 @@ const Landing: React.FC = () => {
             >
               Start Using MyJobTrack
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+            <button
+              onClick={() => navigate('/login')}
+              className="bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl text-lg font-semibold border border-white/20 hover:border-white/30 transition-all duration-200 flex items-center"
+            >
+              <LogIn className="mr-2 h-5 w-5" />
+              Sign In
             </button>
             <p className="text-gray-400 dark:text-gray-500">
               No signup required • Works offline • Free forever

@@ -92,25 +92,25 @@ const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg p-6 max-w-sm w-full">
+    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-70 flex items-center justify-center p-4 z-50 transition-colors duration-200">
+      <div className="bg-white dark:bg-dark-800 rounded-lg p-6 max-w-sm w-full shadow-2xl border border-gray-200 dark:border-dark-700 transition-colors duration-200">
         <div className="text-center mb-4">
-          <h2 className="text-xl font-bold text-gray-900 mb-2">{title}</h2>
-          {subtitle && <p className="text-gray-600">{subtitle}</p>}
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-200">{title}</h2>
+          {subtitle && <p className="text-gray-600 dark:text-gray-400 transition-colors duration-200">{subtitle}</p>}
         </div>
 
         {loading ? (
           <div className="flex justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400"></div>
           </div>
         ) : (
           <div className="text-center mb-6">
             <img
               src={qrCodeData}
               alt="QR Code"
-              className="mx-auto mb-4 border-2 border-blue-200 rounded-lg"
+              className="mx-auto mb-4 border-2 border-blue-200 dark:border-blue-700 rounded-lg transition-colors duration-200"
             />
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">
               Scan this code for quick access
             </p>
           </div>
@@ -120,7 +120,7 @@ const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({
           <button
             onClick={handlePrint}
             disabled={loading}
-            className="flex-1 flex items-center justify-center py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 flex items-center justify-center py-3 px-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
           >
             <Printer size={18} className="mr-2" />
             Print
@@ -128,7 +128,7 @@ const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({
           <button
             onClick={handleDownload}
             disabled={loading}
-            className="flex-1 flex items-center justify-center py-3 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 flex items-center justify-center py-3 px-4 bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
           >
             <Download size={18} className="mr-2" />
             Download
@@ -137,7 +137,7 @@ const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({
 
         <button
           onClick={onClose}
-          className="w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+          className="w-full py-3 px-4 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-dark-600 transition-colors duration-200"
         >
           Close
         </button>

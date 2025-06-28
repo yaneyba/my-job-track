@@ -21,15 +21,15 @@ const QuickActionButton: React.FC<QuickActionButtonProps> = ({
   const getVariantStyles = () => {
     switch (variant) {
       case 'primary':
-        return 'bg-blue-600 hover:bg-blue-700 text-white';
+        return 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white';
       case 'secondary':
-        return 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300';
+        return 'bg-gray-100 hover:bg-gray-200 dark:bg-dark-700 dark:hover:bg-dark-600 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-dark-600';
       case 'success':
-        return 'bg-green-600 hover:bg-green-700 text-white';
+        return 'bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white';
       case 'warning':
-        return 'bg-orange-600 hover:bg-orange-700 text-white';
+        return 'bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white';
       default:
-        return 'bg-blue-600 hover:bg-blue-700 text-white';
+        return 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white';
     }
   };
 
@@ -51,7 +51,7 @@ const QuickActionButton: React.FC<QuickActionButtonProps> = ({
       onClick={onClick}
       className={`
         flex flex-col items-center justify-center rounded-xl font-semibold
-        transition-colors duration-200 shadow-sm hover:shadow-md
+        transition-all duration-200 shadow-sm hover:shadow-md
         min-h-[44px] touch-manipulation
         ${getVariantStyles()}
         ${getSizeStyles()}

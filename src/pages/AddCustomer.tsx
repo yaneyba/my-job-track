@@ -127,26 +127,26 @@ const AddCustomer: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-900 transition-colors duration-200">
       {/* Page Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200 mb-6">
+      <div className="bg-white dark:bg-dark-800 shadow-sm border-b border-gray-200 dark:border-dark-700 mb-6 transition-colors duration-200">
         <div className="max-w-4xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <button
                 onClick={() => navigate('/app/customers')}
-                className="mr-4 p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                className="mr-4 p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors duration-200"
               >
                 <ArrowLeft size={24} />
               </button>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Add Customer</h1>
-                <p className="text-gray-600">Create a new customer profile</p>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-200">Add Customer</h1>
+                <p className="text-gray-600 dark:text-gray-400 transition-colors duration-200">Create a new customer profile</p>
               </div>
             </div>
             <button
               onClick={() => navigate('/app/customers')}
-              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors duration-200"
             >
               <X size={24} />
             </button>
@@ -162,12 +162,12 @@ const AddCustomer: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Customer Name */}
           <div>
-            <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="name" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
               Customer Name *
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <User className="h-5 w-5 text-gray-400" />
+                <User className="h-5 w-5 text-gray-400 dark:text-gray-500" />
               </div>
               <input
                 type="text"
@@ -178,13 +178,13 @@ const AddCustomer: React.FC = () => {
                 className={`
                   block w-full pl-12 pr-4 py-4 text-lg border rounded-xl
                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                  transition-colors bg-white
-                  ${errors.name ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'}
+                  transition-colors duration-200 bg-white dark:bg-dark-700 text-gray-900 dark:text-white
+                  ${errors.name ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20' : 'border-gray-300 dark:border-dark-600 hover:border-gray-400 dark:hover:border-dark-500'}
                 `}
               />
             </div>
             {errors.name && (
-              <p className="mt-2 text-sm text-red-600 flex items-center">
+              <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center transition-colors duration-200">
                 <X className="h-4 w-4 mr-1" />
                 {errors.name}
               </p>
@@ -193,12 +193,12 @@ const AddCustomer: React.FC = () => {
 
           {/* Phone Number */}
           <div>
-            <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
               Phone Number *
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Phone className="h-5 w-5 text-gray-400" />
+                <Phone className="h-5 w-5 text-gray-400 dark:text-gray-500" />
               </div>
               <input
                 type="tel"
@@ -209,13 +209,13 @@ const AddCustomer: React.FC = () => {
                 className={`
                   block w-full pl-12 pr-4 py-4 text-lg border rounded-xl
                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                  transition-colors bg-white
-                  ${errors.phone ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'}
+                  transition-colors duration-200 bg-white dark:bg-dark-700 text-gray-900 dark:text-white
+                  ${errors.phone ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20' : 'border-gray-300 dark:border-dark-600 hover:border-gray-400 dark:hover:border-dark-500'}
                 `}
               />
             </div>
             {errors.phone && (
-              <p className="mt-2 text-sm text-red-600 flex items-center">
+              <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center transition-colors duration-200">
                 <X className="h-4 w-4 mr-1" />
                 {errors.phone}
               </p>
@@ -224,12 +224,12 @@ const AddCustomer: React.FC = () => {
 
           {/* Address */}
           <div>
-            <label htmlFor="address" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="address" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
               Service Address *
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <MapPin className="h-5 w-5 text-gray-400" />
+                <MapPin className="h-5 w-5 text-gray-400 dark:text-gray-500" />
               </div>
               <textarea
                 id="address"
@@ -240,13 +240,13 @@ const AddCustomer: React.FC = () => {
                 className={`
                   block w-full pl-12 pr-4 py-4 text-lg border rounded-xl
                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                  transition-colors bg-white resize-none
-                  ${errors.address ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'}
+                  transition-colors duration-200 bg-white dark:bg-dark-700 text-gray-900 dark:text-white resize-none
+                  ${errors.address ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20' : 'border-gray-300 dark:border-dark-600 hover:border-gray-400 dark:hover:border-dark-500'}
                 `}
               />
             </div>
             {errors.address && (
-              <p className="mt-2 text-sm text-red-600 flex items-center">
+              <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center transition-colors duration-200">
                 <X className="h-4 w-4 mr-1" />
                 {errors.address}
               </p>
@@ -255,12 +255,12 @@ const AddCustomer: React.FC = () => {
 
           {/* Service Type */}
           <div>
-            <label htmlFor="serviceType" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="serviceType" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
               Primary Service Type *
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Briefcase className="h-5 w-5 text-gray-400" />
+                <Briefcase className="h-5 w-5 text-gray-400 dark:text-gray-500" />
               </div>
               <select
                 id="serviceType"
@@ -269,8 +269,8 @@ const AddCustomer: React.FC = () => {
                 className={`
                   block w-full pl-12 pr-4 py-4 text-lg border rounded-xl
                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                  transition-colors bg-white appearance-none
-                  ${errors.serviceType ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'}
+                  transition-colors duration-200 bg-white dark:bg-dark-700 text-gray-900 dark:text-white appearance-none
+                  ${errors.serviceType ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20' : 'border-gray-300 dark:border-dark-600 hover:border-gray-400 dark:hover:border-dark-500'}
                 `}
               >
                 <option value="">Select a service type</option>
@@ -281,13 +281,13 @@ const AddCustomer: React.FC = () => {
                 ))}
               </select>
               <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
             </div>
             {errors.serviceType && (
-              <p className="mt-2 text-sm text-red-600 flex items-center">
+              <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center transition-colors duration-200">
                 <X className="h-4 w-4 mr-1" />
                 {errors.serviceType}
               </p>
@@ -296,8 +296,8 @@ const AddCustomer: React.FC = () => {
 
           {/* Submit Error */}
           {errors.submit && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <p className="text-red-600 flex items-center">
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 transition-colors duration-200">
+              <p className="text-red-600 dark:text-red-400 flex items-center transition-colors duration-200">
                 <X className="h-5 w-5 mr-2" />
                 {errors.submit}
               </p>
@@ -310,7 +310,7 @@ const AddCustomer: React.FC = () => {
               type="submit"
               disabled={isSubmitting}
               className="
-                flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400
+                flex-1 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:bg-blue-400 dark:disabled:bg-blue-600
                 text-white py-4 px-6 rounded-xl text-lg font-semibold
                 transition-colors duration-200 shadow-lg hover:shadow-xl
                 flex items-center justify-center
@@ -335,9 +335,9 @@ const AddCustomer: React.FC = () => {
               onClick={() => navigate('/app/customers')}
               disabled={isSubmitting}
               className="
-                flex-1 bg-gray-100 hover:bg-gray-200 disabled:bg-gray-50
-                text-gray-700 py-4 px-6 rounded-xl text-lg font-semibold
-                transition-colors duration-200 border border-gray-300
+                flex-1 bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 disabled:bg-gray-50 dark:disabled:bg-dark-800
+                text-gray-700 dark:text-gray-300 py-4 px-6 rounded-xl text-lg font-semibold
+                transition-colors duration-200 border border-gray-300 dark:border-dark-600
                 disabled:cursor-not-allowed
               "
             >
@@ -347,9 +347,9 @@ const AddCustomer: React.FC = () => {
         </form>
 
         {/* Help Text */}
-        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-blue-900 mb-2">💡 Pro Tips</h3>
-          <ul className="text-blue-800 space-y-1 text-sm">
+        <div className="mt-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6 transition-colors duration-200">
+          <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2 transition-colors duration-200">💡 Pro Tips</h3>
+          <ul className="text-blue-800 dark:text-blue-200 space-y-1 text-sm transition-colors duration-200">
             <li>• Use the customer's preferred name for easy recognition</li>
             <li>• Include apartment/unit numbers in the address</li>
             <li>• Choose the most common service you provide for this customer</li>

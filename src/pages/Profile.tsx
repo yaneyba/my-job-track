@@ -229,14 +229,14 @@ const Profile: React.FC = () => {
 
       {/* Success Message */}
       {showSuccess && (
-        <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4 flex items-center justify-between">
+        <div className="mb-6 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 flex items-center justify-between transition-colors duration-200">
           <div className="flex items-center">
-            <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
-            <p className="text-green-800 font-medium">Profile updated successfully!</p>
+            <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 transition-colors duration-200" />
+            <p className="text-green-800 dark:text-green-200 font-medium transition-colors duration-200">Profile updated successfully!</p>
           </div>
           <button
             onClick={() => setShowSuccess(false)}
-            className="text-green-600 hover:text-green-800"
+            className="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-200 transition-colors duration-200"
           >
             <X className="h-5 w-5" />
           </button>
@@ -244,7 +244,7 @@ const Profile: React.FC = () => {
       )}
 
       {/* Header */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-6">
+      <div className="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-gray-200 dark:border-dark-700 mb-6 transition-colors duration-200">
         <div className="p-6">
           <div className="flex items-start justify-between mb-6">
             <div className="flex items-center">
@@ -253,39 +253,39 @@ const Profile: React.FC = () => {
                   <img
                     src={profile.profileImage}
                     alt="Profile"
-                    className="w-20 h-20 rounded-full object-cover border-4 border-white shadow-lg"
+                    className="w-20 h-20 rounded-full object-cover border-4 border-white dark:border-dark-600 shadow-lg transition-colors duration-200"
                   />
                 ) : (
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center shadow-lg">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 flex items-center justify-center shadow-lg">
                     <User className="h-10 w-10 text-white" />
                   </div>
                 )}
                 {isEditing && (
                   <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="absolute -bottom-2 -right-2 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-lg transition-colors"
+                    className="absolute -bottom-2 -right-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white p-2 rounded-full shadow-lg transition-colors duration-200"
                   >
                     <Camera className="h-4 w-4" />
                   </button>
                 )}
               </div>
               <div className="ml-6">
-                <h1 className="text-2xl font-bold text-gray-900">{profile.businessName}</h1>
-                <p className="text-gray-600">{profile.ownerName}</p>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-200">{profile.businessName}</h1>
+                <p className="text-gray-600 dark:text-gray-400 transition-colors duration-200">{profile.ownerName}</p>
                 <div className="flex items-center mt-2">
                   <Star className="h-4 w-4 text-yellow-400 fill-current" />
                   <Star className="h-4 w-4 text-yellow-400 fill-current" />
                   <Star className="h-4 w-4 text-yellow-400 fill-current" />
                   <Star className="h-4 w-4 text-yellow-400 fill-current" />
                   <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                  <span className="text-sm text-gray-600 ml-2">5.0 Rating</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400 ml-2 transition-colors duration-200">5.0 Rating</span>
                 </div>
               </div>
             </div>
             
             <button
               onClick={() => setIsEditing(!isEditing)}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center"
+              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center"
             >
               <Edit3 className="h-4 w-4 mr-2" />
               {isEditing ? 'Cancel' : 'Edit Profile'}
@@ -294,42 +294,42 @@ const Profile: React.FC = () => {
 
           {/* Quick Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-blue-50 rounded-lg p-4">
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 transition-colors duration-200">
               <div className="flex items-center">
-                <Users className="h-6 w-6 text-blue-600 mr-2" />
+                <Users className="h-6 w-6 text-blue-600 dark:text-blue-400 mr-2 transition-colors duration-200" />
                 <div>
-                  <p className="text-lg font-bold text-blue-900">150+</p>
-                  <p className="text-sm text-blue-700">Customers</p>
+                  <p className="text-lg font-bold text-blue-900 dark:text-blue-100 transition-colors duration-200">150+</p>
+                  <p className="text-sm text-blue-700 dark:text-blue-300 transition-colors duration-200">Customers</p>
                 </div>
               </div>
             </div>
             
-            <div className="bg-green-50 rounded-lg p-4">
+            <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 transition-colors duration-200">
               <div className="flex items-center">
-                <Calendar className="h-6 w-6 text-green-600 mr-2" />
+                <Calendar className="h-6 w-6 text-green-600 dark:text-green-400 mr-2 transition-colors duration-200" />
                 <div>
-                  <p className="text-lg font-bold text-green-900">500+</p>
-                  <p className="text-sm text-green-700">Jobs Done</p>
+                  <p className="text-lg font-bold text-green-900 dark:text-green-100 transition-colors duration-200">500+</p>
+                  <p className="text-sm text-green-700 dark:text-green-300 transition-colors duration-200">Jobs Done</p>
                 </div>
               </div>
             </div>
             
-            <div className="bg-purple-50 rounded-lg p-4">
+            <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 transition-colors duration-200">
               <div className="flex items-center">
-                <Award className="h-6 w-6 text-purple-600 mr-2" />
+                <Award className="h-6 w-6 text-purple-600 dark:text-purple-400 mr-2 transition-colors duration-200" />
                 <div>
-                  <p className="text-lg font-bold text-purple-900">3</p>
-                  <p className="text-sm text-purple-700">Years</p>
+                  <p className="text-lg font-bold text-purple-900 dark:text-purple-100 transition-colors duration-200">3</p>
+                  <p className="text-sm text-purple-700 dark:text-purple-300 transition-colors duration-200">Years</p>
                 </div>
               </div>
             </div>
             
-            <div className="bg-orange-50 rounded-lg p-4">
+            <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4 transition-colors duration-200">
               <div className="flex items-center">
-                <Star className="h-6 w-6 text-orange-600 mr-2" />
+                <Star className="h-6 w-6 text-orange-600 dark:text-orange-400 mr-2 transition-colors duration-200" />
                 <div>
-                  <p className="text-lg font-bold text-orange-900">5.0</p>
-                  <p className="text-sm text-orange-700">Rating</p>
+                  <p className="text-lg font-bold text-orange-900 dark:text-orange-100 transition-colors duration-200">5.0</p>
+                  <p className="text-sm text-orange-700 dark:text-orange-300 transition-colors duration-200">Rating</p>
                 </div>
               </div>
             </div>
@@ -341,10 +341,10 @@ const Profile: React.FC = () => {
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Business Information */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-gray-200 dark:border-dark-700 transition-colors duration-200">
             <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <Building2 className="h-5 w-5 mr-2 text-blue-600" />
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center transition-colors duration-200">
+                <Building2 className="h-5 w-5 mr-2 text-blue-600 dark:text-blue-400 transition-colors duration-200" />
                 Business Information
               </h2>
 
@@ -352,118 +352,118 @@ const Profile: React.FC = () => {
                 <div className="space-y-4">
                   {/* Business Name */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
                       Business Name *
                     </label>
                     <input
                       type="text"
                       value={editForm.businessName}
                       onChange={(e) => setEditForm(prev => ({ ...prev, businessName: e.target.value }))}
-                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                        errors.businessName ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 bg-white dark:bg-dark-700 text-gray-900 dark:text-white ${
+                        errors.businessName ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20' : 'border-gray-300 dark:border-dark-600'
                       }`}
                     />
                     {errors.businessName && (
-                      <p className="mt-1 text-sm text-red-600">{errors.businessName}</p>
+                      <p className="mt-1 text-sm text-red-600 dark:text-red-400 transition-colors duration-200">{errors.businessName}</p>
                     )}
                   </div>
 
                   {/* Owner Name */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
                       Owner Name *
                     </label>
                     <input
                       type="text"
                       value={editForm.ownerName}
                       onChange={(e) => setEditForm(prev => ({ ...prev, ownerName: e.target.value }))}
-                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                        errors.ownerName ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 bg-white dark:bg-dark-700 text-gray-900 dark:text-white ${
+                        errors.ownerName ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20' : 'border-gray-300 dark:border-dark-600'
                       }`}
                     />
                     {errors.ownerName && (
-                      <p className="mt-1 text-sm text-red-600">{errors.ownerName}</p>
+                      <p className="mt-1 text-sm text-red-600 dark:text-red-400 transition-colors duration-200">{errors.ownerName}</p>
                     )}
                   </div>
 
                   {/* Email */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
                       Email Address *
                     </label>
                     <input
                       type="email"
                       value={editForm.email}
                       onChange={(e) => setEditForm(prev => ({ ...prev, email: e.target.value }))}
-                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                        errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 bg-white dark:bg-dark-700 text-gray-900 dark:text-white ${
+                        errors.email ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20' : 'border-gray-300 dark:border-dark-600'
                       }`}
                     />
                     {errors.email && (
-                      <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                      <p className="mt-1 text-sm text-red-600 dark:text-red-400 transition-colors duration-200">{errors.email}</p>
                     )}
                   </div>
 
                   {/* Phone */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
                       Phone Number *
                     </label>
                     <input
                       type="tel"
                       value={editForm.phone}
                       onChange={(e) => setEditForm(prev => ({ ...prev, phone: e.target.value }))}
-                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                        errors.phone ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 bg-white dark:bg-dark-700 text-gray-900 dark:text-white ${
+                        errors.phone ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20' : 'border-gray-300 dark:border-dark-600'
                       }`}
                     />
                     {errors.phone && (
-                      <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
+                      <p className="mt-1 text-sm text-red-600 dark:text-red-400 transition-colors duration-200">{errors.phone}</p>
                     )}
                   </div>
 
                   {/* Address */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
                       Business Address *
                     </label>
                     <textarea
                       value={editForm.address}
                       onChange={(e) => setEditForm(prev => ({ ...prev, address: e.target.value }))}
                       rows={3}
-                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
-                        errors.address ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none transition-colors duration-200 bg-white dark:bg-dark-700 text-gray-900 dark:text-white ${
+                        errors.address ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20' : 'border-gray-300 dark:border-dark-600'
                       }`}
                     />
                     {errors.address && (
-                      <p className="mt-1 text-sm text-red-600">{errors.address}</p>
+                      <p className="mt-1 text-sm text-red-600 dark:text-red-400 transition-colors duration-200">{errors.address}</p>
                     )}
                   </div>
 
                   {/* Website */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
                       Website
                     </label>
                     <input
                       type="url"
                       value={editForm.website}
                       onChange={(e) => setEditForm(prev => ({ ...prev, website: e.target.value }))}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 bg-white dark:bg-dark-700 text-gray-900 dark:text-white"
                       placeholder="https://www.yourbusiness.com"
                     />
                   </div>
 
                   {/* Bio */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
                       Business Description
                     </label>
                     <textarea
                       value={editForm.bio}
                       onChange={(e) => setEditForm(prev => ({ ...prev, bio: e.target.value }))}
                       rows={4}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none transition-colors duration-200 bg-white dark:bg-dark-700 text-gray-900 dark:text-white"
                       placeholder="Tell customers about your business..."
                     />
                   </div>
@@ -471,39 +471,39 @@ const Profile: React.FC = () => {
               ) : (
                 <div className="space-y-4">
                   <div className="flex items-center">
-                    <Mail className="h-5 w-5 text-gray-400 mr-3" />
+                    <Mail className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3 transition-colors duration-200" />
                     <div>
-                      <p className="text-sm text-gray-600">Email</p>
-                      <a href={`mailto:${profile.email}`} className="font-medium text-blue-600 hover:text-blue-700">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">Email</p>
+                      <a href={`mailto:${profile.email}`} className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200">
                         {profile.email}
                       </a>
                     </div>
                   </div>
                   
                   <div className="flex items-center">
-                    <Phone className="h-5 w-5 text-gray-400 mr-3" />
+                    <Phone className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3 transition-colors duration-200" />
                     <div>
-                      <p className="text-sm text-gray-600">Phone</p>
-                      <a href={`tel:${profile.phone}`} className="font-medium text-blue-600 hover:text-blue-700">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">Phone</p>
+                      <a href={`tel:${profile.phone}`} className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200">
                         {profile.phone}
                       </a>
                     </div>
                   </div>
                   
                   <div className="flex items-start">
-                    <MapPin className="h-5 w-5 text-gray-400 mr-3 mt-0.5" />
+                    <MapPin className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3 mt-0.5 transition-colors duration-200" />
                     <div>
-                      <p className="text-sm text-gray-600">Address</p>
-                      <p className="font-medium text-gray-900">{profile.address}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">Address</p>
+                      <p className="font-medium text-gray-900 dark:text-white transition-colors duration-200">{profile.address}</p>
                     </div>
                   </div>
                   
                   {profile.website && (
                     <div className="flex items-center">
-                      <Globe className="h-5 w-5 text-gray-400 mr-3" />
+                      <Globe className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3 transition-colors duration-200" />
                       <div>
-                        <p className="text-sm text-gray-600">Website</p>
-                        <a href={profile.website} target="_blank" rel="noopener noreferrer" className="font-medium text-blue-600 hover:text-blue-700">
+                        <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">Website</p>
+                        <a href={profile.website} target="_blank" rel="noopener noreferrer" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200">
                           {profile.website}
                         </a>
                       </div>
@@ -512,8 +512,8 @@ const Profile: React.FC = () => {
 
                   {profile.bio && (
                     <div>
-                      <p className="text-sm text-gray-600 mb-2">About</p>
-                      <p className="text-gray-900 bg-gray-50 p-3 rounded-lg">{profile.bio}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 transition-colors duration-200">About</p>
+                      <p className="text-gray-900 dark:text-white bg-gray-50 dark:bg-dark-700 p-3 rounded-lg transition-colors duration-200">{profile.bio}</p>
                     </div>
                   )}
                 </div>
@@ -522,10 +522,10 @@ const Profile: React.FC = () => {
           </div>
 
           {/* Service Types */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-gray-200 dark:border-dark-700 transition-colors duration-200">
             <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <Briefcase className="h-5 w-5 mr-2 text-blue-600" />
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center transition-colors duration-200">
+                <Briefcase className="h-5 w-5 mr-2 text-blue-600 dark:text-blue-400 transition-colors duration-200" />
                 Services Offered
               </h2>
 
@@ -538,14 +538,14 @@ const Profile: React.FC = () => {
                           type="checkbox"
                           checked={editForm.serviceTypes.includes(serviceType)}
                           onChange={() => handleServiceTypeToggle(serviceType)}
-                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          className="rounded border-gray-300 dark:border-dark-600 text-blue-600 dark:text-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-dark-700"
                         />
-                        <span className="ml-2 text-sm text-gray-700">{serviceType}</span>
+                        <span className="ml-2 text-sm text-gray-700 dark:text-gray-300 transition-colors duration-200">{serviceType}</span>
                       </label>
                     ))}
                   </div>
                   {errors.serviceTypes && (
-                    <p className="mt-2 text-sm text-red-600">{errors.serviceTypes}</p>
+                    <p className="mt-2 text-sm text-red-600 dark:text-red-400 transition-colors duration-200">{errors.serviceTypes}</p>
                   )}
                 </div>
               ) : (
@@ -553,7 +553,7 @@ const Profile: React.FC = () => {
                   {profile.serviceTypes.map((serviceType) => (
                     <span
                       key={serviceType}
-                      className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+                      className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200"
                     >
                       {serviceType}
                     </span>
@@ -564,17 +564,17 @@ const Profile: React.FC = () => {
           </div>
 
           {/* Business Hours */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-gray-200 dark:border-dark-700 transition-colors duration-200">
             <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <Clock className="h-5 w-5 mr-2 text-blue-600" />
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center transition-colors duration-200">
+                <Clock className="h-5 w-5 mr-2 text-blue-600 dark:text-blue-400 transition-colors duration-200" />
                 Business Hours
               </h2>
 
               <div className="space-y-3">
                 {Object.entries(profile.businessHours).map(([day, hours]) => (
                   <div key={day} className="flex items-center justify-between py-2">
-                    <span className="font-medium text-gray-900 w-24">
+                    <span className="font-medium text-gray-900 dark:text-white w-24 transition-colors duration-200">
                       {dayNames[day as keyof typeof dayNames]}
                     </span>
                     
@@ -585,9 +585,9 @@ const Profile: React.FC = () => {
                             type="checkbox"
                             checked={!editForm.businessHours[day as keyof typeof editForm.businessHours].closed}
                             onChange={(e) => handleBusinessHoursChange(day as keyof typeof profile.businessHours, 'closed', !e.target.checked)}
-                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            className="rounded border-gray-300 dark:border-dark-600 text-blue-600 dark:text-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-dark-700"
                           />
-                          <span className="ml-2 text-sm text-gray-700">Open</span>
+                          <span className="ml-2 text-sm text-gray-700 dark:text-gray-300 transition-colors duration-200">Open</span>
                         </label>
                         
                         {!editForm.businessHours[day as keyof typeof editForm.businessHours].closed && (
@@ -596,22 +596,22 @@ const Profile: React.FC = () => {
                               type="time"
                               value={editForm.businessHours[day as keyof typeof editForm.businessHours].open}
                               onChange={(e) => handleBusinessHoursChange(day as keyof typeof profile.businessHours, 'open', e.target.value)}
-                              className="px-3 py-1 border border-gray-300 rounded text-sm"
+                              className="px-3 py-1 border border-gray-300 dark:border-dark-600 rounded text-sm bg-white dark:bg-dark-700 text-gray-900 dark:text-white transition-colors duration-200"
                             />
-                            <span className="text-gray-500">to</span>
+                            <span className="text-gray-500 dark:text-gray-400 transition-colors duration-200">to</span>
                             <input
                               type="time"
                               value={editForm.businessHours[day as keyof typeof editForm.businessHours].close}
                               onChange={(e) => handleBusinessHoursChange(day as keyof typeof profile.businessHours, 'close', e.target.value)}
-                              className="px-3 py-1 border border-gray-300 rounded text-sm"
+                              className="px-3 py-1 border border-gray-300 dark:border-dark-600 rounded text-sm bg-white dark:bg-dark-700 text-gray-900 dark:text-white transition-colors duration-200"
                             />
                           </>
                         )}
                       </div>
                     ) : (
-                      <span className="text-gray-600">
+                      <span className="text-gray-600 dark:text-gray-400 transition-colors duration-200">
                         {hours.closed ? (
-                          <span className="text-red-600">Closed</span>
+                          <span className="text-red-600 dark:text-red-400 transition-colors duration-200">Closed</span>
                         ) : (
                           `${formatTime(hours.open)} - ${formatTime(hours.close)}`
                         )}
@@ -627,21 +627,21 @@ const Profile: React.FC = () => {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Pricing */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-gray-200 dark:border-dark-700 transition-colors duration-200">
             <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <DollarSign className="h-5 w-5 mr-2 text-blue-600" />
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center transition-colors duration-200">
+                <DollarSign className="h-5 w-5 mr-2 text-blue-600 dark:text-blue-400 transition-colors duration-200" />
                 Pricing
               </h3>
               
               {isEditing ? (
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
                       Hourly Rate
                     </label>
                     <div className="relative">
-                      <span className="absolute left-3 top-3 text-gray-500">$</span>
+                      <span className="absolute left-3 top-3 text-gray-500 dark:text-gray-400 transition-colors duration-200">$</span>
                       <input
                         type="number"
                         value={editForm.pricing.hourlyRate}
@@ -649,18 +649,18 @@ const Profile: React.FC = () => {
                           ...prev,
                           pricing: { ...prev.pricing, hourlyRate: e.target.value }
                         }))}
-                        className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full pl-8 pr-4 py-3 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 bg-white dark:bg-dark-700 text-gray-900 dark:text-white"
                         placeholder="75"
                       />
                     </div>
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
                       Minimum Charge
                     </label>
                     <div className="relative">
-                      <span className="absolute left-3 top-3 text-gray-500">$</span>
+                      <span className="absolute left-3 top-3 text-gray-500 dark:text-gray-400 transition-colors duration-200">$</span>
                       <input
                         type="number"
                         value={editForm.pricing.minimumCharge}
@@ -668,7 +668,7 @@ const Profile: React.FC = () => {
                           ...prev,
                           pricing: { ...prev.pricing, minimumCharge: e.target.value }
                         }))}
-                        className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full pl-8 pr-4 py-3 border border-gray-300 dark:border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 bg-white dark:bg-dark-700 text-gray-900 dark:text-white"
                         placeholder="50"
                       />
                     </div>
@@ -677,12 +677,12 @@ const Profile: React.FC = () => {
               ) : (
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Hourly Rate:</span>
-                    <span className="font-semibold text-gray-900">${profile.pricing.hourlyRate}/hr</span>
+                    <span className="text-gray-600 dark:text-gray-400 transition-colors duration-200">Hourly Rate:</span>
+                    <span className="font-semibold text-gray-900 dark:text-white transition-colors duration-200">${profile.pricing.hourlyRate}/hr</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Minimum:</span>
-                    <span className="font-semibold text-gray-900">${profile.pricing.minimumCharge}</span>
+                    <span className="text-gray-600 dark:text-gray-400 transition-colors duration-200">Minimum:</span>
+                    <span className="font-semibold text-gray-900 dark:text-white transition-colors duration-200">${profile.pricing.minimumCharge}</span>
                   </div>
                 </div>
               )}
@@ -691,14 +691,14 @@ const Profile: React.FC = () => {
 
           {/* Quick Actions */}
           {!isEditing && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+            <div className="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-gray-200 dark:border-dark-700 transition-colors duration-200">
               <div className="p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-200">Quick Actions</h3>
                 
                 <div className="space-y-3">
                   <button
                     onClick={() => navigate('/app/customers')}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center"
+                    className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center"
                   >
                     <Users className="h-4 w-4 mr-2" />
                     View Customers
@@ -706,7 +706,7 @@ const Profile: React.FC = () => {
                   
                   <button
                     onClick={() => navigate('/app/jobs')}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center"
+                    className="w-full bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white py-3 px-4 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center"
                   >
                     <Calendar className="h-4 w-4 mr-2" />
                     View Jobs
@@ -714,7 +714,7 @@ const Profile: React.FC = () => {
                   
                   <button
                     onClick={() => navigate('/app/settings')}
-                    className="w-full bg-gray-600 hover:bg-gray-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center"
+                    className="w-full bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 text-white py-3 px-4 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center"
                   >
                     <User className="h-4 w-4 mr-2" />
                     App Settings
@@ -728,12 +728,12 @@ const Profile: React.FC = () => {
 
       {/* Save/Cancel Actions */}
       {isEditing && (
-        <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="mt-8 bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-gray-200 dark:border-dark-700 p-6 transition-colors duration-200">
           <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={handleSave}
               disabled={isSubmitting}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center"
+              className="flex-1 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:bg-blue-400 dark:disabled:bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center"
             >
               {isSubmitting ? (
                 <>
@@ -751,15 +751,15 @@ const Profile: React.FC = () => {
             <button
               onClick={handleCancel}
               disabled={isSubmitting}
-              className="flex-1 bg-gray-100 hover:bg-gray-200 disabled:bg-gray-50 text-gray-700 py-3 px-6 rounded-lg font-semibold transition-colors"
+              className="flex-1 bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 disabled:bg-gray-50 dark:disabled:bg-dark-800 text-gray-700 dark:text-gray-300 py-3 px-6 rounded-lg font-semibold transition-colors duration-200"
             >
               Cancel
             </button>
           </div>
 
           {errors.submit && (
-            <div className="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
-              <p className="text-red-600 flex items-center">
+            <div className="mt-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 transition-colors duration-200">
+              <p className="text-red-600 dark:text-red-400 flex items-center transition-colors duration-200">
                 <AlertTriangle className="h-5 w-5 mr-2" />
                 {errors.submit}
               </p>

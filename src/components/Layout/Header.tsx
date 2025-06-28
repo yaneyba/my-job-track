@@ -1,10 +1,12 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Calendar, Bell, Settings, User } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
+import { Calendar, Bell, Settings, User, LogOut } from 'lucide-react';
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, logout } = useAuth();
 
   const getPageTitle = () => {
     const path = location.pathname;
@@ -19,6 +21,11 @@ const Header: React.FC = () => {
     if (path.includes('/jobs/')) return 'Job Details';
     if (path.includes('/new')) return 'Add New';
     return 'MyJobTrack';
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
   };
 
   return (
@@ -53,6 +60,14 @@ const Header: React.FC = () => {
 
           {/* Right Side Actions */}
           <div className="flex items-center space-x-3">
+            {/* User Info - Desktop */}
+            <div className="hidden md:block text-right mr-3">
+              <p className="text-sm font-medium text-gray-900">{user?.name}</p>
+              {user?.businessName && (
+                <p className="text-xs text-gray-500">{user.businessName}</p>
+              )}
+            </div>
+
             {/* Notifications */}
             <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors relative">
               <Bell className="h-5 w-5" />
@@ -82,6 +97,15 @@ const Header: React.FC = () => {
               }`}
             >
               <User className="h-5 w-5" />
+            </button>
+
+            {/* Logout */}
+            <button 
+              onClick={handleLogout}
+              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              title="Sign Out"
+            >
+              <LogOut className="h-5 w-5" />
             </button>
           </div>
         </div>

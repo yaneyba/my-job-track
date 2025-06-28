@@ -1,4 +1,4 @@
-import { IDataProvider } from '../types';
+import { IDataProvider } from './IDataProvider';
 import { LocalStorageDataProvider } from './LocalStorageDataProvider';
 
 export class DataProviderFactory {

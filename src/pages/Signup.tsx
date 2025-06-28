@@ -12,9 +12,7 @@ import {
   Building2,
   ArrowRight,
   CheckCircle,
-  Users,
-  DollarSign,
-  QrCode
+  Users
 } from 'lucide-react';
 
 const Signup: React.FC = () => {
@@ -95,6 +93,7 @@ const Signup: React.FC = () => {
         setSignupError(result.error || 'Signup failed');
       }
     } catch (error) {
+      console.error('Signup error:', error);
       setSignupError('An unexpected error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);

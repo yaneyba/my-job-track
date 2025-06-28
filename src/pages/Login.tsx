@@ -73,6 +73,7 @@ const Login: React.FC = () => {
         setLoginError(result.error || 'Login failed');
       }
     } catch (error) {
+      console.error('Login error:', error);
       setLoginError('An unexpected error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);

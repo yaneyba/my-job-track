@@ -5,8 +5,6 @@ import {
   Calendar, 
   DollarSign, 
   QrCode, 
-  CheckCircle, 
-  Clock, 
   Smartphone, 
   ArrowRight,
   Star,

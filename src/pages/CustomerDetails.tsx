@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Customer, Job } from '../types';
-import { DataProviderFactory } from '../data/DataProviderFactory';
+import { DataProviderFactory } from '../data/providers/DataProviderFactory';
 import Breadcrumbs from '../components/UI/Breadcrumbs';
 import JobCard from '../components/Job/JobCard';
 import QRCodeDisplay from '../components/QR/QRCodeDisplay';
-import StatusBadge from '../components/UI/StatusBadge';
 import {
   ArrowLeft,
   Edit3,
@@ -116,7 +115,7 @@ const CustomerDetails: React.FC = () => {
 
     if (!editForm.phone.trim()) {
       newErrors.phone = 'Phone number is required';
-    } else if (!/^[\d\s\-\(\)\+\.]+$/.test(editForm.phone)) {
+    } else if (!/^[\d\s\-().+.]+$/.test(editForm.phone)) {
       newErrors.phone = 'Please enter a valid phone number';
     }
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '@/contexts/ThemeContext';
 import ThemeToggle from '@/components/UI/ThemeToggle';
 import { 
   Users, 

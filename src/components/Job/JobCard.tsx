@@ -1,8 +1,8 @@
 import React from 'react';
-import { Job } from '../../types';
+import { Job } from '@/types';
 import { Calendar, DollarSign, User, QrCode, Clock } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
-import StatusBadge from '../UI/StatusBadge';
+import StatusBadge from '@/components/UI/StatusBadge';
 
 interface JobCardProps {
   job: Job;

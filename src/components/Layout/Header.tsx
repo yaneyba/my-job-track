@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import ThemeToggle from '../UI/ThemeToggle';
+import { useAuth } from '@/contexts/AuthContext';
+import ThemeToggle from '@/components/UI/ThemeToggle';
 import { Calendar, Bell, Settings, User, LogOut } from 'lucide-react';
 
 const Header: React.FC = () => {

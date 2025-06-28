@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { 
   Calendar, 
   Mail, 
@@ -73,6 +73,7 @@ const Login: React.FC = () => {
         setLoginError(result.error || 'Login failed');
       }
     } catch (error) {
+      console.error('Login error:', error);
       setLoginError('An unexpected error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);

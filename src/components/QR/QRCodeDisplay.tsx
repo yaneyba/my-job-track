@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DataProviderFactory } from '../../data/DataProviderFactory';
+import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { Printer, Download } from 'lucide-react';
 
 interface QRCodeDisplayProps {

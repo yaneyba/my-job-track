@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DataProviderFactory } from '../../data/DataProviderFactory';
+import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import QrScanner from 'qr-scanner';
 import { 
-  Camera, 
   X, 
   AlertCircle, 
   CheckCircle, 
@@ -17,7 +16,7 @@ import {
 
 interface QRScannerProps {
   onClose: () => void;
-  onScanSuccess?: (data: any) => void;
+  onScanSuccess?: (data: QRData) => void;
 }
 
 interface QRData {
@@ -45,12 +44,12 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
 
-  useEffect(() => {
-    initializeScanner();
-    return () => {
-      cleanup();
-    };
-  }, []);
+  const cleanup = () => {
+    stopScanning();
+    if (isFlashlightOn) {
+      toggleFlashlight();
+    }
+  };
 
   const initializeScanner = async () => {
     try {
@@ -83,6 +82,14 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
       setHasPermission(false);
     }
   };
+
+  useEffect(() => {
+    initializeScanner();
+    return () => {
+      cleanup();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const startScanning = async () => {
     if (!videoRef.current) return;
@@ -122,13 +129,6 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
       scannerRef.current = null;
     }
     setIsScanning(false);
-  };
-
-  const cleanup = () => {
-    stopScanning();
-    if (isFlashlightOn) {
-      toggleFlashlight();
-    }
   };
 
   const handleScanResult = async (data: string) => {
@@ -193,10 +193,10 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
 
     try {
       if (isFlashlightOn) {
-        await scannerRef.current.turnFlashlightOff();
+        await scannerRef.current.turnFlashOff();
         setIsFlashlightOn(false);
       } else {
-        await scannerRef.current.turnFlashlightOn();
+        await scannerRef.current.turnFlashOn();
         setIsFlashlightOn(true);
       }
     } catch (err) {

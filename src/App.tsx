@@ -1,24 +1,23 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
-import { ThemeProvider } from './contexts/ThemeContext';
-import ProtectedRoute from './components/Auth/ProtectedRoute';
-import Layout from './components/Layout/Layout';
-import Landing from './pages/Landing';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Dashboard from './pages/Dashboard';
-import Customers from './pages/Customers';
-import AddCustomer from './pages/AddCustomer';
-import CustomerDetails from './pages/CustomerDetails';
-import Jobs from './pages/Jobs';
-import AddJob from './pages/AddJob';
-import JobDetails from './pages/JobDetails';
-import Payments from './pages/Payments';
-import ScanQR from './pages/ScanQR';
-import Settings from './pages/Settings';
-import Profile from './pages/Profile';
-import { useSampleData } from './hooks/useSampleData';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { ThemeProvider } from '@/contexts/ThemeContext';
+import ProtectedRoute from '@/components/Auth/ProtectedRoute';
+import Layout from '@/components/Layout/Layout';
+import Landing from '@/pages/Landing';
+import Login from '@/pages/Login';
+import Signup from '@/pages/Signup';
+import Dashboard from '@/pages/Dashboard';
+import Customers from '@/pages/Customers';
+import AddCustomer from '@/pages/AddCustomer';
+import CustomerDetails from '@/pages/CustomerDetails';
+import Jobs from '@/pages/Jobs';
+import AddJob from '@/pages/AddJob';
+import JobDetails from '@/pages/JobDetails';
+import Payments from '@/pages/Payments';
+import ScanQR from '@/pages/ScanQR';
+import Settings from '@/pages/Settings';
+import Profile from '@/pages/Profile';
+import { useSampleData } from '@/hooks/useSampleData';
 
 function App() {
   return (

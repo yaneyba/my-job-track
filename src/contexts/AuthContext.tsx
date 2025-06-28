@@ -8,6 +8,10 @@ interface User {
   createdAt: string;
 }
 
+interface StoredUser extends User {
+  password: string;
+}
+
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
@@ -42,9 +46,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         // First, ensure demo account exists
         const storedUsers = localStorage.getItem('myjobtrack_users');
-        const users = storedUsers ? JSON.parse(storedUsers) : [];
+      const users: StoredUser[] = storedUsers ? JSON.parse(storedUsers) : [];
         
-        const demoUserExists = users.find((u: any) => u.email === 'demo@myjobtrack.app');
+        const demoUserExists = users.find((u: StoredUser) => u.email === 'demo@myjobtrack.app');
         if (!demoUserExists) {
           const demoUser = {
             id: 'demo-user-id',
@@ -98,13 +102,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       // Get stored users
       const storedUsers = localStorage.getItem('myjobtrack_users');
-      const users = storedUsers ? JSON.parse(storedUsers) : [];
+      const users: StoredUser[] = storedUsers ? JSON.parse(storedUsers) : [];
       
-      console.log('Available users:', users.map((u: any) => ({ email: u.email, id: u.id })));
+      console.log('Available users:', users.map((u: StoredUser) => ({ email: u.email, id: u.id })));
       console.log('Attempting login with:', email);
       
       // Find user by email (case insensitive)
-      const foundUser = users.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
+      const foundUser = users.find((u: StoredUser) => u.email.toLowerCase() === email.toLowerCase());
       
       if (!foundUser) {
         console.log('User not found for email:', email);
@@ -154,10 +158,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       // Get existing users
       const storedUsers = localStorage.getItem('myjobtrack_users');
-      const users = storedUsers ? JSON.parse(storedUsers) : [];
+      const users: StoredUser[] = storedUsers ? JSON.parse(storedUsers) : [];
       
       // Check if email already exists
-      const existingUser = users.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
+      const existingUser = users.find((u: StoredUser) => u.email.toLowerCase() === email.toLowerCase());
       if (existingUser) {
         return { success: false, error: 'An account with this email already exists.' };
       }
@@ -219,8 +223,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const storedUsers = localStorage.getItem('myjobtrack_users');
       if (storedUsers) {
-        const users = JSON.parse(storedUsers);
-        const userIndex = users.findIndex((u: any) => u.id === user.id);
+        const users: StoredUser[] = JSON.parse(storedUsers);
+        const userIndex = users.findIndex((u: StoredUser) => u.id === user.id);
         if (userIndex !== -1) {
           users[userIndex] = { ...users[userIndex], ...updates };
           localStorage.setItem('myjobtrack_users', JSON.stringify(users));

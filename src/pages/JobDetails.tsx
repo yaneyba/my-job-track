@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Job, Customer } from '../types';
-import { DataProviderFactory } from '../data/DataProviderFactory';
-import Breadcrumbs from '../components/UI/Breadcrumbs';
-import StatusBadge from '../components/UI/StatusBadge';
-import QRCodeDisplay from '../components/QR/QRCodeDisplay';
+import { Job, Customer } from '@/types';
+import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
+import Breadcrumbs from '@/components/UI/Breadcrumbs';
+import StatusBadge from '@/components/UI/StatusBadge';
+import QRCodeDisplay from '@/components/QR/QRCodeDisplay';
 import {
   ArrowLeft,
   Edit3,
@@ -16,7 +16,6 @@ import {
   MapPin,
   DollarSign,
   FileText,
-  Clock,
   CheckCircle,
   AlertTriangle,
   Save,

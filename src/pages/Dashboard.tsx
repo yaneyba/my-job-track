@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DashboardStats } from '../types';
-import { DataProviderFactory } from '../data/DataProviderFactory';
-import QuickActionButton from '../components/UI/QuickActionButton';
-import JobCard from '../components/Job/JobCard';
-import Breadcrumbs from '../components/UI/Breadcrumbs';
+import { DashboardStats } from '@/types';
+import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
+import QuickActionButton from '@/components/UI/QuickActionButton';
+import JobCard from '@/components/Job/JobCard';
+import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import { Plus, Users, Calendar, DollarSign, QrCode } from 'lucide-react';
 import { format } from 'date-fns';
 

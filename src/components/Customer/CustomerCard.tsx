@@ -1,7 +1,7 @@
 import React from 'react';
-import { Customer } from '../../types';
+import { Customer } from '@/types';
 import { Phone, MapPin, DollarSign, QrCode } from 'lucide-react';
-import StatusBadge from '../UI/StatusBadge';
+import StatusBadge from '@/components/UI/StatusBadge';
 
 interface CustomerCardProps {
   customer: Customer;

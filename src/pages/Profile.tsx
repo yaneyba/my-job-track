@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Breadcrumbs from '../components/UI/Breadcrumbs';
+import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import {
   User,
   Building2,

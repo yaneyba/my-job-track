@@ -1,5 +1,6 @@
-import { IDataProvider, Customer, Job, DashboardStats } from '../types';
-import { format, isToday, startOfWeek, endOfWeek, isWithinInterval, parseISO } from 'date-fns';
+import { Customer, Job, DashboardStats } from '@/types';
+import { IDataProvider } from './IDataProvider';
+import { isToday, startOfWeek, endOfWeek, isWithinInterval, parseISO } from 'date-fns';
 import QRCode from 'qrcode';
 
 export class LocalStorageDataProvider implements IDataProvider {

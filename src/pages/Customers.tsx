@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Customer } from '../types';
-import { DataProviderFactory } from '../data/DataProviderFactory';
-import SearchBar from '../components/UI/SearchBar';
-import CustomerCard from '../components/Customer/CustomerCard';
-import QuickActionButton from '../components/UI/QuickActionButton';
-import QRCodeDisplay from '../components/QR/QRCodeDisplay';
-import Breadcrumbs from '../components/UI/Breadcrumbs';
-import Pagination from '../components/UI/Pagination';
-import { usePagination } from '../hooks/usePagination';
+import { Customer } from '@/types';
+import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
+import SearchBar from '@/components/UI/SearchBar';
+import CustomerCard from '@/components/Customer/CustomerCard';
+import QuickActionButton from '@/components/UI/QuickActionButton';
+import QRCodeDisplay from '@/components/QR/QRCodeDisplay';
+import Breadcrumbs from '@/components/UI/Breadcrumbs';
+import Pagination from '@/components/UI/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { Plus, Users, CheckCircle, X } from 'lucide-react';
 
 const Customers: React.FC = () => {

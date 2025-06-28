@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DataProviderFactory } from '../data/DataProviderFactory';
-import { useTheme } from '../contexts/ThemeContext';
-import Breadcrumbs from '../components/UI/Breadcrumbs';
-import ThemeToggle from '../components/UI/ThemeToggle';
+import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
+import { useTheme } from '@/contexts/ThemeContext';
+import Breadcrumbs from '@/components/UI/Breadcrumbs';
+import ThemeToggle from '@/components/UI/ThemeToggle';
 import {
   Settings as SettingsIcon,
   Download,
@@ -13,7 +13,6 @@ import {
   CheckCircle,
   X,
   Database,
-  Shield,
   Info,
   FileText,
   Calendar,
@@ -23,12 +22,45 @@ import {
   Moon,
   Sun,
   Bell,
-  Globe,
   HelpCircle,
   ExternalLink,
   RefreshCw,
   Palette
 } from 'lucide-react';
+
+// TypeScript interfaces for settings items
+interface BaseSettingItem {
+  title: string;
+  description: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+interface ComponentSettingItem extends BaseSettingItem {
+  component: React.ReactElement;
+}
+
+interface ToggleSettingItem extends BaseSettingItem {
+  toggle: true;
+  value: boolean;
+  onChange: (value: boolean) => void;
+}
+
+interface ActionSettingItem extends BaseSettingItem {
+  action: () => void;
+  variant: 'primary' | 'secondary' | 'danger';
+}
+
+interface ExternalSettingItem extends BaseSettingItem {
+  external: true;
+}
+
+type SettingItem = ComponentSettingItem | ToggleSettingItem | ActionSettingItem | ExternalSettingItem;
+
+interface SettingSection {
+  title: string;
+  icon: React.ComponentType<{ className?: string }>;
+  items: SettingItem[];
+}
 
 const Settings: React.FC = () => {
   const [showClearConfirm, setShowClearConfirm] = useState(false);
@@ -40,7 +72,7 @@ const Settings: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
-  const { theme, toggleTheme, isDark } = useTheme();
+  const { isDark } = useTheme();
 
   const breadcrumbItems = [
     { label: 'Home', href: '/app' },
@@ -100,6 +132,7 @@ const Settings: React.FC = () => {
           setImportError('Failed to import data. Please try again.');
         }
       } catch (error) {
+        console.error('Import error:', error);
         setImportError('Invalid JSON file. Please select a valid backup file.');
       }
     };
@@ -128,7 +161,7 @@ const Settings: React.FC = () => {
     }
   };
 
-  const settingSections = [
+  const settingSections: SettingSection[] = [
     {
       title: 'Appearance',
       icon: Palette,
@@ -356,11 +389,11 @@ const Settings: React.FC = () => {
                     </div>
                     
                     <div className="ml-4">
-                      {item.component ? (
+                      {'component' in item ? (
                         item.component
-                      ) : item.toggle ? (
+                      ) : 'toggle' in item ? (
                         <button
-                          onClick={() => item.onChange?.(!(item.value as boolean))}
+                          onClick={() => item.onChange(!(item.value as boolean))}
                           className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                             item.value ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
                           }`}
@@ -371,7 +404,7 @@ const Settings: React.FC = () => {
                             }`}
                           />
                         </button>
-                      ) : item.external ? (
+                      ) : 'external' in item ? (
                         <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium text-sm flex items-center">
                           Open
                           <ExternalLink className="h-4 w-4 ml-1" />

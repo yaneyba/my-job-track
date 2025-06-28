@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import QRScanner from '../components/QR/QRScanner';
-import Breadcrumbs from '../components/UI/Breadcrumbs';
+import QRScanner from '@/components/QR/QRScanner';
+import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import { 
   QrCode, 
   Camera, 
@@ -15,7 +14,6 @@ import {
 
 const ScanQR: React.FC = () => {
   const [showScanner, setShowScanner] = useState(false);
-  const navigate = useNavigate();
 
   const breadcrumbItems = [
     { label: 'Home', href: '/app' },
@@ -40,7 +38,7 @@ const ScanQR: React.FC = () => {
     }
   ];
 
-  const handleScanSuccess = (data: any) => {
+  const handleScanSuccess = () => {
     // Scanner component will handle navigation
     setShowScanner(false);
   };

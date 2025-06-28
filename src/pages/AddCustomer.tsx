@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DataProviderFactory } from '../data/DataProviderFactory';
+import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { ArrowLeft, User, Phone, MapPin, Briefcase, Save, X } from 'lucide-react';
-import Breadcrumbs from '../components/UI/Breadcrumbs';
+import Breadcrumbs from '@/components/UI/Breadcrumbs';
 
 const AddCustomer: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -49,7 +49,7 @@ const AddCustomer: React.FC = () => {
 
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required';
-    } else if (!/^[\d\s\-\(\)\+\.]+$/.test(formData.phone)) {
+    } else if (!/^[\d\s\-().+.]+$/.test(formData.phone)) {
       newErrors.phone = 'Please enter a valid phone number';
     }
 

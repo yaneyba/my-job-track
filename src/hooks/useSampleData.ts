@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { DataProviderFactory } from '../data/DataProviderFactory';
+import { useAuth } from '@/contexts/AuthContext';
+import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 
 export const useSampleData = () => {
   const { isAuthenticated, user } = useAuth();
@@ -12,7 +12,7 @@ export const useSampleData = () => {
       const storedUsers = localStorage.getItem('myjobtrack_users');
       const users = storedUsers ? JSON.parse(storedUsers) : [];
       
-      const demoUserExists = users.find((u: any) => u.email === 'demo@myjobtrack.app');
+      const demoUserExists = users.find((u: { email: string }) => u.email === 'demo@myjobtrack.app');
       if (!demoUserExists) {
         const demoUser = {
           id: 'demo-user-id',
@@ -39,9 +39,6 @@ export const useSampleData = () => {
 
     // Only add sample data if the app is completely empty
     if (customers.length === 0 && jobs.length === 0) {
-      // Check if this is the demo user
-      const isDemoUser = user.email === 'demo@myjobtrack.app';
-      
       // Add sample customers
       const sampleCustomers = [
         {

@@ -18,26 +18,26 @@ const Landing: React.FC = () => {
   const features = [
     {
       icon: Users,
-      title: 'Customer Management',
-      description: 'Keep track of all your customers with their contact info, service history, and payment status.',
+      title: 'Simple Customer Tracking',
+      description: 'Add customers in seconds. Track their info, job history, and payment status. No complicated forms or endless fields.',
       color: 'text-blue-600 dark:text-blue-400'
     },
     {
       icon: Calendar,
-      title: 'Job Scheduling',
-      description: 'Schedule and track jobs with ease. See your daily schedule at a glance.',
+      title: 'Easy Job Scheduling',
+      description: 'Schedule jobs with a few taps. See your day at a glance. Perfect for landscapers and handymen on the go.',
       color: 'text-green-600 dark:text-green-400'
     },
     {
       icon: QrCode,
-      title: 'QR Code Integration',
-      description: 'Generate QR codes for customers and jobs. Scan on-site for instant access to information.',
+      title: 'QR Code Magic',
+      description: 'Generate QR codes for job sites. Scan to instantly pull up customer info and job details. Works offline too.',
       color: 'text-purple-600 dark:text-purple-400'
     },
     {
       icon: DollarSign,
-      title: 'Payment Tracking',
-      description: 'Track payments and see which jobs are still unpaid. Never miss a payment again.',
+      title: 'Get Paid Faster',
+      description: 'Track who owes you money at a glance. Mark jobs as paid with one tap. Never lose track of payments again.',
       color: 'text-orange-600 dark:text-orange-400'
     }
   ];
@@ -45,18 +45,18 @@ const Landing: React.FC = () => {
   const benefits = [
     {
       icon: Smartphone,
-      title: 'Mobile-First Design',
-      description: 'Designed specifically for mobile use with large buttons and simple navigation.'
+      title: 'Built for Your Phone',
+      description: 'Large buttons, simple navigation. Use it with gloves on. Works great even in bright sunlight.'
     },
     {
       icon: Shield,
-      title: 'Works Offline',
-      description: 'Your data is stored locally on your device. No internet required after setup.'
+      title: 'No Learning Curve',
+      description: 'If you can text, you can use MyJobTrack. Set up in 5 minutes. Start tracking jobs immediately.'
     },
     {
       icon: Zap,
       title: 'Lightning Fast',
-      description: 'Add customers and schedule jobs in under 2 minutes. Built for speed.'
+      description: 'Add customers in 30 seconds. Schedule jobs in 1 minute. Built for busy landscapers and handymen.'
     }
   ];
 
@@ -64,41 +64,75 @@ const Landing: React.FC = () => {
     {
       name: 'Mike Johnson',
       business: 'Johnson Landscaping',
-      quote: 'This app has transformed how I manage my business. The QR codes are a game-changer!',
+      quote: 'Finally, software that actually makes sense! No confusing menus, just simple job tracking.',
       rating: 5
     },
     {
-      name: 'Sarah Davis',
-      business: 'Clean & Shine Services',
-      quote: 'So simple to use. I can track all my jobs and payments without any hassle.',
+      name: 'Sarah Martinez',
+      business: 'Fix-It Handyman Services', 
+      quote: 'I went from paper chaos to organized in one afternoon. The QR codes save me so much time on job sites.',
       rating: 5
     },
     {
-      name: 'Tom Wilson',
-      business: 'Wilson Handyman',
-      quote: 'Perfect for small service businesses. Everything I need in one place.',
+      name: 'Tom Wilson', 
+      business: 'Wilson Contracting',
+      quote: 'Been using this for 6 months. Simple, fast, and it just works. No more lost paperwork!',
       rating: 5
     }
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-dark-900 dark:via-dark-800 dark:to-dark-900 transition-colors duration-200">
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "MyJobTrack",
+            "url": "https://myjobtrack.app",
+            "description": "Simple CRM software built specifically for landscapers, handymen, contractors and service professionals. Easy job tracking, customer management, and payment tracking without the complexity.",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Any",
+            "creator": {
+              "@type": "Organization",
+              "name": "MyJobTrack"
+            },
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "audience": {
+              "@type": "Audience",
+              "audienceType": "Landscapers, Handymen, Contractors, Service Professionals"
+            }
+          })
+        }}
+      />
+      
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
+      <header className="relative overflow-hidden" role="banner">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 dark:from-blue-400/5 dark:to-purple-400/5"></div>
         <div className="relative max-w-7xl mx-auto px-4 py-16 sm:py-24">
           <div className="text-center">
             <div className="flex justify-center mb-8">
               <div className="bg-blue-600 dark:bg-blue-500 p-4 rounded-2xl shadow-lg">
-                <Calendar className="h-12 w-12 text-white" />
+                <Calendar className="h-12 w-12 text-white" aria-hidden="true" />
               </div>
             </div>
             <h1 className="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-200">
-              MyJobTrack
+              <span itemProp="name">MyJobTrack</span>
+              <span className="sr-only">- Simple CRM for Landscapers, Handymen & Service Pros</span>
             </h1>
-            <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed transition-colors duration-200">
-              The simple job tracking app designed for service providers. Manage customers, schedule jobs, 
-              and track payments with powerful QR code integration.
+            <h2 className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed transition-colors duration-200">
+              <span className="text-green-600 dark:text-green-400 font-semibold">Dead Simple CRM</span> built for 
+              <span className="font-semibold"> Landscapers, Handymen & Contractors</span>
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto transition-colors duration-200">
+              Track jobs, manage customers, and get paid faster. <strong>No complexity, no learning curve</strong> - 
+              just what you need to run your landscaping, handyman, or contracting business.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <button
@@ -117,7 +151,7 @@ const Landing: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* Features Section */}
       <section id="features" className="py-20 bg-white dark:bg-dark-800 transition-colors duration-200">

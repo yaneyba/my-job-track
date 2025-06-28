@@ -51,7 +51,7 @@ const Dashboard: React.FC = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400"></div>
       </div>
     );
   }
@@ -65,35 +65,35 @@ const Dashboard: React.FC = () => {
 
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-200">
           Welcome Back!
         </h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-400 transition-colors duration-200">
           {format(new Date(), 'EEEE, MMMM d, yyyy')}
         </p>
       </div>
 
       {/* Quick Stats */}
       <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-dark-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-700 transition-colors duration-200">
           <div className="flex items-center">
-            <Calendar className="h-8 w-8 text-blue-600 mr-3" />
+            <Calendar className="h-8 w-8 text-blue-600 dark:text-blue-400 mr-3 transition-colors duration-200" />
             <div>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-200">
                 {stats?.todaysJobs.length || 0}
               </p>
-              <p className="text-sm text-gray-600">Today's Jobs</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">Today's Jobs</p>
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-dark-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-700 transition-colors duration-200">
           <div className="flex items-center">
-            <DollarSign className="h-8 w-8 text-green-600 mr-3" />
+            <DollarSign className="h-8 w-8 text-green-600 dark:text-green-400 mr-3 transition-colors duration-200" />
             <div>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-200">
                 ${stats?.thisWeekEarnings.toFixed(0) || '0'}
               </p>
-              <p className="text-sm text-gray-600">This Week</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">This Week</p>
             </div>
           </div>
         </div>
@@ -101,19 +101,19 @@ const Dashboard: React.FC = () => {
 
       {/* Unpaid Jobs Alert */}
       {stats && stats.unpaidJobsCount > 0 && (
-        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+        <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4 mb-6 transition-colors duration-200">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-orange-800">
+              <h3 className="text-lg font-semibold text-orange-800 dark:text-orange-200 transition-colors duration-200">
                 ${stats.totalUnpaid.toFixed(2)} Unpaid
               </h3>
-              <p className="text-orange-700">
+              <p className="text-orange-700 dark:text-orange-300 transition-colors duration-200">
                 {stats.unpaidJobsCount} job{stats.unpaidJobsCount !== 1 ? 's' : ''} need payment
               </p>
             </div>
             <button
               onClick={() => navigate('/app/payments')}
-              className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+              className="px-4 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white rounded-lg transition-colors duration-200"
             >
               View All
             </button>
@@ -123,7 +123,7 @@ const Dashboard: React.FC = () => {
 
       {/* Quick Actions */}
       <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-3">Quick Actions</h2>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 transition-colors duration-200">Quick Actions</h2>
         <div className="grid grid-cols-2 gap-4">
           <QuickActionButton
             icon={Plus}
@@ -154,7 +154,7 @@ const Dashboard: React.FC = () => {
 
       {/* Today's Jobs */}
       <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-3">Today's Jobs</h2>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 transition-colors duration-200">Today's Jobs</h2>
         {stats && stats.todaysJobs.length > 0 ? (
           <div className="space-y-3">
             {stats.todaysJobs.map((job) => (
@@ -168,12 +168,12 @@ const Dashboard: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-lg p-8 text-center shadow-sm border border-gray-200">
-            <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-600">No jobs scheduled for today</p>
+          <div className="bg-white dark:bg-dark-800 rounded-lg p-8 text-center shadow-sm border border-gray-200 dark:border-dark-700 transition-colors duration-200">
+            <Calendar className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-3 transition-colors duration-200" />
+            <p className="text-gray-600 dark:text-gray-400 transition-colors duration-200">No jobs scheduled for today</p>
             <button
               onClick={() => navigate('/app/jobs/new')}
-              className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg transition-colors duration-200"
             >
               Schedule a Job
             </button>

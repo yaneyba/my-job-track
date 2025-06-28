@@ -7,6 +7,30 @@ export const useSampleData = () => {
   const dataProvider = DataProviderFactory.getInstance();
 
   useEffect(() => {
+    // Create demo account first, regardless of authentication status
+    const createDemoAccount = () => {
+      const storedUsers = localStorage.getItem('myjobtrack_users');
+      const users = storedUsers ? JSON.parse(storedUsers) : [];
+      
+      const demoUserExists = users.find((u: any) => u.email === 'demo@myjobtrack.app');
+      if (!demoUserExists) {
+        const demoUser = {
+          id: 'demo-user-id',
+          email: 'demo@myjobtrack.app',
+          password: 'demo123',
+          name: 'Demo User',
+          businessName: 'Demo Service Company',
+          createdAt: new Date().toISOString()
+        };
+        users.push(demoUser);
+        localStorage.setItem('myjobtrack_users', JSON.stringify(users));
+        console.log('Demo account created successfully');
+      }
+    };
+
+    // Always ensure demo account exists
+    createDemoAccount();
+
     // Only initialize sample data if user is authenticated
     if (!isAuthenticated || !user) return;
 
@@ -15,7 +39,7 @@ export const useSampleData = () => {
 
     // Only add sample data if the app is completely empty
     if (customers.length === 0 && jobs.length === 0) {
-      // Create demo account with sample data
+      // Check if this is the demo user
       const isDemoUser = user.email === 'demo@myjobtrack.app';
       
       // Add sample customers
@@ -90,25 +114,7 @@ export const useSampleData = () => {
 
       sampleJobs.forEach(job => dataProvider.addJob(job));
 
-      // Create demo user account if it doesn't exist
-      if (isDemoUser) {
-        const storedUsers = localStorage.getItem('myjobtrack_users');
-        const users = storedUsers ? JSON.parse(storedUsers) : [];
-        
-        const demoUserExists = users.find((u: any) => u.email === 'demo@myjobtrack.app');
-        if (!demoUserExists) {
-          const demoUser = {
-            id: 'demo-user-id',
-            email: 'demo@myjobtrack.app',
-            password: 'demo123',
-            name: 'Demo User',
-            businessName: 'Demo Service Company',
-            createdAt: new Date().toISOString()
-          };
-          users.push(demoUser);
-          localStorage.setItem('myjobtrack_users', JSON.stringify(users));
-        }
-      }
+      console.log('Sample data initialized for user:', user.email);
     }
   }, [isAuthenticated, user, dataProvider]);
 };

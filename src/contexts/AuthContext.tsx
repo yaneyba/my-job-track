@@ -36,10 +36,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Check for existing session on app load
+  // Initialize demo account and check for existing session on app load
   useEffect(() => {
-    const checkAuth = () => {
+    const initializeAuth = () => {
       try {
+        // First, ensure demo account exists
+        const storedUsers = localStorage.getItem('myjobtrack_users');
+        const users = storedUsers ? JSON.parse(storedUsers) : [];
+        
+        const demoUserExists = users.find((u: any) => u.email === 'demo@myjobtrack.app');
+        if (!demoUserExists) {
+          const demoUser = {
+            id: 'demo-user-id',
+            email: 'demo@myjobtrack.app',
+            password: 'demo123',
+            name: 'Demo User',
+            businessName: 'Demo Service Company',
+            createdAt: new Date().toISOString()
+          };
+          users.push(demoUser);
+          localStorage.setItem('myjobtrack_users', JSON.stringify(users));
+          console.log('Demo account initialized');
+        }
+
+        // Then check for existing session
         const storedUser = localStorage.getItem('myjobtrack_user');
         const sessionToken = localStorage.getItem('myjobtrack_session');
         
@@ -59,7 +79,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           }
         }
       } catch (error) {
-        console.error('Error checking auth:', error);
+        console.error('Error initializing auth:', error);
         // Clear corrupted data
         localStorage.removeItem('myjobtrack_user');
         localStorage.removeItem('myjobtrack_session');
@@ -68,7 +88,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     };
 
-    checkAuth();
+    initializeAuth();
   }, []);
 
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
@@ -80,15 +100,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const storedUsers = localStorage.getItem('myjobtrack_users');
       const users = storedUsers ? JSON.parse(storedUsers) : [];
       
-      // Find user by email
+      console.log('Available users:', users.map((u: any) => ({ email: u.email, id: u.id })));
+      console.log('Attempting login with:', email);
+      
+      // Find user by email (case insensitive)
       const foundUser = users.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
       
       if (!foundUser) {
+        console.log('User not found for email:', email);
         return { success: false, error: 'No account found with this email address.' };
       }
       
+      console.log('Found user:', { email: foundUser.email, id: foundUser.id });
+      
       // Check password (in production, this would be hashed)
       if (foundUser.password !== password) {
+        console.log('Password mismatch for user:', foundUser.email);
         return { success: false, error: 'Incorrect password. Please try again.' };
       }
       
@@ -111,6 +138,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.setItem('myjobtrack_session', JSON.stringify(sessionData));
       
       setUser(userData);
+      console.log('Login successful for user:', userData.email);
       return { success: true };
       
     } catch (error) {

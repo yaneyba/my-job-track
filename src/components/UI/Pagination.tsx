@@ -75,7 +75,7 @@ const Pagination: React.FC<PaginationProps> = ({
     <div className={`flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 ${className}`}>
       {/* Info Text */}
       {showInfo && (
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">
           Showing <span className="font-medium">{startItem}</span> to{' '}
           <span className="font-medium">{endItem}</span> of{' '}
           <span className="font-medium">{totalItems}</span> results
@@ -89,10 +89,10 @@ const Pagination: React.FC<PaginationProps> = ({
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className={`
-            flex items-center justify-center w-10 h-10 rounded-lg border transition-colors
+            flex items-center justify-center w-10 h-10 rounded-lg border transition-colors duration-200
             ${currentPage === 1
-              ? 'border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50'
-              : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'
+              ? 'border-gray-200 dark:border-dark-600 text-gray-400 dark:text-gray-500 cursor-not-allowed bg-gray-50 dark:bg-dark-700'
+              : 'border-gray-300 dark:border-dark-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-700 hover:border-gray-400 dark:hover:border-dark-500'
             }
           `}
           aria-label="Previous page"
@@ -106,16 +106,16 @@ const Pagination: React.FC<PaginationProps> = ({
             <React.Fragment key={index}>
               {page === '...' ? (
                 <div className="flex items-center justify-center w-10 h-10">
-                  <MoreHorizontal className="h-4 w-4 text-gray-400" />
+                  <MoreHorizontal className="h-4 w-4 text-gray-400 dark:text-gray-500" />
                 </div>
               ) : (
                 <button
                   onClick={() => onPageChange(page as number)}
                   className={`
-                    flex items-center justify-center w-10 h-10 rounded-lg border text-sm font-medium transition-colors
+                    flex items-center justify-center w-10 h-10 rounded-lg border text-sm font-medium transition-colors duration-200
                     ${currentPage === page
-                      ? 'border-blue-500 bg-blue-600 text-white shadow-sm'
-                      : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'
+                      ? 'border-blue-500 dark:border-blue-400 bg-blue-600 dark:bg-blue-500 text-white shadow-sm'
+                      : 'border-gray-300 dark:border-dark-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-700 hover:border-gray-400 dark:hover:border-dark-500'
                     }
                   `}
                   aria-label={`Go to page ${page}`}
@@ -133,10 +133,10 @@ const Pagination: React.FC<PaginationProps> = ({
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className={`
-            flex items-center justify-center w-10 h-10 rounded-lg border transition-colors
+            flex items-center justify-center w-10 h-10 rounded-lg border transition-colors duration-200
             ${currentPage === totalPages
-              ? 'border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50'
-              : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'
+              ? 'border-gray-200 dark:border-dark-600 text-gray-400 dark:text-gray-500 cursor-not-allowed bg-gray-50 dark:bg-dark-700'
+              : 'border-gray-300 dark:border-dark-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-700 hover:border-gray-400 dark:hover:border-dark-500'
             }
           `}
           aria-label="Next page"

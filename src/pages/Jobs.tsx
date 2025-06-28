@@ -91,7 +91,7 @@ const Jobs: React.FC = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400 transition-colors duration-200"></div>
       </div>
     );
   }
@@ -105,14 +105,14 @@ const Jobs: React.FC = () => {
 
       {/* Success Message */}
       {successMessage && (
-        <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4 flex items-center justify-between">
+        <div className="mb-6 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 flex items-center justify-between transition-colors duration-200">
           <div className="flex items-center">
-            <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
-            <p className="text-green-800 font-medium">{successMessage}</p>
+            <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 transition-colors duration-200" />
+            <p className="text-green-800 dark:text-green-200 font-medium transition-colors duration-200">{successMessage}</p>
           </div>
           <button
             onClick={() => setSuccessMessage('')}
-            className="text-green-600 hover:text-green-800"
+            className="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-200 transition-colors duration-200"
           >
             <X className="h-5 w-5" />
           </button>
@@ -122,11 +122,11 @@ const Jobs: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Jobs</h1>
-          <p className="text-gray-600">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-200">Jobs</h1>
+          <p className="text-gray-600 dark:text-gray-400 transition-colors duration-200">
             {jobs.length} job{jobs.length !== 1 ? 's' : ''} total
             {filter !== 'all' && (
-              <span className="text-blue-600 ml-1">
+              <span className="text-blue-600 dark:text-blue-400 ml-1 transition-colors duration-200">
                 • {filteredJobs.length} {filter.replace('-', ' ')}
               </span>
             )}
@@ -141,7 +141,7 @@ const Jobs: React.FC = () => {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex space-x-1 mb-6 bg-gray-100 p-1 rounded-lg">
+      <div className="flex space-x-1 mb-6 bg-gray-100 dark:bg-dark-700 p-1 rounded-lg transition-colors duration-200">
         {[
           { key: 'all', label: 'All Jobs' },
           { key: 'scheduled', label: 'Scheduled' },
@@ -151,10 +151,10 @@ const Jobs: React.FC = () => {
           <button
             key={key}
             onClick={() => setFilter(key as typeof filter)}
-            className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
+            className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors duration-200 ${
               filter === key
-                ? 'bg-white text-blue-600 shadow-sm'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-white dark:bg-dark-800 text-blue-600 dark:text-blue-400 shadow-sm'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             {label}
@@ -189,9 +189,9 @@ const Jobs: React.FC = () => {
           />
         </>
       ) : (
-        <div className="bg-white rounded-lg p-8 text-center shadow-sm border border-gray-200">
-          <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-          <p className="text-gray-600 mb-4">
+        <div className="bg-white dark:bg-dark-800 rounded-lg p-8 text-center shadow-sm border border-gray-200 dark:border-dark-700 transition-colors duration-200">
+          <Calendar className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-3 transition-colors duration-200" />
+          <p className="text-gray-600 dark:text-gray-400 mb-4 transition-colors duration-200">
             {filter === 'all' ? 'No jobs scheduled yet' : `No ${filter} jobs`}
           </p>
           {filter === 'all' && (

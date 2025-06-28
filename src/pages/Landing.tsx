@@ -82,21 +82,21 @@ const Landing: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-dark-900 dark:via-dark-800 dark:to-dark-900">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 dark:from-blue-400/20 dark:to-purple-400/20"></div>
         <div className="relative max-w-7xl mx-auto px-4 py-16 sm:py-24">
           <div className="text-center">
             <div className="flex justify-center mb-8">
-              <div className="bg-blue-600 p-4 rounded-2xl shadow-lg">
+              <div className="bg-blue-600 dark:bg-blue-500 p-4 rounded-2xl shadow-lg">
                 <Calendar className="h-12 w-12 text-white" />
               </div>
             </div>
-            <h1 className="text-4xl sm:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-6">
               MyJobTrack
             </h1>
-            <p className="text-xl sm:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
               The simple job tracking app designed for service providers. Manage customers, schedule jobs, 
               and track payments with powerful QR code integration.
             </p>
@@ -110,7 +110,7 @@ const Landing: React.FC = () => {
               </button>
               <button
                 onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-                className="bg-white hover:bg-gray-50 text-gray-700 px-8 py-4 rounded-xl text-lg font-semibold border-2 border-gray-200 hover:border-gray-300 transition-all duration-200"
+                className="bg-white hover:bg-gray-50 dark:bg-dark-700 dark:hover:bg-dark-600 text-gray-700 dark:text-gray-200 px-8 py-4 rounded-xl text-lg font-semibold border-2 border-gray-200 dark:border-dark-600 hover:border-gray-300 dark:hover:border-dark-500 transition-all duration-200"
               >
                 Learn More
               </button>
@@ -120,27 +120,27 @@ const Landing: React.FC = () => {
       </div>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-white">
+      <section id="features" className="py-20 bg-white dark:bg-dark-800">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Everything You Need to Run Your Service Business
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Built specifically for landscapers, cleaners, handymen, and other service providers.
             </p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow duration-200">
+              <div key={index} className="bg-gray-50 dark:bg-dark-700 rounded-2xl p-8 hover:shadow-lg dark:hover:shadow-xl transition-shadow duration-200">
                 <div className={`${feature.color} mb-4`}>
                   <feature.icon className="h-12 w-12" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -192,13 +192,13 @@ const Landing: React.FC = () => {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gray-50 dark:bg-dark-900">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Why Service Providers Love MyJobTrack
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Designed by service providers, for service providers. Simple, fast, and effective.
             </p>
           </div>
@@ -206,13 +206,13 @@ const Landing: React.FC = () => {
           <div className="grid md:grid-cols-3 gap-8">
             {benefits.map((benefit, index) => (
               <div key={index} className="text-center">
-                <div className="bg-blue-100 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <benefit.icon className="h-8 w-8 text-blue-600" />
+                <div className="bg-blue-100 dark:bg-blue-900/30 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <benefit.icon className="h-8 w-8 text-blue-600 dark:text-blue-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
                   {benefit.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   {benefit.description}
                 </p>
               </div>
@@ -222,31 +222,31 @@ const Landing: React.FC = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white dark:bg-dark-800">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Trusted by Service Providers
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-600 dark:text-gray-300">
               See what our users have to say about MyJobTrack.
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-gray-50 rounded-2xl p-8">
+              <div key={index} className="bg-gray-50 dark:bg-dark-700 rounded-2xl p-8">
                 <div className="flex mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-gray-700 mb-6 leading-relaxed italic">
+                <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed italic">
                   "{testimonial.quote}"
                 </p>
                 <div>
-                  <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                  <p className="text-gray-600">{testimonial.business}</p>
+                  <p className="font-semibold text-gray-900 dark:text-white">{testimonial.name}</p>
+                  <p className="text-gray-600 dark:text-gray-400">{testimonial.business}</p>
                 </div>
               </div>
             ))}
@@ -255,24 +255,24 @@ const Landing: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-gray-900 to-gray-800">
+      <section className="py-20 bg-gradient-to-r from-gray-900 to-gray-800 dark:from-dark-900 dark:to-black">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
             Ready to Transform Your Service Business?
           </h2>
-          <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+          <p className="text-xl text-gray-300 dark:text-gray-400 mb-8 leading-relaxed">
             Join thousands of service providers who have streamlined their operations with MyJobTrack.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
               onClick={() => navigate('/app')}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center group"
+              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center group"
             >
               Start Using MyJobTrack
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </button>
-            <p className="text-gray-400">
+            <p className="text-gray-400 dark:text-gray-500">
               No signup required • Works offline • Free forever
             </p>
           </div>

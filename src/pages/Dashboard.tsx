@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DashboardStats } from '@/types';
+import { DashboardStats, Job } from '@/types';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import QuickActionButton from '@/components/UI/QuickActionButton';
 import JobCard from '@/components/Job/JobCard';
@@ -18,11 +18,7 @@ const Dashboard: React.FC = () => {
     { label: 'Home', current: true }
   ];
 
-  useEffect(() => {
-    loadDashboardData();
-  }, []);
-
-  const loadDashboardData = () => {
+  const loadDashboardData = useCallback(() => {
     setLoading(true);
     try {
       const dashboardStats = dataProvider.getDashboardStats();
@@ -32,10 +28,14 @@ const Dashboard: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadDashboardData();
+  }, [loadDashboardData]);
 
   const handleJobStatusChange = (jobId: string, status: 'scheduled' | 'in-progress' | 'completed') => {
-    const updates: any = { status };
+    const updates: Partial<Job> = { status };
     if (status === 'completed') {
       updates.completedDate = new Date().toISOString();
     }

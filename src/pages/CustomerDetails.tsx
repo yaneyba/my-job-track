@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Customer, Job } from '@/types';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
@@ -69,13 +69,7 @@ const CustomerDetails: React.FC = () => {
     { label: customer?.name || 'Customer Details', current: true }
   ];
 
-  useEffect(() => {
-    if (id) {
-      loadCustomerDetails();
-    }
-  }, [id]);
-
-  const loadCustomerDetails = () => {
+  const loadCustomerDetails = useCallback(() => {
     setLoading(true);
     try {
       const customerData = dataProvider.getCustomer(id!);
@@ -104,7 +98,13 @@ const CustomerDetails: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, navigate]);
+
+  useEffect(() => {
+    if (id) {
+      loadCustomerDetails();
+    }
+  }, [id, loadCustomerDetails]);
 
   const validateEditForm = () => {
     const newErrors: Record<string, string> = {};
@@ -169,7 +169,7 @@ const CustomerDetails: React.FC = () => {
   };
 
   const handleJobStatusChange = (jobId: string, status: Job['status']) => {
-    const updates: any = { status };
+    const updates: Partial<Job> = { status };
     if (status === 'completed') {
       updates.completedDate = new Date().toISOString();
     }

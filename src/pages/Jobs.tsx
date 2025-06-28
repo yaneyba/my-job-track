@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Job } from '@/types';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
@@ -42,6 +42,22 @@ const Jobs: React.FC = () => {
     itemsPerPage: 10 // Show 10 jobs per page
   });
 
+  const loadJobs = useCallback(() => {
+    setLoading(true);
+    try {
+      const jobData = dataProvider.getJobs();
+      // Sort jobs by scheduled date (most recent first)
+      const sortedJobs = jobData.sort((a, b) => 
+        parseISO(b.scheduledDate).getTime() - parseISO(a.scheduledDate).getTime()
+      );
+      setJobs(sortedJobs);
+    } catch (error) {
+      console.error('Failed to load jobs:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     loadJobs();
     
@@ -56,26 +72,10 @@ const Jobs: React.FC = () => {
         setSuccessMessage('');
       }, 5000);
     }
-  }, [location.state]);
-
-  const loadJobs = () => {
-    setLoading(true);
-    try {
-      const jobData = dataProvider.getJobs();
-      // Sort jobs by scheduled date (most recent first)
-      const sortedJobs = jobData.sort((a, b) => 
-        parseISO(b.scheduledDate).getTime() - parseISO(a.scheduledDate).getTime()
-      );
-      setJobs(sortedJobs);
-    } catch (error) {
-      console.error('Failed to load jobs:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [location.state, loadJobs]);
 
   const handleJobStatusChange = (jobId: string, status: 'scheduled' | 'in-progress' | 'completed') => {
-    const updates: any = { status };
+    const updates: Partial<Job> = { status };
     if (status === 'completed') {
       updates.completedDate = new Date().toISOString();
     }

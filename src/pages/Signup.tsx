@@ -12,9 +12,7 @@ import {
   Building2,
   ArrowRight,
   CheckCircle,
-  Users,
-  ArrowLeft,
-  Home
+  Users
 } from 'lucide-react';
 
 const Signup: React.FC = () => {
@@ -124,18 +122,6 @@ const Signup: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-dark-900 dark:via-dark-800 dark:to-dark-900 transition-colors duration-200">
-      {/* Back to Landing Button */}
-      <div className="absolute top-4 left-4 z-10">
-        <Link
-          to="/"
-          className="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-dark-600 hover:bg-white dark:hover:bg-dark-700 transition-all duration-200 shadow-sm hover:shadow-md"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          <Home className="h-4 w-4 mr-1" />
-          <span className="text-sm font-medium">Home</span>
-        </Link>
-      </div>
-
       <div className="flex min-h-screen">
         {/* Left Side - Branding & Benefits */}
         <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-green-600 to-blue-600 p-12 flex-col justify-center">
@@ -432,6 +418,16 @@ const Signup: React.FC = () => {
                 By creating an account, you agree to our Terms of Service and Privacy Policy.
                 Your data is stored locally on your device.
               </p>
+            </div>
+
+            {/* Back to Landing Link */}
+            <div className="mt-4 text-center">
+              <Link
+                to="/"
+                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 text-sm transition-colors duration-200"
+              >
+                ← Back to homepage
+              </Link>
             </div>
           </div>
         </div>

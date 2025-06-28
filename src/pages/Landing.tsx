@@ -186,13 +186,6 @@ const Landing: React.FC = () => {
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </button>
               <button
-                onClick={() => navigate('/login')}
-                className="bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl text-lg font-semibold border-2 border-white/30 hover:border-white/50 transition-all duration-200 flex items-center backdrop-blur-sm"
-              >
-                <LogIn className="mr-2 h-5 w-5" />
-                Sign In
-              </button>
-              <button
                 onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-blue-100 hover:text-white px-4 py-2 text-lg font-medium transition-colors duration-200 underline decoration-2 underline-offset-4 decoration-blue-300 hover:decoration-white"
               >

@@ -150,12 +150,12 @@ const Landing: React.FC = () => {
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
-            src="https://images.pexels.com/photos/416978/pexels-photo-416978.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop"
-            alt="Professional landscaper working on garden maintenance"
-            className="w-full h-full object-cover"
+            src="/hero.png"
+            alt="MyJobTrack app interface showing job tracking, customer management, and payment features"
+            className="w-full h-full object-cover object-center"
           />
           {/* Overlay for better text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-800/70 to-purple-900/80 dark:from-blue-950/90 dark:via-blue-900/80 dark:to-purple-950/90"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/85 via-blue-800/75 to-purple-900/85 dark:from-blue-950/90 dark:via-blue-900/85 dark:to-purple-950/90"></div>
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 py-24 sm:py-32">

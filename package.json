@@ -14,7 +14,9 @@
     "sitemap:generate": "echo 'Sitemap already generated manually'",
     "seo:check": "echo 'SEO structure implemented - check robots.txt, sitemap.xml, and meta tags'",
     "clear-cache": "npm run clean && npm install",
-    "icons:generate": "node tools/create-calendar-icons.js"
+    "icons:generate": "node tools/create-calendar-icons.js",
+    "icons:cache-bust": "node tools/add-icon-cache-busting.js",
+    "icons:update": "npm run icons:generate && npm run icons:cache-bust"
   },
   "dependencies": {
     "date-fns": "^3.6.0",

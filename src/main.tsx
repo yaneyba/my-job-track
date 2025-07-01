@@ -2,6 +2,10 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from '@/App.tsx';
 import './index.css';
+import { checkIconRefresh } from '@/utils/iconManager';
+
+// Check if icons need to be refreshed on application startup
+checkIconRefresh();
 
 // Register service worker for PWA
 if ('serviceWorker' in navigator) {
@@ -9,6 +13,19 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
         console.log('SW registered: ', registration);
+        
+        // Handle service worker updates
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+          if (newWorker) {
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'activated') {
+                // Force icon refresh on service worker update
+                checkIconRefresh();
+              }
+            });
+          }
+        });
       })
       .catch((registrationError) => {
         console.log('SW registration failed: ', registrationError);

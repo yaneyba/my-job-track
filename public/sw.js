@@ -1,11 +1,23 @@
+const CACHE_VERSION = "icon-v=1751384515442";
 // Version this cache - increment when you want to force cache refresh
 const CACHE_NAME = 'myjobtrack-v2-' + Date.now();
 const STATIC_CACHE_NAME = 'myjobtrack-static-v2';
+const ICON_CACHE_NAME = 'myjobtrack-icons-v1';
 
 // Cache strategies for different types of resources
 const urlsToCache = [
   '/',
   '/manifest.json'
+];
+
+// Icon resources to cache separately with their own versioning
+const iconResources = [
+  '/favicon.svg',
+  '/favicon-32x32.svg',
+  '/apple-touch-icon.svg',
+  '/icon-192.svg',
+  '/icon.svg',
+  '/favicon.ico'
 ];
 
 // Resources that should always be fresh (no caching)
@@ -45,13 +57,46 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// Install icons into their own cache
+self.addEventListener('install', (event) => {
+  // Also cache icon resources separately
+  event.waitUntil(
+    caches.open(ICON_CACHE_NAME)
+      .then((cache) => cache.addAll(iconResources))
+  );
+});
+
 // Fetch event - implement cache strategies
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   
+  // Special handling for icon resources - network first with cache fallback
+  const isIconRequest = iconResources.some(icon => 
+    url.pathname.endsWith(icon) || url.pathname.includes(icon + '?')
+  );
+  
   // Don't cache certain URLs
   if (noCacheUrls.some(pattern => url.pathname.startsWith(pattern))) {
     event.respondWith(fetch(event.request));
+    return;
+  }
+
+  // Special handling for icons - check if URL has version parameter
+  if (isIconRequest) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          // Cache the fresh icon
+          const responseClone = response.clone();
+          caches.open(ICON_CACHE_NAME)
+            .then(cache => cache.put(event.request, responseClone));
+          return response;
+        })
+        .catch(() => {
+          // Fallback to cache
+          return caches.match(event.request);
+        })
+    );
     return;
   }
 

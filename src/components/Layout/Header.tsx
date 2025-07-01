@@ -240,10 +240,10 @@ const Header: React.FC = () => {
         </div>
       </header>
 
-      {/* Mobile Notification Panel - Full Screen Overlay */}
+      {/* Mobile Notification Panel - Positioned from top */}
       {showNotifications && (
-        <div className="sm:hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end">
-          <div className="w-full bg-white dark:bg-dark-800 rounded-t-2xl max-h-[85vh] flex flex-col">
+        <div className="sm:hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start pt-20">
+          <div className="w-full mx-4 bg-white dark:bg-dark-800 rounded-2xl max-h-[calc(100vh-120px)] flex flex-col shadow-2xl">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-dark-700 flex-shrink-0">
               <div className="flex items-center">

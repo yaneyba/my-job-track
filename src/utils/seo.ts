@@ -90,11 +90,11 @@ const updateStructuredData = (data: Record<string, unknown>) => {
 export const seoData = {
   landing: {
     title: 'MyJobTrack - Simple CRM for Landscapers, Handymen & Service Pros',
-    description: 'Dead simple CRM built for landscapers, handymen, contractors & service professionals. Track jobs, manage customers, and get paid faster. No complexity, just what you need to run your business.',
+    description: 'Simple CRM built for landscapers, handymen, contractors & service professionals. Track jobs, manage customers, and get paid faster. No complexity, just what you need to run your business.',
     keywords: 'simple CRM, landscaper software, handyman app, contractor CRM, simple job tracking, easy customer management, landscaping business software, handyman job tracker, simple service business app, easy contractor software',
     canonical: 'https://myjobtrack.app/',
     ogTitle: 'MyJobTrack - Simple CRM for Landscapers & Handymen',
-    ogDescription: 'Dead simple CRM built for landscapers, handymen, contractors. Track jobs, manage customers, get paid faster. No complexity.',
+    ogDescription: 'Simple CRM built for landscapers, handymen, contractors. Track jobs, manage customers, get paid faster. No complexity.',
     ogImage: 'https://myjobtrack.app/og-image.png'
   },
   

@@ -6,11 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:fresh": "npm run clean && vite build",
     "build:seo": "npm run build && npm run sitemap:generate",
+    "clean": "rm -rf dist .vite node_modules/.vite",
     "lint": "eslint .",
     "preview": "vite preview",
     "sitemap:generate": "echo 'Sitemap already generated manually'",
-    "seo:check": "echo 'SEO structure implemented - check robots.txt, sitemap.xml, and meta tags'"
+    "seo:check": "echo 'SEO structure implemented - check robots.txt, sitemap.xml, and meta tags'",
+    "clear-cache": "npm run clean && npm install"
   },
   "dependencies": {
     "date-fns": "^3.6.0",

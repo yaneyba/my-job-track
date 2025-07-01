@@ -12,7 +12,10 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
-  const { notifications, dismissNotification, clearAllNotifications } = useNotifications();
+  const { notifications, dismissNotification, clearAllNotifications, markNotificationAsRead } = useNotifications();
+
+  // Count unread notifications
+  const unreadCount = notifications.filter(n => !n.read).length;
 
   const getPageTitle = () => {
     const path = location.pathname;
@@ -45,6 +48,10 @@ const Header: React.FC = () => {
   const handleClearAllNotifications = () => {
     clearAllNotifications();
     setShowNotifications(false);
+  };
+
+  const handleNotificationClick = (id: string) => {
+    markNotificationAsRead(id);
   };
 
   return (
@@ -105,10 +112,10 @@ const Header: React.FC = () => {
                   title="Notifications"
                 >
                   <Bell className="h-5 w-5" />
-                  {/* Notification badge */}
-                  {notifications.length > 0 && (
+                  {/* Notification badge - only show for unread notifications */}
+                  {unreadCount > 0 && (
                     <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
-                      {notifications.length > 9 ? '9+' : notifications.length}
+                      {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
                   )}
                 </button>
@@ -124,6 +131,11 @@ const Header: React.FC = () => {
                         {notifications.length > 0 && (
                           <span className="ml-2 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs font-medium px-2 py-1 rounded-full">
                             {notifications.length}
+                          </span>
+                        )}
+                        {unreadCount > 0 && (
+                          <span className="ml-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 text-xs font-medium px-2 py-1 rounded-full">
+                            {unreadCount} new
                           </span>
                         )}
                       </div>
@@ -161,6 +173,7 @@ const Header: React.FC = () => {
                               } : undefined
                             }))}
                             onDismiss={handleDismissNotification}
+                            onNotificationClick={handleNotificationClick}
                           />
                         </div>
                       ) : (
@@ -241,6 +254,11 @@ const Header: React.FC = () => {
                     {notifications.length}
                   </span>
                 )}
+                {unreadCount > 0 && (
+                  <span className="ml-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 text-xs font-medium px-2 py-1 rounded-full">
+                    {unreadCount} new
+                  </span>
+                )}
               </div>
               <div className="flex items-center space-x-2">
                 {notifications.length > 1 && (
@@ -276,6 +294,7 @@ const Header: React.FC = () => {
                       } : undefined
                     }))}
                     onDismiss={handleDismissNotification}
+                    onNotificationClick={handleNotificationClick}
                   />
                 </div>
               ) : (

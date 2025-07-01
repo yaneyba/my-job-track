@@ -22,17 +22,20 @@ export interface NotificationItem {
   };
   timestamp: Date;
   dismissible?: boolean;
+  read?: boolean;
 }
 
 interface NotificationAlertProps {
   notifications: NotificationItem[];
   onDismiss?: (id: string) => void;
+  onNotificationClick?: (id: string) => void;
   className?: string;
 }
 
 const NotificationAlert: React.FC<NotificationAlertProps> = ({
   notifications,
   onDismiss,
+  onNotificationClick,
   className = ''
 }) => {
   if (notifications.length === 0) return null;
@@ -103,6 +106,18 @@ const NotificationAlert: React.FC<NotificationAlertProps> = ({
     return `${diffInDays}d ago`;
   };
 
+  const handleNotificationClick = (notification: NotificationItem) => {
+    // Mark as read when clicked
+    if (onNotificationClick) {
+      onNotificationClick(notification.id);
+    }
+    
+    // If there's an action, execute it
+    if (notification.action) {
+      notification.action.onClick();
+    }
+  };
+
   return (
     <div className={`space-y-4 ${className}`}>
       {notifications.map((notification) => {
@@ -112,7 +127,10 @@ const NotificationAlert: React.FC<NotificationAlertProps> = ({
         return (
           <div
             key={notification.id}
-            className={`border rounded-xl p-4 transition-colors duration-200 ${styles.container}`}
+            className={`border rounded-xl p-4 transition-all duration-200 ${styles.container} ${
+              notification.action ? 'cursor-pointer hover:shadow-md' : ''
+            } ${notification.read ? 'opacity-75' : ''}`}
+            onClick={() => notification.action && handleNotificationClick(notification)}
           >
             <div className="flex items-start">
               <div className={`flex-shrink-0 ${styles.icon} mr-3 mt-0.5`}>
@@ -122,10 +140,17 @@ const NotificationAlert: React.FC<NotificationAlertProps> = ({
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between">
                   <div className="flex-1 min-w-0">
-                    <h4 className={`font-semibold ${styles.title} transition-colors duration-200`}>
+                    <h4 className={`font-semibold ${styles.title} transition-colors duration-200 ${
+                      notification.read ? 'opacity-75' : ''
+                    }`}>
                       {notification.title}
+                      {!notification.read && (
+                        <span className="ml-2 w-2 h-2 bg-blue-500 rounded-full inline-block"></span>
+                      )}
                     </h4>
-                    <p className={`mt-1 text-sm ${styles.message} transition-colors duration-200 leading-relaxed`}>
+                    <p className={`mt-1 text-sm ${styles.message} transition-colors duration-200 leading-relaxed ${
+                      notification.read ? 'opacity-75' : ''
+                    }`}>
                       {notification.message}
                     </p>
                     <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 transition-colors duration-200">
@@ -135,7 +160,10 @@ const NotificationAlert: React.FC<NotificationAlertProps> = ({
                   
                   {notification.dismissible && onDismiss && (
                     <button
-                      onClick={() => onDismiss(notification.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDismiss(notification.id);
+                      }}
                       className={`ml-4 ${styles.icon} hover:opacity-70 transition-opacity flex-shrink-0`}
                       aria-label="Dismiss notification"
                     >
@@ -147,7 +175,10 @@ const NotificationAlert: React.FC<NotificationAlertProps> = ({
                 {notification.action && (
                   <div className="mt-3">
                     <button
-                      onClick={notification.action.onClick}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleNotificationClick(notification);
+                      }}
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${styles.action}`}
                     >
                       {notification.action.label}

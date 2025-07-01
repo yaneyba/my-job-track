@@ -29,7 +29,11 @@ export const useNotifications = () => {
         message: `You have ${overdueUnpaidJobs.length} overdue payment${overdueUnpaidJobs.length > 1 ? 's' : ''} totaling $${totalOverdue.toFixed(2)}. Follow up with customers to collect payment.`,
         action: {
           label: 'View Payments',
-          onClick: () => window.location.href = '/app/payments'
+          onClick: () => {
+            // Dismiss this notification when action is clicked
+            dismissNotification('overdue-payments');
+            window.location.href = '/app/payments';
+          }
         },
         timestamp: now,
         dismissible: true
@@ -48,7 +52,11 @@ export const useNotifications = () => {
         message: `You have ${scheduledTodayJobs.length} job${scheduledTodayJobs.length > 1 ? 's' : ''} scheduled for today. Make sure you're prepared and have all necessary equipment.`,
         action: {
           label: 'View Today\'s Jobs',
-          onClick: () => window.location.href = '/app/jobs'
+          onClick: () => {
+            // Dismiss this notification when action is clicked
+            dismissNotification('todays-jobs');
+            window.location.href = '/app/jobs';
+          }
         },
         timestamp: now,
         dismissible: true
@@ -67,7 +75,11 @@ export const useNotifications = () => {
         message: `Don't forget about your ${scheduledTomorrowJobs.length} job${scheduledTomorrowJobs.length > 1 ? 's' : ''} scheduled for tomorrow. Plan your route and prepare equipment tonight.`,
         action: {
           label: 'View Schedule',
-          onClick: () => window.location.href = '/app/jobs'
+          onClick: () => {
+            // Dismiss this notification when action is clicked
+            dismissNotification('tomorrows-jobs');
+            window.location.href = '/app/jobs';
+          }
         },
         timestamp: now,
         dismissible: true
@@ -86,7 +98,11 @@ export const useNotifications = () => {
         message: `You have $${totalUnpaid.toFixed(2)} in unpaid invoices across ${unpaidJobs.length} completed job${unpaidJobs.length > 1 ? 's' : ''}. Consider following up with customers.`,
         action: {
           label: 'Manage Payments',
-          onClick: () => window.location.href = '/app/payments'
+          onClick: () => {
+            // Dismiss this notification when action is clicked
+            dismissNotification('large-unpaid');
+            window.location.href = '/app/payments';
+          }
         },
         timestamp: now,
         dismissible: true
@@ -112,7 +128,11 @@ export const useNotifications = () => {
         message: `${customersWithoutRecentJobs.length} customer${customersWithoutRecentJobs.length > 1 ? 's' : ''} haven't had service in over 30 days. Consider reaching out to schedule maintenance.`,
         action: {
           label: 'View Customers',
-          onClick: () => window.location.href = '/app/customers'
+          onClick: () => {
+            // Dismiss this notification when action is clicked
+            dismissNotification('inactive-customers');
+            window.location.href = '/app/customers';
+          }
         },
         timestamp: now,
         dismissible: true
@@ -139,7 +159,7 @@ export const useNotifications = () => {
     }
 
     setNotifications(newNotifications);
-  }, [dataProvider]);
+  }, []);
 
   const dismissNotification = useCallback((id: string) => {
     setNotifications(prev => prev.filter(notification => notification.id !== id));
@@ -153,6 +173,25 @@ export const useNotifications = () => {
 
   const clearAllNotifications = useCallback(() => {
     setNotifications([]);
+    
+    // Mark all current notifications as dismissed
+    const dismissed = JSON.parse(localStorage.getItem('dismissed_notifications') || '[]');
+    const today = new Date().toDateString();
+    notifications.forEach(notification => {
+      dismissed.push({ id: notification.id, date: today });
+    });
+    localStorage.setItem('dismissed_notifications', JSON.stringify(dismissed));
+  }, [notifications]);
+
+  // Function to mark notification as read/clicked without dismissing
+  const markNotificationAsRead = useCallback((id: string) => {
+    setNotifications(prev => 
+      prev.map(notification => 
+        notification.id === id 
+          ? { ...notification, read: true }
+          : notification
+      )
+    );
   }, []);
 
   useEffect(() => {
@@ -174,6 +213,7 @@ export const useNotifications = () => {
     notifications,
     dismissNotification,
     clearAllNotifications,
+    markNotificationAsRead,
     refreshNotifications: generateNotifications
   };
 };

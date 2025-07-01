@@ -245,10 +245,21 @@ const Profile: React.FC = () => {
 
       {/* Header */}
       <div className="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-gray-200 dark:border-dark-700 mb-6 transition-colors duration-200">
-        <div className="p-6">
-          <div className="flex items-start justify-between mb-6">
-            <div className="flex items-center">
-              <div className="relative">
+        <div className="p-4 sm:p-6">
+          {/* Mobile Edit Button - Top Right */}
+          <div className="flex justify-end mb-4 sm:hidden">
+            <button
+              onClick={() => setIsEditing(!isEditing)}
+              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center text-sm"
+            >
+              <Edit3 className="h-4 w-4 mr-2" />
+              {isEditing ? 'Cancel' : 'Edit Profile'}
+            </button>
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center">
+              <div className="relative mb-4 sm:mb-0 self-center sm:self-auto">
                 {profile.profileImage ? (
                   <img
                     src={profile.profileImage}
@@ -269,10 +280,10 @@ const Profile: React.FC = () => {
                   </button>
                 )}
               </div>
-              <div className="ml-6">
+              <div className="sm:ml-6 text-center sm:text-left">
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-200">{profile.businessName}</h1>
                 <p className="text-gray-600 dark:text-gray-400 transition-colors duration-200">{profile.ownerName}</p>
-                <div className="flex items-center mt-2">
+                <div className="flex items-center justify-center sm:justify-start mt-2">
                   <Star className="h-4 w-4 text-yellow-400 fill-current" />
                   <Star className="h-4 w-4 text-yellow-400 fill-current" />
                   <Star className="h-4 w-4 text-yellow-400 fill-current" />
@@ -283,13 +294,16 @@ const Profile: React.FC = () => {
               </div>
             </div>
             
-            <button
-              onClick={() => setIsEditing(!isEditing)}
-              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center"
-            >
-              <Edit3 className="h-4 w-4 mr-2" />
-              {isEditing ? 'Cancel' : 'Edit Profile'}
-            </button>
+            {/* Desktop Edit Button */}
+            <div className="hidden sm:block">
+              <button
+                onClick={() => setIsEditing(!isEditing)}
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center"
+              >
+                <Edit3 className="h-4 w-4 mr-2" />
+                {isEditing ? 'Cancel' : 'Edit Profile'}
+              </button>
+            </div>
           </div>
 
           {/* Quick Stats */}

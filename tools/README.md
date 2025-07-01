@@ -8,14 +8,12 @@ The icons are generated from the Calendar SVG from Lucide React, which is used t
 
 ## Available Tools
 
-1. `generate-calendar-icons.js` - Generates SVG icons for various purposes:
-   - favicon.svg - Basic favicon
-   - favicon-32x32.svg - 32x32 icon for browser tabs
-   - apple-touch-icon.svg - 180x180 icon for iOS devices
-   - icon-192.svg - 192x192 icon for PWA
-   - icon.svg - 512x512 base icon
-
-2. `generate-favicon-ico.js` - Converts the SVG to ICO format (requires additional dependencies)
+`create-calendar-icons.js` - Generates SVG icons for various purposes:
+- favicon.svg - Basic favicon
+- favicon-32x32.svg - 32x32 icon for browser tabs
+- apple-touch-icon.svg - 180x180 icon for iOS devices
+- icon-192.svg - 192x192 icon for PWA
+- icon.svg - 512x512 base icon
 
 ## Usage
 
@@ -25,18 +23,13 @@ The icons are generated from the Calendar SVG from Lucide React, which is used t
 npm run icons:generate
 ```
 
-### Generate All Icons (including ICO)
+## Note About favicon.ico
 
-This command installs the required dependencies and generates all icons, including the favicon.ico:
+For the favicon.ico file, you can use online converters or tools like:
+1. [RealFaviconGenerator](https://realfavicongenerator.net/)
+2. [Favicon.io](https://favicon.io/favicon-converter/)
 
-```bash
-npm run icons:generate:all
-```
-
-## Dependencies
-
-- svg2img - For converting SVG to PNG
-- ico-converter - For converting PNG to ICO
+Upload the generated favicon.svg to create the .ico file.
 
 ## Icon Design
 

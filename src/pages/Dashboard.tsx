@@ -77,8 +77,8 @@ const Dashboard: React.FC = () => {
         </p>
       </div>
 
-      {/* Notifications Section */}
-      {notifications.length > 0 && (
+      {/* Notifications Section - Only show if there are notifications and user hasn't hidden them */}
+      {notifications.length > 0 && showNotifications && (
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
@@ -92,11 +92,11 @@ const Dashboard: React.FC = () => {
             </div>
             <div className="flex items-center space-x-2">
               <button
-                onClick={() => setShowNotifications(!showNotifications)}
+                onClick={() => setShowNotifications(false)}
                 className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700 transition-colors duration-200"
-                title={showNotifications ? 'Hide notifications' : 'Show notifications'}
+                title="Hide notifications"
               >
-                {showNotifications ? <BellOff className="h-4 w-4" /> : <Bell className="h-4 w-4" />}
+                <BellOff className="h-4 w-4" />
               </button>
               {notifications.length > 1 && (
                 <button
@@ -109,12 +109,10 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
           
-          {showNotifications && (
-            <NotificationAlert
-              notifications={notifications}
-              onDismiss={dismissNotification}
-            />
-          )}
+          <NotificationAlert
+            notifications={notifications}
+            onDismiss={dismissNotification}
+          />
         </div>
       )}
 

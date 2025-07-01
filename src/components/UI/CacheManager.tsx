@@ -37,47 +37,50 @@ export default function CacheManager() {
   };
 
   return (
-    <div className="space-y-4">
-      {/* Warning Info */}
-      <div className="flex items-start space-x-3 p-3 sm:p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg transition-colors duration-200">
-        <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5 transition-colors duration-200" />
-        <div className="text-xs sm:text-sm text-amber-700 dark:text-amber-300 transition-colors duration-200 min-w-0">
-          <p className="font-medium mb-1">About Cache Management</p>
-          <p className="leading-relaxed">
-            If you're seeing outdated content or the app isn't working properly, 
-            clearing the cache can help. This will remove all stored data and reload the app.
-          </p>
+    <div className="bg-white dark:bg-dark-800 rounded-lg shadow-sm p-3 sm:p-4 lg:p-6 border border-gray-200 dark:border-dark-700 transition-colors duration-200">
+      <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-gray-900 dark:text-white mb-2 sm:mb-3 lg:mb-4 transition-colors duration-200">
+        Cache Management
+      </h3>
+      
+      <div className="space-y-3 sm:space-y-4">
+        <div className="flex items-start space-x-2 sm:space-x-3 p-2 sm:p-3 lg:p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg transition-colors duration-200">
+          <AlertTriangle className="h-3 w-3 sm:h-4 sm:w-4 lg:h-5 lg:w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5 transition-colors duration-200" />
+          <div className="text-xs sm:text-sm text-amber-700 dark:text-amber-300 transition-colors duration-200 min-w-0">
+            <p className="font-medium mb-1">About Cache Management</p>
+            <p className="leading-relaxed">
+              If you're seeing outdated content or the app isn't working properly, 
+              clearing the cache can help. This will remove all stored data and reload the app.
+            </p>
+          </div>
         </div>
-      </div>
 
-      {/* Action Buttons */}
-      <div className="space-y-3">
-        <button
-          onClick={handleCheckUpdates}
-          disabled={isChecking}
-          className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-dark-700 hover:bg-gray-50 dark:hover:bg-dark-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 min-h-[48px] touch-manipulation"
-        >
-          <RotateCcw className={`h-4 w-4 mr-2 flex-shrink-0 ${isChecking ? 'animate-spin' : ''}`} />
-          <span>{isChecking ? 'Checking for Updates...' : 'Check for Updates'}</span>
-        </button>
+        <div className="space-y-2 sm:space-y-3">
+          <button
+            onClick={handleCheckUpdates}
+            disabled={isChecking}
+            className="w-full flex items-center justify-center px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-dark-700 hover:bg-gray-50 dark:hover:bg-dark-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 min-h-[44px]"
+          >
+            <RotateCcw className={`h-3 w-3 sm:h-4 sm:w-4 mr-2 flex-shrink-0 ${isChecking ? 'animate-spin' : ''}`} />
+            <span className="truncate">{isChecking ? 'Checking...' : 'Check for Updates'}</span>
+          </button>
 
-        <button
-          onClick={handleClearCache}
-          disabled={isClearing}
-          className="w-full flex items-center justify-center px-4 py-3 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white rounded-lg text-sm font-medium disabled:cursor-not-allowed transition-colors duration-200 min-h-[48px] touch-manipulation"
-        >
-          <RotateCcw className={`h-4 w-4 mr-2 flex-shrink-0 ${isClearing ? 'animate-spin' : ''}`} />
-          <span>{isClearing ? 'Clearing Cache...' : 'Clear Cache & Reload'}</span>
-        </button>
-      </div>
-
-      {/* Version Info */}
-      <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1 transition-colors duration-200 pt-2 border-t border-gray-200 dark:border-dark-600">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-2">
-          <p className="truncate">Version: {__PACKAGE_VERSION__ || '1.0.0'}</p>
-          <p className="truncate">Build: {new Date(__BUILD_TIME__ || Date.now()).toLocaleDateString()}</p>
+          <button
+            onClick={handleClearCache}
+            disabled={isClearing}
+            className="w-full flex items-center justify-center px-3 py-2.5 sm:px-4 sm:py-3 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white rounded-lg text-xs sm:text-sm font-medium disabled:cursor-not-allowed transition-colors duration-200 min-h-[44px]"
+          >
+            <RotateCcw className={`h-3 w-3 sm:h-4 sm:w-4 mr-2 flex-shrink-0 ${isClearing ? 'animate-spin' : ''}`} />
+            <span className="truncate">{isClearing ? 'Clearing...' : 'Clear Cache & Reload'}</span>
+          </button>
         </div>
-        <p className="truncate">Cache: SW v2 + File Hashing</p>
+
+        <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1 transition-colors duration-200">
+          <div className="flex flex-col space-y-1 sm:space-y-0 sm:flex-row sm:justify-between sm:items-center">
+            <p className="truncate">Version: {__PACKAGE_VERSION__ || '1.0.0'}</p>
+            <p className="truncate">Build: {new Date(__BUILD_TIME__ || Date.now()).toLocaleDateString()}</p>
+          </div>
+          <p className="truncate">Cache: SW v2 + File Hashing</p>
+        </div>
       </div>
     </div>
   );

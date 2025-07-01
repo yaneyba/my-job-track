@@ -91,6 +91,16 @@ const Login: React.FC = () => {
     }
   };
 
+  const handleDemoFill = () => {
+    setFormData({
+      email: 'demo@myjobtrack.app',
+      password: 'demo123'
+    });
+    // Clear any existing errors
+    setErrors({});
+    setLoginError('');
+  };
+
   const features = [
     {
       icon: Users,
@@ -317,10 +327,18 @@ const Login: React.FC = () => {
               <p className="text-blue-800 dark:text-blue-200 text-sm mb-3">
                 Want to explore the app? Use these demo credentials:
               </p>
-              <div className="bg-white dark:bg-dark-700 rounded p-3 text-sm">
+              <div className="bg-white dark:bg-dark-700 rounded p-3 text-sm mb-3">
                 <p className="text-gray-700 dark:text-gray-300"><strong>Email:</strong> demo@myjobtrack.app</p>
                 <p className="text-gray-700 dark:text-gray-300"><strong>Password:</strong> demo123</p>
               </div>
+              <button
+                type="button"
+                onClick={handleDemoFill}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center"
+              >
+                <ArrowRight className="h-4 w-4 mr-2" />
+                Auto-fill Demo Credentials
+              </button>
             </div>
 
             {/* Back to Landing Link */}

@@ -1,49 +1,12 @@
-<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
   <defs>
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1E40AF;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="clipboardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#F3F4F6;stop-opacity:1" />
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#8b5cf6" />
     </linearGradient>
   </defs>
-  
-  <!-- Background with rounded corners for app icon -->
-  <rect width="192" height="192" rx="32" fill="url(#bgGradient)"/>
-  
-  <!-- Main clipboard -->
-  <rect x="52" y="30" width="88" height="120" rx="8" ry="8" fill="url(#clipboardGradient)" stroke="#E5E7EB" stroke-width="1"/>
-  
-  <!-- Clipboard clip -->
-  <rect x="72" y="22" width="48" height="16" rx="4" ry="4" fill="#374151"/>
-  <rect x="76" y="26" width="40" height="8" rx="2" ry="2" fill="#6B7280"/>
-  
-  <!-- Task items -->
-  <!-- Completed task 1 -->
-  <rect x="62" y="52" width="8" height="8" rx="1" fill="#10B981"/>
-  <path d="M64 55 L66 57 L69 54" stroke="white" stroke-width="1" stroke-linecap="round" fill="none"/>
-  <rect x="74" y="53.5" width="52" height="1.5" rx="0.75" fill="#10B981" opacity="0.3"/>
-  
-  <!-- Completed task 2 -->
-  <rect x="62" y="67" width="8" height="8" rx="1" fill="#10B981"/>
-  <path d="M64 70 L66 72 L69 69" stroke="white" stroke-width="1" stroke-linecap="round" fill="none"/>
-  <rect x="74" y="68.5" width="44" height="1.5" rx="0.75" fill="#10B981" opacity="0.3"/>
-  
-  <!-- Completed task 3 -->
-  <rect x="62" y="82" width="8" height="8" rx="1" fill="#10B981"/>
-  <path d="M64 85 L66 87 L69 84" stroke="white" stroke-width="1" stroke-linecap="round" fill="none"/>
-  <rect x="74" y="83.5" width="58" height="1.5" rx="0.75" fill="#10B981" opacity="0.3"/>
-  
-  <!-- Pending tasks -->
-  <rect x="62" y="105" width="8" height="8" rx="1" fill="none" stroke="#D1D5DB" stroke-width="1"/>
-  <rect x="74" y="106.5" width="48" height="1.5" rx="0.75" fill="#6B7280"/>
-  
-  <rect x="62" y="120" width="8" height="8" rx="1" fill="none" stroke="#D1D5DB" stroke-width="1"/>
-  <rect x="74" y="121.5" width="40" height="1.5" rx="0.75" fill="#6B7280"/>
-  
-  <!-- Small tool icon -->
-  <circle cx="130" cy="120" r="10" fill="#F59E0B" opacity="0.9"/>
-  <path d="M127 115 L131 119 L129 121 L125 117 C124.5 116.5 124.5 115.5 125 115 C125.5 114.5 126.5 114.5 127 115 Z M123 125 L121 127 L119 125 L121 123 Z" fill="white"/>
+  <rect width="192" height="192" rx="48" fill="url(#gradient)" />
+  <g transform="translate(44, 44) scale(4.3)">
+    <path d="M21 8v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8m18 0V7a1 1 0 0 0-1-1h-2M3 8V7a1 1 0 0 1 1-1h2m0 0V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3m0 0h-2M6 6h2" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
 </svg>

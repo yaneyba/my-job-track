@@ -4,6 +4,7 @@ import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { useTheme } from '@/contexts/ThemeContext';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import ThemeToggle from '@/components/UI/ThemeToggle';
+import CacheManager from '@/components/UI/CacheManager';
 import {
   Settings as SettingsIcon,
   Download,
@@ -243,6 +244,18 @@ const Settings: React.FC = () => {
           description: 'Suggest new features or improvements',
           icon: ExternalLink,
           external: true
+        }
+      ]
+    },
+    {
+      title: 'Cache & Performance',
+      icon: RefreshCw,
+      items: [
+        {
+          title: 'Cache Management',
+          description: 'Clear cached data and check for updates',
+          icon: RefreshCw,
+          component: <CacheManager />
         }
       ]
     }

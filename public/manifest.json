@@ -1,7 +1,7 @@
 {
   "name": "MyJobTrack - Simple CRM for Landscapers, Handymen & Service Pros",
   "short_name": "MyJobTrack",
-  "description": "Dead simple CRM built specifically for landscapers, handymen, contractors & service professionals. Track jobs, manage customers, and get paid faster. No complexity, just what you need to run your business.",
+  "description": "Simple CRM built specifically for landscapers, handymen, contractors & service professionals. Track jobs, manage customers, and get paid faster. No complexity, just what you need to run your business.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

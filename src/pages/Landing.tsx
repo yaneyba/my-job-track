@@ -169,7 +169,7 @@ const Landing: React.FC = () => {
               <span className="sr-only">- Simple CRM for Landscapers, Handymen & Service Pros</span>
             </h1>
             <h2 className="text-xl sm:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
-              <span className="text-green-300 font-semibold">Dead Simple CRM</span> built for 
+              <span className="text-green-300 font-semibold">Simple CRM</span> built for 
               <span className="font-semibold text-white"> Landscapers, Handymen & Contractors</span>
             </h2>
             <p className="text-lg text-blue-50 mb-8 max-w-2xl mx-auto drop-shadow-md">

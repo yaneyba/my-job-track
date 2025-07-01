@@ -220,6 +220,12 @@ const Settings: React.FC = () => {
           toggle: true,
           value: notifications,
           onChange: setNotifications
+        },
+        {
+          title: 'Cache Management',
+          description: 'Clear cached data and check for updates',
+          icon: RefreshCw,
+          component: <CacheManager />
         }
       ]
     },
@@ -244,18 +250,6 @@ const Settings: React.FC = () => {
           description: 'Suggest new features or improvements',
           icon: ExternalLink,
           external: true
-        }
-      ]
-    },
-    {
-      title: 'Cache & Performance',
-      icon: RefreshCw,
-      items: [
-        {
-          title: 'Cache Management',
-          description: 'Clear cached data and check for updates',
-          icon: RefreshCw,
-          component: <CacheManager />
         }
       ]
     }
@@ -390,20 +384,22 @@ const Settings: React.FC = () => {
               
               <div className="space-y-4">
                 {section.items.map((item, itemIndex) => (
-                  <div key={itemIndex} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-dark-700 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors">
-                    <div className="flex items-center flex-1">
-                      <div className="bg-white dark:bg-dark-800 p-2 rounded-lg mr-4 shadow-sm">
+                  <div key={itemIndex} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 dark:bg-dark-700 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors">
+                    <div className="flex items-start sm:items-center flex-1 mb-4 sm:mb-0">
+                      <div className="bg-white dark:bg-dark-800 p-2 rounded-lg mr-4 shadow-sm flex-shrink-0">
                         <item.icon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
                       </div>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900 dark:text-white">{item.title}</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{item.description}</p>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{item.title}</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{item.description}</p>
                       </div>
                     </div>
                     
-                    <div className="ml-4">
+                    <div className="flex-shrink-0 w-full sm:w-auto sm:ml-4">
                       {'component' in item ? (
-                        item.component
+                        <div className="w-full">
+                          {item.component}
+                        </div>
                       ) : 'toggle' in item ? (
                         <button
                           onClick={() => item.onChange(!(item.value as boolean))}
@@ -425,7 +421,7 @@ const Settings: React.FC = () => {
                       ) : (
                         <button
                           onClick={item.action}
-                          className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                          className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors w-full sm:w-auto ${
                             item.variant === 'primary'
                               ? 'bg-blue-600 hover:bg-blue-700 text-white'
                               : item.variant === 'danger'

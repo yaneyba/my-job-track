@@ -1,5 +1,6 @@
 import React from 'react';
-import { Calendar, Heart, ExternalLink } from 'lucide-react';
+import { Heart, ExternalLink } from 'lucide-react';
+import Logo from '@/components/UI/Logo';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -10,14 +11,15 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="md:col-span-2">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg">
-                <Calendar className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold">MyJobTrack</h3>
-                <p className="text-gray-400 text-sm">Simple Job Tracking for Service Providers</p>
-              </div>
+            <div className="mb-4">
+              <Logo 
+                size="md" 
+                variant="horizontal" 
+                theme="white" 
+                showTagline={true}
+                tagline="Simple Job Tracking for Service Providers"
+                clickable={true}
+              />
             </div>
             <p className="text-gray-300 mb-4 max-w-md">
               Streamline your service business with powerful customer management, 

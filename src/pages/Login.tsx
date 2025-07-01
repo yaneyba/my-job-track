@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import Logo from '@/components/UI/Logo';
 import { 
-  Calendar, 
+  Calendar,
   Mail, 
   Lock, 
   Eye, 
@@ -131,15 +132,16 @@ const Login: React.FC = () => {
         <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-purple-600 p-12 flex-col justify-center">
           <div className="max-w-md">
             {/* Logo */}
-            <Link to="/" className="flex items-center mb-8 hover:opacity-80 transition-opacity">
-              <div className="bg-white/20 p-3 rounded-xl mr-4">
-                <Calendar className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-white">MyJobTrack</h1>
-                <p className="text-blue-100">Simple Job Tracking</p>
-              </div>
-            </Link>
+            <div className="mb-8">
+              <Logo 
+                size="lg" 
+                variant="horizontal" 
+                theme="white" 
+                showTagline={true}
+                tagline="Simple Job Tracking"
+                clickable={true}
+              />
+            </div>
 
             {/* Features */}
             <div className="space-y-6">
@@ -179,15 +181,15 @@ const Login: React.FC = () => {
           <div className="w-full max-w-md">
             {/* Mobile Logo */}
             <div className="lg:hidden text-center mb-8">
-              <Link to="/" className="flex items-center justify-center mb-4 hover:opacity-80 transition-opacity">
-                <div className="bg-blue-600 p-3 rounded-xl mr-3">
-                  <Calendar className="h-8 w-8 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white">MyJobTrack</h1>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm">Simple Job Tracking</p>
-                </div>
-              </Link>
+              <Logo 
+                size="lg" 
+                variant="horizontal" 
+                theme="colored" 
+                showTagline={true}
+                tagline="Simple Job Tracking"
+                clickable={true}
+                className="justify-center"
+              />
             </div>
 
             {/* Form Header */}

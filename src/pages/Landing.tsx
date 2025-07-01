@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import ThemeToggle from '@/components/UI/ThemeToggle';
+import Logo from '@/components/UI/Logo';
 import { 
   Users, 
   Calendar, 
@@ -119,12 +120,12 @@ const Landing: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <div className="flex items-center">
-              <div className="bg-blue-600 dark:bg-blue-500 p-2 rounded-lg mr-3">
-                <Calendar className="h-6 w-6 text-white" />
-              </div>
-              <span className="text-xl font-bold text-gray-900 dark:text-white">MyJobTrack</span>
-            </div>
+            <Logo 
+              size="md"
+              variant="horizontal"
+              theme="colored"
+              clickable={false}
+            />
 
             {/* Right Side Actions */}
             <div className="flex items-center space-x-4">
@@ -160,9 +161,13 @@ const Landing: React.FC = () => {
         <div className="relative max-w-7xl mx-auto px-4 py-24 sm:py-32">
           <div className="text-center">
             <div className="flex justify-center mb-8">
-              <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl shadow-lg border border-white/30">
-                <Calendar className="h-12 w-12 text-white" aria-hidden="true" />
-              </div>
+              <Logo 
+                size="xl"
+                variant="icon-only"
+                theme="white"
+                clickable={false}
+                className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl shadow-lg border border-white/30"
+              />
             </div>
             <h1 className="text-4xl sm:text-6xl font-bold text-white mb-6 drop-shadow-lg">
               <span itemProp="name">MyJobTrack</span>
@@ -359,11 +364,13 @@ const Landing: React.FC = () => {
       <footer className="bg-gray-900 dark:bg-dark-950 py-12 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center mb-4 md:mb-0">
-              <div className="bg-blue-600 dark:bg-blue-500 p-2 rounded-lg mr-3">
-                <Calendar className="h-6 w-6 text-white" />
-              </div>
-              <span className="text-xl font-bold text-white">MyJobTrack</span>
+            <div className="mb-4 md:mb-0">
+              <Logo 
+                size="md"
+                variant="horizontal"
+                theme="white"
+                clickable={false}
+              />
             </div>
             <div className="text-gray-400 dark:text-gray-500 text-center md:text-right transition-colors duration-200">
               <p>Built for service providers who value simplicity.</p>

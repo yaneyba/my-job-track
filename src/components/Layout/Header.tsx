@@ -2,7 +2,8 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import ThemeToggle from '@/components/UI/ThemeToggle';
-import { Calendar, Bell, Settings, User, LogOut } from 'lucide-react';
+import Logo from '@/components/UI/Logo';
+import { Bell, Settings, User, LogOut } from 'lucide-react';
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -35,18 +36,24 @@ const Header: React.FC = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo and Brand */}
           <div className="flex items-center">
-            <button
+            <Logo 
+              size="md"
+              variant="horizontal"
+              theme="colored"
+              showTagline={true}
+              tagline="Job Tracking"
+              clickable={true}
               onClick={() => navigate('/app')}
-              className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
-            >
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg">
-                <Calendar className="h-6 w-6 text-white" />
-              </div>
-              <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">MyJobTrack</h1>
-                <p className="text-xs text-gray-500 dark:text-gray-400 -mt-1">Job Tracking</p>
-              </div>
-            </button>
+              className="hidden sm:flex"
+            />
+            <Logo 
+              size="sm"
+              variant="icon-only"
+              theme="colored"
+              clickable={true}
+              onClick={() => navigate('/app')}
+              className="sm:hidden"
+            />
           </div>
 
           {/* Page Title - Mobile */}

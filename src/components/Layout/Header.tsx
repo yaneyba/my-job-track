@@ -5,7 +5,7 @@ import { useNotifications } from '@/hooks/useNotifications';
 import ThemeToggle from '@/components/UI/ThemeToggle';
 import Logo from '@/components/UI/Logo';
 import NotificationAlert from '@/components/UI/NotificationAlert';
-import { Bell, Settings, User, LogOut, X } from 'lucide-react';
+import { Bell, User, LogOut, X } from 'lucide-react';
 
 const Header: React.FC = () => {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -202,18 +202,6 @@ const Header: React.FC = () => {
                   </div>
                 )}
               </div>
-
-              {/* Settings */}
-              <button 
-                onClick={() => navigate('/app/settings')}
-                className={`p-2 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors ${
-                  location.pathname.includes('/settings')
-                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                    : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
-                }`}
-              >
-                <Settings className="h-5 w-5" />
-              </button>
 
               {/* Profile */}
               <button 

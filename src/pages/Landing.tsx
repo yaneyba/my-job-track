@@ -175,7 +175,8 @@ const Landing: React.FC = () => {
             </h1>
             <h2 className="text-xl sm:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
               <span className="text-green-300 font-semibold">Simple CRM</span> built for 
-              <span className="font-semibold text-white"> Landscapers, Handymen & Contractors</span>
+              <span className="font-semibold text-white"> services providers </span> 
+              who value simplicity and speed.
             </h2>
             <p className="text-lg text-blue-50 mb-8 max-w-2xl mx-auto drop-shadow-md">
               Track jobs, manage customers, and get paid faster. <strong className="text-white">No complexity, no learning curve</strong> - 
@@ -373,7 +374,7 @@ const Landing: React.FC = () => {
               />
             </div>
             <div className="text-gray-400 dark:text-gray-500 text-center md:text-right transition-colors duration-200">
-              <p>Built for service providers who value simplicity.</p>
+              <p>Built for service providers who value simplicity and speed.</p>
               <p className="mt-1">© 2024 MyJobTrack. All rights reserved.</p>
             </div>
           </div>

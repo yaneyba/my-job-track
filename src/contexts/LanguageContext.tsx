@@ -5,7 +5,7 @@ type Language = 'en' | 'es';
 interface LanguageContextType {
   language: Language;
   setLanguage: (language: Language) => void;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string>) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -241,10 +241,11 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     setLanguageState(newLanguage);
   };
 
-  const t = (key: string): string => {
+  const t = (key: string, params?: Record<string, string>): string => {
     const keys = key.split('.');
     let value: any = translations[language];
     
+    // Navigate through the nested object
     for (const k of keys) {
       if (value && typeof value === 'object' && k in value) {
         value = value[k];
@@ -262,7 +263,17 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
       }
     }
     
-    return typeof value === 'string' ? value : key;
+    // If we have a string value, interpolate parameters
+    if (typeof value === 'string') {
+      if (params) {
+        return value.replace(/\{(\w+)\}/g, (match, paramKey) => {
+          return params[paramKey] || match;
+        });
+      }
+      return value;
+    }
+    
+    return key; // Return key if translation not found
   };
 
   const value: LanguageContextType = {

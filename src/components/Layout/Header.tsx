@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useNotifications } from '@/hooks/useNotifications';
 import ThemeToggle from '@/components/UI/ThemeToggle';
 import Logo from '@/components/UI/Logo';
@@ -12,6 +13,7 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
+  const { t } = useLanguage();
   const { notifications, dismissNotification, clearAllNotifications, markNotificationAsRead } = useNotifications();
 
   // Count unread notifications
@@ -19,16 +21,16 @@ const Header: React.FC = () => {
 
   const getPageTitle = () => {
     const path = location.pathname;
-    if (path === '/app' || path === '/app/dashboard') return 'Dashboard';
-    if (path === '/app/customers') return 'Customers';
-    if (path === '/app/jobs') return 'Jobs';
-    if (path === '/app/payments') return 'Payments';
-    if (path === '/app/scan') return 'Scan QR Code';
-    if (path === '/app/settings') return 'Settings';
-    if (path === '/app/profile') return 'Profile';
-    if (path.includes('/customers/')) return 'Customer Details';
-    if (path.includes('/jobs/')) return 'Job Details';
-    if (path.includes('/new')) return 'Add New';
+    if (path === '/app' || path === '/app/dashboard') return t('dashboard.welcome');
+    if (path === '/app/customers') return t('nav.customers');
+    if (path === '/app/jobs') return t('nav.jobs');
+    if (path === '/app/payments') return t('nav.payments');
+    if (path === '/app/scan') return t('nav.scan');
+    if (path === '/app/settings') return t('nav.settings');
+    if (path === '/app/profile') return t('nav.profile');
+    if (path.includes('/customers/')) return t('nav.customers');
+    if (path.includes('/jobs/')) return t('nav.jobs');
+    if (path.includes('/new')) return t('dashboard.addCustomer');
     return 'MyJobTrack';
   };
 

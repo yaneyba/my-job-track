@@ -55,13 +55,42 @@ export const testLanguageFeatures = () => {
   };
 };
 
+// Test translation function in console
+export const testTranslations = () => {
+  const savedLanguage = localStorage.getItem('myjobtrack_language') || 'en';
+  console.log('🔍 Current Language:', savedLanguage);
+  
+  // Test specific keys that should be translated
+  const testKeys = [
+    'settings.language',
+    'settings.languageDescription', 
+    'settings.appearance',
+    'common.english',
+    'common.spanish'
+  ];
+  
+  console.log('🔍 Testing Translation Keys:');
+  testKeys.forEach(key => {
+    console.log(`   ${key}: [should show translation, not key]`);
+  });
+  
+  console.log('\n💡 Debug Steps:');
+  console.log('1. Check if language context is updating');
+  console.log('2. Verify translation function is being called');
+  console.log('3. Check if components are re-rendering');
+  
+  return { savedLanguage, testKeys };
+};
+
 // Add to window for console testing
 declare global {
   interface Window {
     testLanguageFeatures: typeof testLanguageFeatures;
+    testTranslations: typeof testTranslations;
   }
 }
 
 if (typeof window !== 'undefined') {
   window.testLanguageFeatures = testLanguageFeatures;
+  window.testTranslations = testTranslations;
 }

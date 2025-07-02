@@ -242,25 +242,17 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   };
 
   const t = (key: string, params?: Record<string, string>): string => {
-    const keys = key.split('.');
-    let value: any = translations[language];
+    // Get translation directly from flat object using the key
+    let value = (translations[language] as Record<string, string>)[key];
     
-    // Navigate through the nested object
-    for (const k of keys) {
-      if (value && typeof value === 'object' && k in value) {
-        value = value[k];
-      } else {
-        // Fallback to English if key not found
-        value = translations.en;
-        for (const fallbackKey of keys) {
-          if (value && typeof value === 'object' && fallbackKey in value) {
-            value = value[fallbackKey];
-          } else {
-            return key; // Return key if not found in fallback
-          }
-        }
-        break;
-      }
+    // If not found in current language, fallback to English
+    if (!value) {
+      value = (translations.en as Record<string, string>)[key];
+    }
+    
+    // If still not found, return the key
+    if (!value) {
+      return key;
     }
     
     // If we have a string value, interpolate parameters

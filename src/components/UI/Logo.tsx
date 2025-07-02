@@ -109,7 +109,7 @@ const Logo: React.FC<LogoProps> = ({
   const IconComponent = () => (
     <div className={`${colors.iconBg} ${config.iconContainer} rounded-lg flex items-center justify-center`}>
       <img 
-        src="/icon.svg"
+        src="/logo-icon.svg"
         alt="MyJobTrack Logo" 
         className={`${config.icon} w-full h-full object-contain`}
       />

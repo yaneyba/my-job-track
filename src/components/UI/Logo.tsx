@@ -34,7 +34,7 @@ const Logo: React.FC<LogoProps> = ({
   const sizeConfig = {
     xs: {
       icon: 'h-4 w-4',
-      iconContainer: 'p-1',
+      iconContainer: 'p-1 h-6 w-6',
       title: 'text-sm font-bold',
       tagline: 'text-xs',
       spacing: 'space-x-1',
@@ -42,7 +42,7 @@ const Logo: React.FC<LogoProps> = ({
     },
     sm: {
       icon: 'h-5 w-5',
-      iconContainer: 'p-1.5',
+      iconContainer: 'p-1.5 h-8 w-8',
       title: 'text-base font-bold',
       tagline: 'text-xs',
       spacing: 'space-x-2',
@@ -50,7 +50,7 @@ const Logo: React.FC<LogoProps> = ({
     },
     md: {
       icon: 'h-6 w-6',
-      iconContainer: 'p-2',
+      iconContainer: 'p-2 h-10 w-10',
       title: 'text-lg font-bold',
       tagline: 'text-sm',
       spacing: 'space-x-3',
@@ -58,7 +58,7 @@ const Logo: React.FC<LogoProps> = ({
     },
     lg: {
       icon: 'h-8 w-8',
-      iconContainer: 'p-3',
+      iconContainer: 'p-2 h-12 w-12',
       title: 'text-xl font-bold',
       tagline: 'text-sm',
       spacing: 'space-x-4',
@@ -66,7 +66,7 @@ const Logo: React.FC<LogoProps> = ({
     },
     xl: {
       icon: 'h-10 w-10',
-      iconContainer: 'p-4',
+      iconContainer: 'p-2 h-16 w-16',
       title: 'text-2xl font-bold',
       tagline: 'text-base',
       spacing: 'space-x-4',
@@ -107,11 +107,11 @@ const Logo: React.FC<LogoProps> = ({
 
   // Icon component
   const IconComponent = () => (
-    <div className={`${colors.iconBg} ${config.iconContainer} rounded-lg`}>
+    <div className={`${colors.iconBg} ${config.iconContainer} rounded-lg flex items-center justify-center`}>
       <img 
         src="/icon.svg"
         alt="MyJobTrack Logo" 
-        className={`${config.icon}`}
+        className={`${config.icon} w-full h-full object-contain`}
       />
     </div>
   );

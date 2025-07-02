@@ -134,6 +134,30 @@ The app is configured as a PWA with:
 - No server required - fully client-side
 - Data persists between sessions
 
+## 🚀 Deployment
+
+MyJobTrack includes comprehensive deployment scripts for different scenarios:
+
+```bash
+# Production deployment (recommended for releases)
+./scripts/deployment/deploy.sh production
+
+# Fresh deployment with cache busting
+./scripts/deployment/deploy.sh fresh
+
+# Quick deployment for testing
+./scripts/deployment/deploy.sh quick
+```
+
+**Deployment Features:**
+- ✅ Automated build versioning with git hash
+- ✅ Icon cache busting for fresh updates
+- ✅ Multiple deployment strategies
+- ✅ Build validation and linting
+- ✅ Production optimization
+
+For detailed deployment instructions, see [`scripts/deployment/README.md`](scripts/deployment/README.md).
+
 ## 🤝 Contributing
 
 1. Fork the repository

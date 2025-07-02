@@ -3,6 +3,9 @@
 # Test Language/Internationalization functionality
 # This script opens the app and tests the language toggle
 
+# Change to project root directory
+cd "$(dirname "$0")/.."
+
 echo "🌐 Testing Language/Internationalization Features"
 echo "================================================="
 

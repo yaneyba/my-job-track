@@ -1,0 +1,84 @@
+name: Release Build with Version
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch full history for git info
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Generate build version and info
+      run: npm run build:version
+      
+    - name: Update icons with cache busting
+      run: npm run icons:cache-bust
+    
+    - name: Lint code
+      run: npm run lint
+    
+    - name: Build application
+      run: npm run build:release
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist-${{ github.ref_name }}
+        path: dist/
+        retention-days: 30
+    
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: Release ${{ github.ref_name }}
+        body: |
+          ## What's Changed
+          
+          Build Information:
+          - Build Number: Generated automatically
+          - Build Date: $(date -Iseconds)
+          - Git Hash: ${{ github.sha }}
+          - Environment: production
+          
+          ## Deployment
+          
+          This release includes:
+          - ✅ Automated build version tracking
+          - ✅ Icon cache busting
+          - ✅ SEO optimization
+          - ✅ Production optimizations
+          
+          ## Quick Deploy
+          
+          ```bash
+          # Download and extract the artifacts
+          # Deploy the dist/ folder to your web server
+          ```
+        draft: false
+        prerelease: false

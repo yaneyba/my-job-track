@@ -1,6 +1,18 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import fs from 'fs';
+
+// Read build info if it exists
+let buildInfo = {};
+try {
+  const buildInfoPath = path.resolve(__dirname, './src/build-info.json');
+  if (fs.existsSync(buildInfoPath)) {
+    buildInfo = JSON.parse(fs.readFileSync(buildInfoPath, 'utf8'));
+  }
+} catch (error) {
+  console.warn('Could not read build info, using defaults');
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -17,6 +29,7 @@ export default defineConfig({
     // Inject build timestamp for cache busting
     __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
     __PACKAGE_VERSION__: JSON.stringify(process.env.npm_package_version),
+    __BUILD_INFO__: JSON.stringify(buildInfo),
   },
   build: {
     // Enable rollup options for better cache busting

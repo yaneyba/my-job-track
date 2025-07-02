@@ -1,6 +1,7 @@
 import React from 'react';
 import { Heart, ExternalLink } from 'lucide-react';
 import Logo from '@/components/UI/Logo';
+import BuildInfoDisplay from '@/components/UI/BuildInfoDisplay';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -117,9 +118,7 @@ const Footer: React.FC = () => {
               <span>⚡ Works Offline</span>
             </div>
             <div className="flex items-center space-x-2">
-              <span>Version 1.0.0</span>
-              <span>•</span>
-              <span>Last updated: {new Date().toLocaleDateString()}</span>
+              <BuildInfoDisplay variant="footer" />
             </div>
           </div>
         </div>

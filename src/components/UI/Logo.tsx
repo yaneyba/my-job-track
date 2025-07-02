@@ -1,5 +1,4 @@
 import React from 'react';
-import { Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface LogoProps {
@@ -109,7 +108,11 @@ const Logo: React.FC<LogoProps> = ({
   // Icon component
   const IconComponent = () => (
     <div className={`${colors.iconBg} ${config.iconContainer} rounded-lg`}>
-      <Calendar className={`${config.icon} ${colors.iconColor}`} />
+      <img 
+        src="/icon.svg"
+        alt="MyJobTrack Logo" 
+        className={`${config.icon}`}
+      />
     </div>
   );
 

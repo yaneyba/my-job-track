@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import ThemeToggle from '@/components/UI/ThemeToggle';
 import CacheManager from '@/components/UI/CacheManager';
@@ -26,7 +27,9 @@ import {
   HelpCircle,
   ExternalLink,
   RefreshCw,
-  Palette
+  Palette,
+  Languages,
+  Globe
 } from 'lucide-react';
 
 // TypeScript interfaces for settings items
@@ -74,10 +77,11 @@ const Settings: React.FC = () => {
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
   const { isDark } = useTheme();
+  const { language, setLanguage, t } = useLanguage();
 
   const breadcrumbItems = [
-    { label: 'Home', href: '/app' },
-    { label: 'Settings', current: true }
+    { label: t('nav.home'), href: '/app' },
+    { label: t('nav.settings'), current: true }
   ];
 
   // Get app statistics
@@ -162,19 +166,56 @@ const Settings: React.FC = () => {
     }
   };
 
+  const handleLanguageChange = (newLanguage: 'en' | 'es') => {
+    setLanguage(newLanguage);
+  };
+
   const settingSections: SettingSection[] = [
     {
-      title: 'Appearance',
+      title: t('settings.appearance'),
       icon: Palette,
       items: [
         {
-          title: 'Theme',
-          description: `Currently using ${isDark ? 'dark' : 'light'} mode`,
+          title: t('settings.language'),
+          description: t('settings.languageDescription'),
+          icon: Languages,
+          component: (
+            <div className="flex items-center space-x-3">
+              <div className="flex bg-gray-100 dark:bg-dark-700 rounded-lg p-1 transition-colors duration-200">
+                <button
+                  onClick={() => handleLanguageChange('en')}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center ${
+                    language === 'en'
+                      ? 'bg-white dark:bg-dark-800 text-blue-600 dark:text-blue-400 shadow-sm'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  }`}
+                >
+                  <Globe className="h-4 w-4 mr-2" />
+                  {t('common.english')}
+                </button>
+                <button
+                  onClick={() => handleLanguageChange('es')}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center ${
+                    language === 'es'
+                      ? 'bg-white dark:bg-dark-800 text-blue-600 dark:text-blue-400 shadow-sm'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  }`}
+                >
+                  <Globe className="h-4 w-4 mr-2" />
+                  {t('common.spanish')}
+                </button>
+              </div>
+            </div>
+          )
+        },
+        {
+          title: t('settings.theme'),
+          description: t('settings.themeDescription', { mode: isDark ? t('common.dark') : t('common.light') }),
           icon: isDark ? Moon : Sun,
           component: (
             <div className="flex items-center space-x-3">
               <span className="text-sm text-gray-600 dark:text-gray-400">
-                {isDark ? 'Dark' : 'Light'}
+                {isDark ? t('common.dark') : t('common.light')}
               </span>
               <ThemeToggle size="sm" />
             </div>
@@ -183,26 +224,26 @@ const Settings: React.FC = () => {
       ]
     },
     {
-      title: 'Data Management',
+      title: t('settings.dataManagement'),
       icon: Database,
       items: [
         {
-          title: 'Export Data',
-          description: 'Download a backup of all your customers and jobs',
+          title: t('settings.exportData'),
+          description: t('settings.exportDescription'),
           icon: Download,
           action: handleExportData,
           variant: 'primary' as const
         },
         {
-          title: 'Import Data',
-          description: 'Restore data from a backup file',
+          title: t('settings.importData'),
+          description: t('settings.importDescription'),
           icon: Upload,
           action: () => fileInputRef.current?.click(),
           variant: 'secondary' as const
         },
         {
-          title: 'Clear All Data',
-          description: 'Permanently delete all customers and jobs',
+          title: t('settings.clearAllData'),
+          description: t('settings.clearDescription'),
           icon: Trash2,
           action: () => setShowClearConfirm(true),
           variant: 'danger' as const
@@ -210,44 +251,44 @@ const Settings: React.FC = () => {
       ]
     },
     {
-      title: 'App Preferences',
+      title: t('settings.appPreferences'),
       icon: SettingsIcon,
       items: [
         {
-          title: 'Notifications',
-          description: 'Enable push notifications for reminders',
+          title: t('settings.notifications'),
+          description: t('settings.notificationsDescription'),
           icon: Bell,
           toggle: true,
           value: notifications,
           onChange: setNotifications
         },
         {
-          title: 'Cache Management',
-          description: 'Clear cached data and check for updates',
+          title: t('settings.cacheManagement'),
+          description: t('settings.cacheDescription'),
           icon: RefreshCw,
           component: <CacheManager />
         }
       ]
     },
     {
-      title: 'Help & Support',
+      title: t('settings.helpSupport'),
       icon: HelpCircle,
       items: [
         {
-          title: 'User Guide',
-          description: 'Learn how to use MyJobTrack',
+          title: t('settings.userGuide'),
+          description: t('settings.userGuideDescription'),
           icon: FileText,
           external: true
         },
         {
-          title: 'Contact Support',
-          description: 'Get help with technical issues',
+          title: t('settings.contactSupport'),
+          description: t('settings.contactDescription'),
           icon: ExternalLink,
           external: true
         },
         {
-          title: 'Feature Requests',
-          description: 'Suggest new features or improvements',
+          title: t('settings.featureRequests'),
+          description: t('settings.featureDescription'),
           icon: ExternalLink,
           external: true
         }
@@ -316,8 +357,8 @@ const Settings: React.FC = () => {
             <SettingsIcon className="h-8 w-8 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Settings</h1>
-            <p className="text-gray-600 dark:text-gray-400">Manage your app preferences and data</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('settings.title')}</h1>
+            <p className="text-gray-600 dark:text-gray-400">{t('settings.description')}</p>
           </div>
         </div>
       </div>
@@ -326,7 +367,7 @@ const Settings: React.FC = () => {
       <div className="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-gray-200 dark:border-dark-700 p-6 mb-8 transition-colors duration-200">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
           <Info className="h-5 w-5 mr-2 text-blue-600 dark:text-blue-400" />
-          App Statistics
+          {t('settings.appStatistics')}
         </h2>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -335,7 +376,7 @@ const Settings: React.FC = () => {
               <Users className="h-6 w-6 text-blue-600 dark:text-blue-400 mr-2" />
               <div>
                 <p className="text-lg font-bold text-blue-900 dark:text-blue-100">{customers.length}</p>
-                <p className="text-sm text-blue-700 dark:text-blue-300">Customers</p>
+                <p className="text-sm text-blue-700 dark:text-blue-300">{t('common.customers')}</p>
               </div>
             </div>
           </div>
@@ -345,7 +386,7 @@ const Settings: React.FC = () => {
               <Calendar className="h-6 w-6 text-green-600 dark:text-green-400 mr-2" />
               <div>
                 <p className="text-lg font-bold text-green-900 dark:text-green-100">{jobs.length}</p>
-                <p className="text-sm text-green-700 dark:text-green-300">Total Jobs</p>
+                <p className="text-sm text-green-700 dark:text-green-300">{t('common.total')} {t('common.jobs')}</p>
               </div>
             </div>
           </div>
@@ -355,7 +396,7 @@ const Settings: React.FC = () => {
               <DollarSign className="h-6 w-6 text-orange-600 dark:text-orange-400 mr-2" />
               <div>
                 <p className="text-lg font-bold text-orange-900 dark:text-orange-100">${totalUnpaid.toFixed(0)}</p>
-                <p className="text-sm text-orange-700 dark:text-orange-300">Unpaid</p>
+                <p className="text-sm text-orange-700 dark:text-orange-300">{t('common.unpaid')}</p>
               </div>
             </div>
           </div>
@@ -365,7 +406,7 @@ const Settings: React.FC = () => {
               <Smartphone className="h-6 w-6 text-purple-600 dark:text-purple-400 mr-2" />
               <div>
                 <p className="text-lg font-bold text-purple-900 dark:text-purple-100">v1.0.0</p>
-                <p className="text-sm text-purple-700 dark:text-purple-300">Version</p>
+                <p className="text-sm text-purple-700 dark:text-purple-300">{t('settings.version')}</p>
               </div>
             </div>
           </div>
@@ -385,7 +426,7 @@ const Settings: React.FC = () => {
               <div className="space-y-4">
                 {section.items.map((item, itemIndex) => (
                   <div key={itemIndex}>
-                    {'component' in item && item.title === 'Cache Management' ? (
+                    {'component' in item && item.title === t('settings.cacheManagement') ? (
                       // Special layout for Cache Management - always stacked
                       <div className="p-4 bg-gray-50 dark:bg-dark-700 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors">
                         <div className="flex items-start mb-4">
@@ -434,7 +475,7 @@ const Settings: React.FC = () => {
                             </button>
                           ) : 'external' in item ? (
                             <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium text-sm flex items-center">
-                              Open
+                              {t('common.open')}
                               <ExternalLink className="h-4 w-4 ml-1" />
                             </button>
                           ) : (
@@ -464,10 +505,10 @@ const Settings: React.FC = () => {
 
       {/* App Information */}
       <div className="mt-8 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-dark-800 dark:to-dark-700 rounded-xl p-6 border border-gray-200 dark:border-dark-600 transition-colors duration-200">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">About MyJobTrack</h2>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('settings.aboutMyJobTrack')}</h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Features</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('settings.features')}</h3>
             <ul className="text-gray-600 dark:text-gray-400 space-y-1 text-sm">
               <li>• Customer Management</li>
               <li>• Job Scheduling & Tracking</li>
@@ -476,17 +517,19 @@ const Settings: React.FC = () => {
               <li>• Mobile-First Design</li>
               <li>• Offline Data Storage</li>
               <li>• Dark Mode Support</li>
+              <li>• Multi-language Support</li>
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Technical Info</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('settings.technicalInfo')}</h3>
             <ul className="text-gray-600 dark:text-gray-400 space-y-1 text-sm">
-              <li>• Version: 1.0.0</li>
-              <li>• Data Storage: Local Browser</li>
-              <li>• Platform: Progressive Web App</li>
-              <li>• Last Updated: {new Date().toLocaleDateString()}</li>
-              <li>• Built with React & TypeScript</li>
-              <li>• Theme: {isDark ? 'Dark' : 'Light'} Mode</li>
+              <li>• {t('settings.version')}: 1.0.0</li>
+              <li>• {t('settings.dataStorage')}</li>
+              <li>• {t('settings.platform')}</li>
+              <li>• {t('settings.lastUpdated')}: {new Date().toLocaleDateString()}</li>
+              <li>• {t('settings.builtWith')}</li>
+              <li>• {t('settings.themeMode', { mode: isDark ? t('common.dark') : t('common.light') })}</li>
+              <li>• Language: {language === 'en' ? t('common.english') : t('common.spanish')}</li>
             </ul>
           </div>
         </div>
@@ -510,18 +553,18 @@ const Settings: React.FC = () => {
                 <AlertTriangle className="h-6 w-6 text-red-600 dark:text-red-400" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Clear All Data</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('settings.clearAllData')}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">This action cannot be undone</p>
               </div>
             </div>
             
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
               <p className="text-red-800 dark:text-red-200 text-sm mb-3">
-                <strong>Warning:</strong> This will permanently delete:
+                <strong>{t('common.warning')}:</strong> This will permanently delete:
               </p>
               <ul className="text-red-700 dark:text-red-300 text-sm space-y-1">
-                <li>• All {customers.length} customers</li>
-                <li>• All {jobs.length} jobs</li>
+                <li>• All {customers.length} {t('common.customers').toLowerCase()}</li>
+                <li>• All {jobs.length} {t('common.jobs').toLowerCase()}</li>
                 <li>• All payment records</li>
                 <li>• All app data</li>
               </ul>
@@ -546,7 +589,7 @@ const Settings: React.FC = () => {
                 ) : (
                   <>
                     <Trash2 className="h-4 w-4 mr-2" />
-                    Clear All Data
+                    {t('settings.clearAllData')}
                   </>
                 )}
               </button>
@@ -555,7 +598,7 @@ const Settings: React.FC = () => {
                 disabled={isClearing}
                 className="flex-1 bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 disabled:bg-gray-50 dark:disabled:bg-gray-700 text-gray-700 dark:text-gray-200 py-3 px-4 rounded-lg font-medium transition-colors"
               >
-                Cancel
+                {t('common.cancel')}
               </button>
             </div>
           </div>

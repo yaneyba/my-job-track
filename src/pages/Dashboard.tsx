@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DashboardStats, Job } from '@/types';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
+import { useLanguage } from '@/contexts/LanguageContext';
 import QuickActionButton from '@/components/UI/QuickActionButton';
 import JobCard from '@/components/Job/JobCard';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
@@ -17,9 +18,10 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
   const { notifications, dismissNotification, clearAllNotifications } = useNotifications();
+  const { t } = useLanguage();
 
   const breadcrumbItems = [
-    { label: 'Home', current: true }
+    { label: t('nav.home'), current: true }
   ];
 
   const loadDashboardData = useCallback(() => {
@@ -70,7 +72,7 @@ const Dashboard: React.FC = () => {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-200">
-          Welcome Back!
+          {t('dashboard.welcome')}
         </h1>
         <p className="text-gray-600 dark:text-gray-400 transition-colors duration-200">
           {format(new Date(), 'EEEE, MMMM d, yyyy')}
@@ -84,7 +86,7 @@ const Dashboard: React.FC = () => {
             <div className="flex items-center">
               <Bell className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-2 transition-colors duration-200" />
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white transition-colors duration-200">
-                Notifications
+                {t('dashboard.notifications')}
               </h2>
               <span className="ml-2 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs font-medium px-2 py-1 rounded-full transition-colors duration-200">
                 {notifications.length}
@@ -125,7 +127,7 @@ const Dashboard: React.FC = () => {
               <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-200">
                 {stats?.todaysJobs.length || 0}
               </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">Today's Jobs</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">{t('dashboard.todaysJobs')}</p>
             </div>
           </div>
         </div>
@@ -136,7 +138,7 @@ const Dashboard: React.FC = () => {
               <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-200">
                 ${stats?.thisWeekEarnings.toFixed(0) || '0'}
               </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">This Week</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">{t('dashboard.thisWeek')}</p>
             </div>
           </div>
         </div>
@@ -148,7 +150,7 @@ const Dashboard: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-lg font-semibold text-orange-800 dark:text-orange-200 transition-colors duration-200">
-                ${stats.totalUnpaid.toFixed(2)} Unpaid
+                ${stats.totalUnpaid.toFixed(2)} {t('dashboard.unpaid')}
               </h3>
               <p className="text-orange-700 dark:text-orange-300 transition-colors duration-200">
                 {stats.unpaidJobsCount} job{stats.unpaidJobsCount !== 1 ? 's' : ''} need payment
@@ -166,29 +168,29 @@ const Dashboard: React.FC = () => {
 
       {/* Quick Actions */}
       <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 transition-colors duration-200">Quick Actions</h2>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 transition-colors duration-200">{t('dashboard.quickActions')}</h2>
         <div className="grid grid-cols-2 gap-4">
           <QuickActionButton
             icon={Plus}
-            label="Add Customer"
+            label={t('dashboard.addCustomer')}
             onClick={() => navigate('/app/customers/new')}
             variant="primary"
           />
           <QuickActionButton
             icon={Calendar}
-            label="Schedule Job"
+            label={t('dashboard.scheduleJob')}
             onClick={() => navigate('/app/jobs/new')}
             variant="secondary"
           />
           <QuickActionButton
             icon={Users}
-            label="View Customers"
+            label={t('dashboard.viewCustomers')}
             onClick={() => navigate('/app/customers')}
             variant="secondary"
           />
           <QuickActionButton
             icon={QrCode}
-            label="Scan QR Code"
+            label={t('dashboard.scanQR')}
             onClick={() => navigate('/app/scan')}
             variant="secondary"
           />
@@ -197,7 +199,7 @@ const Dashboard: React.FC = () => {
 
       {/* Today's Jobs */}
       <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 transition-colors duration-200">Today's Jobs</h2>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 transition-colors duration-200">{t('dashboard.todaysJobs')}</h2>
         {stats && stats.todaysJobs.length > 0 ? (
           <div className="space-y-3">
             {stats.todaysJobs.map((job) => (
@@ -213,12 +215,12 @@ const Dashboard: React.FC = () => {
         ) : (
           <div className="bg-white dark:bg-dark-800 rounded-lg p-8 text-center shadow-sm border border-gray-200 dark:border-dark-700 transition-colors duration-200">
             <Calendar className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-3 transition-colors duration-200" />
-            <p className="text-gray-600 dark:text-gray-400 transition-colors duration-200">No jobs scheduled for today</p>
+            <p className="text-gray-600 dark:text-gray-400 transition-colors duration-200">{t('dashboard.noJobsToday')}</p>
             <button
               onClick={() => navigate('/app/jobs/new')}
               className="mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg transition-colors duration-200"
             >
-              Schedule a Job
+              {t('dashboard.scheduleAJob')}
             </button>
           </div>
         )}

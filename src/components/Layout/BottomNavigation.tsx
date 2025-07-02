@@ -1,16 +1,18 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Home, Users, Calendar, DollarSign, Settings } from 'lucide-react';
 
 const BottomNavigation: React.FC = () => {
   const location = useLocation();
+  const { t } = useLanguage();
 
   const navItems = [
-    { to: '/app', icon: Home, label: 'Home', exact: true },
-    { to: '/app/customers', icon: Users, label: 'Customers' },
-    { to: '/app/jobs', icon: Calendar, label: 'Jobs' },
-    { to: '/app/payments', icon: DollarSign, label: 'Payments' },
-    { to: '/app/settings', icon: Settings, label: 'Settings' },
+    { to: '/app', icon: Home, label: t('nav.home'), exact: true },
+    { to: '/app/customers', icon: Users, label: t('nav.customers') },
+    { to: '/app/jobs', icon: Calendar, label: t('nav.jobs') },
+    { to: '/app/payments', icon: DollarSign, label: t('nav.payments') },
+    { to: '/app/settings', icon: Settings, label: t('nav.settings') },
   ];
 
   const isActive = (to: string, exact?: boolean) => {

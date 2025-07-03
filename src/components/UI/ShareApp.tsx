@@ -21,12 +21,14 @@ interface ShareAppProps {
   onClose?: () => void;
   className?: string;
   variant?: 'button' | 'modal' | 'inline';
+  size?: 'sm' | 'md' | 'lg';
 }
 
 const ShareApp: React.FC<ShareAppProps> = ({ 
   onClose, 
   className = '', 
-  variant = 'button' 
+  variant = 'button',
+  size = 'md'
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [showQRCode, setShowQRCode] = useState(false);
@@ -134,6 +136,34 @@ const ShareApp: React.FC<ShareAppProps> = ({
       }
     }
   ];
+
+  const getSizeClasses = () => {
+    switch (size) {
+      case 'sm':
+        return {
+          button: 'p-2',
+          icon: 'h-4 w-4',
+          text: 'text-sm',
+          spacing: ''
+        };
+      case 'lg':
+        return {
+          button: 'px-6 py-3',
+          icon: 'h-5 w-5',
+          text: 'text-base',
+          spacing: 'mr-3'
+        };
+      default: // md
+        return {
+          button: 'px-4 py-2',
+          icon: 'h-4 w-4',
+          text: 'text-sm',
+          spacing: 'mr-2'
+        };
+    }
+  };
+
+  const sizeClasses = getSizeClasses();
 
   const ShareContent = () => (
     <div className="space-y-6">
@@ -272,10 +302,11 @@ const ShareApp: React.FC<ShareAppProps> = ({
       <>
         <button
           onClick={() => setShowModal(true)}
-          className={`flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition-colors duration-200 ${className}`}
+          className={`flex items-center bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition-colors duration-200 ${sizeClasses.button} ${sizeClasses.text} ${className}`}
+          title="Share MyJobTrack"
         >
-          <Share2 className="h-4 w-4 mr-2" />
-          Share App
+          <Share2 className={`${sizeClasses.icon} ${sizeClasses.spacing}`} />
+          {size !== 'sm' && 'Share App'}
         </button>
 
         {/* Modal */}

@@ -107,8 +107,13 @@ const Header: React.FC = () => {
               {/* Theme Toggle */}
               <ThemeToggle size="sm" />
 
-              {/* Share App */}
-              <ShareApp />
+              {/* Share App - Small on mobile, regular on desktop */}
+              <div className="sm:hidden">
+                <ShareApp size="sm" />
+              </div>
+              <div className="hidden sm:block">
+                <ShareApp />
+              </div>
 
               {/* Notifications */}
               <div className="relative">

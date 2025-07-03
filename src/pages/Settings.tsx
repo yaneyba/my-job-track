@@ -6,6 +6,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import ThemeToggle from '@/components/UI/ThemeToggle';
 import CacheManager from '@/components/UI/CacheManager';
+import ShareApp from '@/components/UI/ShareApp';
 import {
   Settings as SettingsIcon,
   Download,
@@ -29,7 +30,8 @@ import {
   RefreshCw,
   Palette,
   Languages,
-  Globe
+  Globe,
+  Share2
 } from 'lucide-react';
 
 // TypeScript interfaces for settings items
@@ -255,6 +257,12 @@ const Settings: React.FC = () => {
       icon: SettingsIcon,
       items: [
         {
+          title: 'Share MyJobTrack',
+          description: 'Help other service professionals discover this simple CRM',
+          icon: Share2,
+          component: <ShareApp variant="inline" className="w-full" />
+        },
+        {
           title: t('settings.notifications'),
           description: t('settings.notificationsDescription'),
           icon: Bell,
@@ -426,8 +434,8 @@ const Settings: React.FC = () => {
               <div className="space-y-4">
                 {section.items.map((item, itemIndex) => (
                   <div key={itemIndex}>
-                    {'component' in item && item.title === t('settings.cacheManagement') ? (
-                      // Special layout for Cache Management - always stacked
+                    {'component' in item && (item.title === t('settings.cacheManagement') || item.title === 'Share MyJobTrack') ? (
+                      // Special layout for Cache Management and Share App - always stacked
                       <div className="p-4 bg-gray-50 dark:bg-dark-700 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors">
                         <div className="flex items-start mb-4">
                           <div className="bg-white dark:bg-dark-800 p-2 rounded-lg mr-4 shadow-sm flex-shrink-0">

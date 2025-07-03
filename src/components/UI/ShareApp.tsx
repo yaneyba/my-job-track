@@ -15,7 +15,6 @@ import {
   Star,
   Smartphone
 } from 'lucide-react';
-import QRCodeDisplay from './QRCodeDisplay';
 
 interface ShareAppProps {
   onClose?: () => void;
@@ -63,7 +62,7 @@ const ShareApp: React.FC<ShareAppProps> = ({
   };
 
   const handleNativeShare = async () => {
-    if (navigator.share) {
+    if (typeof navigator !== 'undefined' && 'share' in navigator) {
       try {
         await navigator.share({
           title: appName,
@@ -181,7 +180,7 @@ const ShareApp: React.FC<ShareAppProps> = ({
       </div>
 
       {/* Native Share (Mobile) */}
-      {navigator.share && (
+      {typeof navigator !== 'undefined' && 'share' in navigator && (
         <button
           onClick={handleNativeShare}
           className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-4 px-6 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl"
@@ -273,7 +272,7 @@ const ShareApp: React.FC<ShareAppProps> = ({
           </li>
           <li className="flex items-start">
             <Smartphone className="h-3 w-3 mr-2 mt-0.5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
-            It's completely free and works offline
+            It works offline and syncs automatically
           </li>
           <li className="flex items-start">
             <CheckCircle className="h-3 w-3 mr-2 mt-0.5 text-blue-600 dark:text-blue-400 flex-shrink-0" />

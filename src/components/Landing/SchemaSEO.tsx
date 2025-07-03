@@ -19,7 +19,6 @@ const SchemaSEO: React.FC = () => {
           },
           "offers": {
             "@type": "Offer",
-            "price": "0",
             "priceCurrency": "USD"
           },
           "audience": {

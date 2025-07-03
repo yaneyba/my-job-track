@@ -170,7 +170,7 @@ const Login: React.FC = () => {
 
               <div className="flex items-center text-white/80 text-sm">
                 <CheckCircle className="h-4 w-4 mr-2" />
-                <span>Free to use • Works offline • No credit card required</span>
+                <span>Works offline • Easy to use • Professional features</span>
               </div>
             </div>
           </div>
@@ -315,7 +315,7 @@ const Login: React.FC = () => {
                   to="/signup"
                   className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold"
                 >
-                  Sign up for free
+                  Sign up now
                 </Link>
               </p>
             </div>

@@ -48,7 +48,7 @@ const HeroSection: React.FC = () => {
               onClick={() => navigate('/app')}
               className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-200 flex items-center group border-2 border-green-500 hover:border-green-400"
             >
-              Get Started Free
+              Get Started
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </button>
             <button

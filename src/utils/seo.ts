@@ -135,8 +135,8 @@ export const seoData = {
   
   signup: {
     title: 'Sign Up - MyJobTrack',
-    description: 'Create your free MyJobTrack account and start managing your service business with professional job tracking, customer management, and payment tracking.',
-    keywords: 'sign up, create account, free service business software',
+    description: 'Create your MyJobTrack account and start managing your service business with professional job tracking, customer management, and payment tracking.',
+    keywords: 'sign up, create account, service business software',
     canonical: 'https://myjobtrack.app/signup'
   }
 };

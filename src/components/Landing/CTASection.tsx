@@ -24,7 +24,7 @@ const CTASection: React.FC = () => {
             <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
           </button>
           <p className="text-gray-400 dark:text-gray-500">
-            Free to signup • Works offline
+            Sign up to use • Works offline
           </p>
         </div>
       </div>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { DashboardStats, Job } from '@/types';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -17,7 +16,6 @@ const Dashboard: React.FC = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [showNotifications, setShowNotifications] = useState(true);
-  const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
   const { notifications, dismissNotification, clearAllNotifications } = useNotifications();
   const { t } = useLanguage();

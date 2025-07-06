@@ -3,6 +3,10 @@ import { IDataProvider } from './IDataProvider';
 import apiClient from '@/lib/api';
 
 export class ApiDataProvider implements IDataProvider {
+  constructor() {
+    console.log('🚀 ApiDataProvider initialized - using API mode!');
+  }
+  
   // Customer methods
   getCustomers(): Customer[] {
     // Note: This method should be async, but interface is sync

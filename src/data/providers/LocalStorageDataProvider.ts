@@ -1,6 +1,6 @@
 import { Customer, Job, DashboardStats } from '@/types';
 import { IDataProvider } from './IDataProvider';
-import { isToday, startOfWeek, endOfWeek, isWithinInterval, parseISO } from 'date-fns';
+import { isWithinInterval, parseISO } from 'date-fns';
 import QRCode from 'qrcode';
 
 export class LocalStorageDataProvider implements IDataProvider {
@@ -161,7 +161,17 @@ export class LocalStorageDataProvider implements IDataProvider {
   }
 
   // Dashboard methods
-  getDashboardStats(date?: string): DashboardStats {
+  getDashboardStats(_date?: string): DashboardStats {
+    // TEMPORARILY DISABLED: Return empty stats to force API usage and fix data isolation
+    console.warn('LocalStorage dashboard stats disabled - app should use API with proper user isolation');
+    return {
+      todaysJobs: [],
+      totalUnpaid: 0,
+      unpaidJobsCount: 0,
+      thisWeekEarnings: 0
+    };
+    
+    /* Original code commented out to fix data isolation:
     const jobs = this.getJobs();
     const targetDate = date ? parseISO(date) : new Date();
     
@@ -188,6 +198,7 @@ export class LocalStorageDataProvider implements IDataProvider {
       unpaidJobsCount: unpaidJobs.length,
       thisWeekEarnings
     };
+    */
   }
 
   // QR Code methods

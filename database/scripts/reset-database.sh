@@ -16,7 +16,7 @@ fi
 echo "🔄 Resetting database with proper schema..."
 
 # Assuming you're using wrangler for D1 operations
-wrangler d1 execute your-database-name --file=schema-updated.sql
+wrangler d1 execute myjobtrack-db --file=../schema-updated.sql
 
 echo "✅ Database reset with proper user isolation"
 echo "🔐 All tables now include user_id for proper data isolation"

@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Job } from '@/types';
-import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import JobCard from '@/components/Job/JobCard';
 import QuickActionButton from '@/components/UI/QuickActionButton';
 import QRCodeDisplay from '@/components/QR/QRCodeDisplay';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import Pagination from '@/components/UI/Pagination';
 import { usePagination } from '@/hooks/usePagination';
+import { useSampleData } from '@/hooks/useSampleData';
 import { Plus, Calendar, CheckCircle, X } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
+import apiClient from '@/lib/api';
 
 const Jobs: React.FC = () => {
   const [jobs, setJobs] = useState<Job[]>([]);

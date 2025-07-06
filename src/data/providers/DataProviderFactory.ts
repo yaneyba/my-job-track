@@ -6,6 +6,8 @@ export class DataProviderFactory {
 
   static getInstance(): IDataProvider {
     if (!this.instance) {
+      // Use localStorage provider for development/demo mode
+      // In production, components should use React Query with the API directly
       this.instance = new LocalStorageDataProvider();
     }
     return this.instance;
@@ -13,5 +15,9 @@ export class DataProviderFactory {
 
   static setInstance(provider: IDataProvider): void {
     this.instance = provider;
+  }
+
+  static reset(): void {
+    this.instance = null;
   }
 }

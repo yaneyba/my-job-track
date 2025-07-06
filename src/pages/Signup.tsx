@@ -202,7 +202,7 @@ const Signup: React.FC = () => {
             )}
 
             {/* Signup Form */}
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} autoComplete="off" className="space-y-6">
               {/* Full Name */}
               <div>
                 <label htmlFor="name" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -215,6 +215,8 @@ const Signup: React.FC = () => {
                   <input
                     type="text"
                     id="name"
+                    name="name"
+                    autoComplete="off"
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
                     placeholder="Enter your full name"
@@ -246,6 +248,8 @@ const Signup: React.FC = () => {
                   <input
                     type="email"
                     id="email"
+                    name="email"
+                    autoComplete="off"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                     placeholder="Enter your email"
@@ -277,6 +281,8 @@ const Signup: React.FC = () => {
                   <input
                     type="text"
                     id="businessName"
+                    name="businessName"
+                    autoComplete="off"
                     value={formData.businessName}
                     onChange={(e) => handleInputChange('businessName', e.target.value)}
                     placeholder="Your business name"
@@ -301,6 +307,8 @@ const Signup: React.FC = () => {
                   <input
                     type={showPassword ? 'text' : 'password'}
                     id="password"
+                    name="password"
+                    autoComplete="new-password"
                     value={formData.password}
                     onChange={(e) => handleInputChange('password', e.target.value)}
                     placeholder="Create a password"
@@ -343,6 +351,8 @@ const Signup: React.FC = () => {
                   <input
                     type={showConfirmPassword ? 'text' : 'password'}
                     id="confirmPassword"
+                    name="confirmPassword"
+                    autoComplete="new-password"
                     value={formData.confirmPassword}
                     onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                     placeholder="Confirm your password"

@@ -21,8 +21,13 @@ export class LocalStorageDataProvider implements IDataProvider {
 
   // Customer methods
   getCustomers(): Customer[] {
-    const data = localStorage.getItem(this.CUSTOMERS_KEY);
-    return data ? JSON.parse(data) : [];
+    // TEMPORARILY DISABLED: Return empty array to force API usage and fix data isolation
+    console.warn('LocalStorage customers disabled - app should use API with proper user isolation');
+    return [];
+    
+    // Original code commented out:
+    // const data = localStorage.getItem(this.CUSTOMERS_KEY);
+    // return data ? JSON.parse(data) : [];
   }
 
   getCustomer(id: string): Customer | undefined {
@@ -85,8 +90,13 @@ export class LocalStorageDataProvider implements IDataProvider {
 
   // Job methods
   getJobs(): Job[] {
-    const data = localStorage.getItem(this.JOBS_KEY);
-    return data ? JSON.parse(data) : [];
+    // TEMPORARILY DISABLED: Return empty array to force API usage and fix data isolation
+    console.warn('LocalStorage jobs disabled - app should use API with proper user isolation');
+    return [];
+    
+    // Original code commented out:
+    // const data = localStorage.getItem(this.JOBS_KEY);
+    // return data ? JSON.parse(data) : [];
   }
 
   getJob(id: string): Job | undefined {

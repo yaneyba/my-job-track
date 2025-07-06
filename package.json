@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@cloudflare/workers-types": "^4.20250705.0",
+    "@tanstack/react-query": "^5.81.5",
     "date-fns": "^3.6.0",
     "lucide-react": "^0.344.0",
     "qr-scanner": "^1.4.2",

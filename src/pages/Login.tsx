@@ -207,7 +207,7 @@ const Login: React.FC = () => {
             )}
 
             {/* Login Form */}
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} autoComplete="off" className="space-y-6">
               {/* Email */}
               <div>
                 <label htmlFor="email" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -220,6 +220,8 @@ const Login: React.FC = () => {
                   <input
                     type="email"
                     id="email"
+                    name="email"
+                    autoComplete="off"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                     placeholder="Enter your email"
@@ -251,6 +253,8 @@ const Login: React.FC = () => {
                   <input
                     type={showPassword ? 'text' : 'password'}
                     id="password"
+                    name="password"
+                    autoComplete="new-password"
                     value={formData.password}
                     onChange={(e) => handleInputChange('password', e.target.value)}
                     placeholder="Enter your password"

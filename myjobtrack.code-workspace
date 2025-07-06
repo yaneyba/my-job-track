@@ -1,0 +1,235 @@
+{
+	"folders": [
+		{
+			"name": "MyJobTrack",
+			"path": "."
+		}
+	],
+	"settings": {
+		"typescript.preferences.includePackageJsonAutoImports": "auto",
+		"typescript.suggest.autoImports": true,
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": "explicit"
+		},
+		"files.exclude": {
+			"**/node_modules": true,
+			"**/.git": true,
+			"**/.DS_Store": true,
+			"**/dist": true,
+			"**/.wrangler": true
+		},
+		"search.exclude": {
+			"**/node_modules": true,
+			"**/dist": true,
+			"**/.wrangler": true,
+			"**/package-lock.json": true
+		},
+		"typescript.workspaceSymbols.scope": "allOpenProjects",
+		"eslint.workingDirectories": ["."],
+		"files.associations": {
+			"*.sql": "sql",
+			"wrangler.toml": "toml"
+		},
+		"emmet.includeLanguages": {
+			"typescript": "html",
+			"typescriptreact": "html"
+		}
+	},
+	"extensions": {
+		"recommendations": [
+			"esbenp.prettier-vscode",
+			"dbaeumer.vscode-eslint",
+			"bradlc.vscode-tailwindcss",
+			"ms-vscode.vscode-typescript-next",
+			"cloudflare.vscode-wrangler",
+			"ms-vscode.vscode-json",
+			"formulahendry.auto-rename-tag",
+			"christian-kohler.path-intellisense",
+			"ms-vscode.vscode-sql"
+		]
+	},
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "dev",
+				"type": "shell",
+				"command": "npm",
+				"args": ["run", "dev"],
+				"group": "build",
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "shared",
+					"showReuseMessage": true,
+					"clear": false
+				},
+				"isBackground": true,
+				"problemMatcher": {
+					"owner": "typescript",
+					"source": "ts",
+					"applyTo": "closedDocuments",
+					"fileLocation": [
+						"relative",
+						"${workspaceFolder}"
+					],
+					"pattern": "$tsc",
+					"background": {
+						"activeOnStart": true,
+						"beginsPattern": {
+							"regexp": "(.*?)"
+						},
+						"endsPattern": {
+							"regexp": "Local:\\s+(https?://localhost:\\d+)"
+						}
+					}
+				}
+			},
+			{
+				"label": "build",
+				"type": "shell",
+				"command": "npm",
+				"args": ["run", "build"],
+				"group": {
+					"kind": "build",
+					"isDefault": true
+				},
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "shared"
+				},
+				"problemMatcher": ["$tsc"]
+			},
+			{
+				"label": "lint",
+				"type": "shell",
+				"command": "npm",
+				"args": ["run", "lint"],
+				"group": "test",
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "shared"
+				},
+				"problemMatcher": ["$eslint-stylish"]
+			},
+			{
+				"label": "preview",
+				"type": "shell",
+				"command": "npm",
+				"args": ["run", "preview"],
+				"group": "build",
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "deploy:api",
+				"type": "shell",
+				"command": "npm",
+				"args": ["run", "deploy:api"],
+				"group": "build",
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "deploy:full",
+				"type": "shell",
+				"command": "npm",
+				"args": ["run", "deploy:full"],
+				"group": "build",
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "shared"
+				}
+			},
+			{
+				"label": "wrangler:dev",
+				"type": "shell",
+				"command": "npx",
+				"args": ["wrangler", "dev", "src/api/index.ts", "--port", "8787"],
+				"group": "build",
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "shared"
+				},
+				"isBackground": true,
+				"problemMatcher": {
+					"pattern": {
+						"regexp": "^(.*)$",
+						"file": 1,
+						"location": 2,
+						"message": 3
+					},
+					"background": {
+						"activeOnStart": true,
+						"beginsPattern": "^.*Starting local server.*$",
+						"endsPattern": "^.*Ready on.*$"
+					}
+				}
+			},
+			{
+				"label": "dev:concurrent",
+				"type": "shell",
+				"command": "npm",
+				"args": ["run", "dev:concurrent"],
+				"group": "build",
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "shared"
+				},
+				"isBackground": true,
+				"problemMatcher": []
+			}
+		]
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Launch Frontend",
+				"type": "node",
+				"request": "launch",
+				"program": "${workspaceFolder}/node_modules/.bin/vite",
+				"args": ["--port", "5173"],
+				"console": "integratedTerminal",
+				"env": {
+					"NODE_ENV": "development"
+				},
+				"runtimeExecutable": "npm",
+				"runtimeArgs": ["run", "dev"]
+			},
+			{
+				"name": "Debug Wrangler API",
+				"type": "node",
+				"request": "launch",
+				"program": "${workspaceFolder}/node_modules/.bin/wrangler",
+				"args": ["dev", "src/api/index.ts", "--port", "8787", "--inspector-port", "9229"],
+				"console": "integratedTerminal",
+				"env": {
+					"NODE_ENV": "development"
+				}
+			}
+		],
+		"compounds": []
+	}
+}

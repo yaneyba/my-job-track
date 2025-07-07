@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useMVP } from '@/contexts/MVPContext';
 import Logo from '@/components/UI/Logo';
 import { 
   Calendar,
@@ -28,6 +29,7 @@ const Login: React.FC = () => {
   const [loginError, setLoginError] = useState('');
 
   const { login, isAuthenticated } = useAuth();
+  const { isMVPMode } = useMVP();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -311,18 +313,20 @@ const Login: React.FC = () => {
               </button>
             </form>
 
-            {/* Sign Up Link */}
-            <div className="mt-8 text-center">
-              <p className="text-gray-600 dark:text-gray-400">
-                Don't have an account?{' '}
-                <Link
-                  to="/signup"
-                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold"
-                >
-                  Sign up now
-                </Link>
-              </p>
-            </div>
+            {/* Sign Up Link - Hidden in MVP mode */}
+            {!isMVPMode && (
+              <div className="mt-8 text-center">
+                <p className="text-gray-600 dark:text-gray-400">
+                  Don't have an account?{' '}
+                  <Link
+                    to="/signup"
+                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold"
+                  >
+                    Sign up now
+                  </Link>
+                </p>
+              </div>
+            )}
 
             {/* Demo Account Info */}
             <div className="mt-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">

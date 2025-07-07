@@ -21,7 +21,7 @@ interface MVPProviderProps {
 
 export const MVPProvider: React.FC<MVPProviderProps> = ({ children }) => {
   // Read MVP mode from environment variable
-  const envMVPMode = import.meta.env.VITE_MVP_MODE === 'true';
+  const envMVPMode = import.meta.env.VITE_USE_MVP_MODE === 'true';
   const [isMVPMode, setIsMVPMode] = useState(envMVPMode);
 
   const setMVPMode = (enabled: boolean) => {

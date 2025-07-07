@@ -13,8 +13,8 @@ export class JobService {
       INSERT INTO jobs (
         id, user_id, customer_id, title, description, status, 
         estimated_cost, actual_cost, estimated_hours, actual_hours,
-        due_date, created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        due_date, paid, completed_at, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     const params = [
@@ -29,6 +29,8 @@ export class JobService {
       jobData.estimated_hours || null,
       jobData.actual_hours || null,
       jobData.due_date || null,
+      false, // paid - explicitly set to false for new jobs
+      null,  // completed_at - null for new jobs
       now,
       now
     ];

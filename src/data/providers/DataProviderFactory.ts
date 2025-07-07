@@ -9,7 +9,8 @@ export class DataProviderFactory {
   static getInstance(): IDataProvider {
     if (!this.instance) {
       // Check if we should use demo data provider
-      if (this.isDemoMode || import.meta.env.VITE_USE_DEMO_DATA === 'true') {
+      // When API provider is disabled, use demo data (they are opposites)
+      if (this.isDemoMode || import.meta.env.VITE_USE_API_PROVIDER !== 'true') {
         this.instance = new DemoDataProvider();
       } else {
         // Use API provider by default

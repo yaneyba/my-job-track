@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useMVP } from '@/contexts/MVPContext';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -8,6 +9,7 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
+  const { isMVPMode } = useMVP();
   const location = useLocation();
 
   if (isLoading) {
@@ -19,6 +21,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         </div>
       </div>
     );
+  }
+
+  // In MVP mode, allow access without authentication (demo mode)
+  if (isMVPMode) {
+    return <>{children}</>;
   }
 
   if (!isAuthenticated) {

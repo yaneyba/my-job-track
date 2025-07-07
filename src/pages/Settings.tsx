@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useMVP } from '@/contexts/MVPContext';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import ThemeToggle from '@/components/UI/ThemeToggle';
 import CacheManager from '@/components/UI/CacheManager';
@@ -74,9 +75,11 @@ const Settings: React.FC = () => {
   const [isClearing, setIsClearing] = useState(false);
   const [notifications, setNotifications] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const useApiProvider = import.meta.env.VITE_USE_API_PROVIDER === 'true';
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
   const { isDark } = useTheme();
+  const { isMVPMode } = useMVP();
   const { language, setLanguage, t } = useLanguage();
 
   const breadcrumbItems = [
@@ -258,16 +261,19 @@ const Settings: React.FC = () => {
           title: t('settings.notifications'),
           description: t('settings.notificationsDescription'),
           icon: Bell,
-          toggle: true,
-          value: notifications,
-          onChange: setNotifications
-        },
-        {
-          title: t('settings.cacheManagement'),
-          description: t('settings.cacheDescription'),
-          icon: RefreshCw,
-          component: <CacheManager />
+          toggle: true, 
+          value: notifications, 
+          onChange: setNotifications 
         }
+        // Only show cache management when not using API provider
+        ...(useApiProvider ? [] : [
+          {
+            title: t('settings.cacheManagement'),
+            description: t('settings.cacheDescription'),
+            icon: RefreshCw,
+            component: <CacheManager />
+          }
+        ])
       ]
     },
     {
@@ -427,7 +433,7 @@ const Settings: React.FC = () => {
                 {section.items.map((item, itemIndex) => (
                   <div key={itemIndex}>
                     {'component' in item && item.title === t('settings.cacheManagement') ? (
-                      // Special layout for Cache Management and Share App - always stacked
+                      // Special layout for Cache Management - always stacked
                       <div className="p-4 bg-gray-50 dark:bg-dark-700 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors">
                         <div className="flex items-start mb-4">
                           <div className="bg-white dark:bg-dark-800 p-2 rounded-lg mr-4 shadow-sm flex-shrink-0">

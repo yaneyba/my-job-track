@@ -1,10 +1,31 @@
 import { useState } from 'react';
 import { RotateCcw, AlertTriangle } from 'lucide-react';
 import { forceClearCacheAndReload, checkForUpdates } from '@/utils/cacheBuster';
+import { useMVP } from '@/contexts/MVPContext';
 
 export default function CacheManager() {
   const [isClearing, setIsClearing] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
+  const useApiProvider = import.meta.env.VITE_USE_API_PROVIDER === 'true';
+  const { isMVPMode } = useMVP();
+  
+  // If using API provider, don't render the component
+  if (useApiProvider) {
+    return (
+      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 transition-colors duration-200">
+        <div className="flex items-start space-x-2">
+          <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5 transition-colors duration-200" />
+          <div className="text-sm text-amber-700 dark:text-amber-300 transition-colors duration-200">
+            <p className="font-medium mb-1">Cache management is disabled in API mode</p>
+            <p className="leading-relaxed">
+              When using the API provider, cache management is handled automatically by the server.
+              {isMVPMode && " In MVP mode, data is stored on the server for demonstration purposes."}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleClearCache = async () => {
     if (confirm('This will clear all cached data and reload the app. Continue?')) {

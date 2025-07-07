@@ -1,16 +1,5 @@
 import demoData from '@/data/demo.json';
 
-export interface DemoUser {
-  id: string;
-  name: string;
-  businessName: string;
-  phone: string;
-  email: string;
-  address: string;
-  bio: string;
-  createdAt: string;
-}
-
 export interface DemoCustomer {
   id: string;
   name: string;
@@ -70,7 +59,6 @@ export interface DemoStats {
 }
 
 export interface DemoData {
-  demoUser: DemoUser;
   customers: DemoCustomer[];
   jobs: DemoJob[];
   serviceTypes: string[];
@@ -97,28 +85,11 @@ export const getDemoCredentials = () => {
 };
 
 /**
- * Create demo user object with environment credentials
- */
-export const createDemoUser = (): DemoUser => {
-  const credentials = getDemoCredentials();
-  return {
-    ...demoData.demoUser,
-    email: credentials.email
-  };
-};
-
-/**
  * Get demo data for localStorage (backward compatibility)
+ * Note: User data should come from database in API mode
  */
 export const getDemoDataForStorage = () => {
-  const credentials = getDemoCredentials();
-  
   return {
-    user: {
-      ...demoData.demoUser,
-      email: credentials.email,
-      password: credentials.password
-    },
     customers: demoData.customers,
     jobs: demoData.jobs,
     notifications: demoData.notifications,

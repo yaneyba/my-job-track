@@ -1,32 +1,19 @@
 import { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { getDemoCredentials, createDemoUser } from '@/hooks/useDemoData';
+import { getDemoCredentials } from '@/hooks/useDemoData';
 
 export const useSampleData = () => {
   const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
-    // Create demo account first, regardless of authentication status
-    const createDemoAccount = () => {
-      const storedUsers = localStorage.getItem('myjobtrack_users');
-      const users = storedUsers ? JSON.parse(storedUsers) : [];
-      
-      const credentials = getDemoCredentials();
-      const demoUserExists = users.find((u: { email: string }) => u.email === credentials.email);
-      
-      if (!demoUserExists) {
-        const demoUser = {
-          ...createDemoUser(),
-          password: credentials.password
-        };
-        users.push(demoUser);
-        localStorage.setItem('myjobtrack_users', JSON.stringify(users));
-        console.log('Demo account created successfully');
-      }
-    };
-
-    // Always ensure demo account exists
-    createDemoAccount();
+    // In API mode, demo data comes from the database
+    // This hook is maintained for backward compatibility but does not create localStorage data
+    const credentials = getDemoCredentials();
+    
+    if (credentials.email && credentials.password) {
+      console.log('Demo credentials available from environment variables');
+      console.log('Demo user should be accessed from database, not localStorage');
+    }
 
     // Note: Sample data creation is disabled to prevent data isolation issues
     // The app now uses the API directly with proper user isolation

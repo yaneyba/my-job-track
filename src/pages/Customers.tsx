@@ -11,7 +11,7 @@ import Pagination from '@/components/UI/Pagination';
 import { usePagination } from '@/hooks/usePagination';
 import { Plus, Users, CheckCircle, X } from 'lucide-react';
 
-const Customers: React.FC = () => {
+export default function Customers() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -182,6 +182,3 @@ const Customers: React.FC = () => {
       )}
     </div>
   );
-};
-
-export default Customers;

@@ -23,7 +23,7 @@ This document outlines all environment variables used in MyJobTrack and their pu
 
 | Variable | Description | Example Values |
 |----------|-------------|----------------|
-| `VITE_USE_DEMO_MODE` | Enable demo mode features | `true` (enable)<br>`false` (disable) |
+| `VITE_DEMO_MODE` | Enable demo mode features | `true` (enable)<br>`false` (disable) |
 
 ### Cache Management
 

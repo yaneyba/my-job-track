@@ -75,7 +75,6 @@ const Settings: React.FC = () => {
   const [isClearing, setIsClearing] = useState(false);
   const [notifications, setNotifications] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const useApiProvider = import.meta.env.VITE_USE_API_PROVIDER === 'true';
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
   const { isDark } = useTheme();
@@ -265,15 +264,15 @@ const Settings: React.FC = () => {
           value: notifications, 
           onChange: setNotifications 
         },
-        // Only show cache management when not using API provider
-        ...(useApiProvider ? [] : [
+        // Only show cache management when in demo mode
+        ...(isDemoMode ? [
           {
             title: t('settings.cacheManagement'),
             description: t('settings.cacheDescription'),
             icon: RefreshCw,
             component: <CacheManager />
           }
-        ])
+        ] : [])
       ]
     },
     {

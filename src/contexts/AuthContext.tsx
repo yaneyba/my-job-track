@@ -42,7 +42,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { isDemoMode } = useDemo();
-  const useAPIProvider = import.meta.env.VITE_USE_API_PROVIDER === 'true';
 
   // Initialize demo account and check for existing session on app load
   useEffect(() => {
@@ -113,7 +112,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     initializeAuth();
-  }, [isDemoMode, useAPIProvider]);
+  }, [isDemoMode]);
 
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
@@ -121,7 +120,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Check if we should use API provider or demo mode
-      const shouldUseAPI = useAPIProvider;
+      const shouldUseAPI = !isDemoMode;
       
       if (!shouldUseAPI) {
         // Demo mode: try authenticating with DemoDataProvider

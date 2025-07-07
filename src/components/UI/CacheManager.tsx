@@ -6,11 +6,10 @@ import { useDemo } from '@/contexts/DemoContext';
 export default function CacheManager() {
   const [isClearing, setIsClearing] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
-  const useApiProvider = import.meta.env.VITE_USE_API_PROVIDER === 'true';
   const { isDemoMode } = useDemo();
   
-  // If using API provider, don't render the component
-  if (useApiProvider) {
+  // If not in demo mode, don't render the component
+  if (!isDemoMode) {
     return (
       <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 transition-colors duration-200">
         <div className="flex items-start space-x-2">

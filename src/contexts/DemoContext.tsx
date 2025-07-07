@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { env } from '@/utils/env';
 
 interface DemoContextType {
   isDemoMode: boolean;
@@ -21,8 +22,7 @@ interface DemoProviderProps {
 
 export const DemoProvider: React.FC<DemoProviderProps> = ({ children }) => {
   // Read Demo mode from environment variable
-  const envDemoMode = import.meta.env.VITE_USE_DEMO_MODE === 'true';
-  const [isDemoMode, setIsDemoMode] = useState(envDemoMode);
+  const [isDemoMode, setIsDemoMode] = useState(env.isDemoMode());
 
   const setDemoMode = (enabled: boolean) => {
     setIsDemoMode(enabled);

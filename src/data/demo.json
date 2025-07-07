@@ -1,0 +1,236 @@
+{
+  "demoUser": {
+    "id": "demo-user-id",
+    "name": "Demo User",
+    "businessName": "Demo Service Company",
+    "phone": "+1 (555) 123-4567",
+    "email": "demo@example.com",
+    "address": "123 Business St, Demo City, DC 12345",
+    "bio": "Professional service provider with 10+ years of experience in landscaping and home maintenance.",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  "customers": [
+    {
+      "id": "demo-customer-1",
+      "name": "John Smith",
+      "email": "john.smith@email.com",
+      "phone": "+1 (555) 234-5678",
+      "address": "456 Oak Street, Demo City, DC 12345",
+      "notes": "Prefers morning appointments. Has two dogs.",
+      "createdAt": "2024-01-15T10:30:00.000Z",
+      "updatedAt": "2024-01-15T10:30:00.000Z"
+    },
+    {
+      "id": "demo-customer-2",
+      "name": "Sarah Johnson",
+      "email": "sarah.johnson@email.com",
+      "phone": "+1 (555) 345-6789",
+      "address": "789 Pine Avenue, Demo City, DC 12345",
+      "notes": "Regular weekly service. Gate code: 1234",
+      "createdAt": "2024-01-20T14:15:00.000Z",
+      "updatedAt": "2024-01-20T14:15:00.000Z"
+    },
+    {
+      "id": "demo-customer-3",
+      "name": "Mike Wilson",
+      "email": "mike.wilson@email.com",
+      "phone": "+1 (555) 456-7890",
+      "address": "321 Elm Drive, Demo City, DC 12345",
+      "notes": "Commercial property. Contact property manager for access.",
+      "createdAt": "2024-02-01T09:00:00.000Z",
+      "updatedAt": "2024-02-01T09:00:00.000Z"
+    },
+    {
+      "id": "demo-customer-4",
+      "name": "Lisa Brown",
+      "email": "lisa.brown@email.com",
+      "phone": "+1 (555) 567-8901",
+      "address": "654 Maple Lane, Demo City, DC 12345",
+      "notes": "Elderly client. Please be extra careful with delicate plants.",
+      "createdAt": "2024-02-10T16:45:00.000Z",
+      "updatedAt": "2024-02-10T16:45:00.000Z"
+    }
+  ],
+  "jobs": [
+    {
+      "id": "demo-job-1",
+      "customerId": "demo-customer-1",
+      "customerName": "John Smith",
+      "serviceType": "Lawn Mowing",
+      "description": "Regular lawn maintenance including mowing, edging, and cleanup",
+      "scheduledDate": "2024-12-20T09:00:00.000Z",
+      "estimatedDuration": 120,
+      "price": 75.00,
+      "status": "scheduled",
+      "paymentStatus": "unpaid",
+      "notes": "Check sprinkler heads while mowing",
+      "createdAt": "2024-12-15T10:30:00.000Z",
+      "updatedAt": "2024-12-15T10:30:00.000Z"
+    },
+    {
+      "id": "demo-job-2",
+      "customerId": "demo-customer-2",
+      "customerName": "Sarah Johnson",
+      "serviceType": "Garden Cleanup",
+      "description": "Seasonal garden cleanup and preparation for winter",
+      "scheduledDate": "2024-12-18T10:00:00.000Z",
+      "estimatedDuration": 180,
+      "price": 150.00,
+      "status": "completed",
+      "paymentStatus": "paid",
+      "completedDate": "2024-12-18T13:00:00.000Z",
+      "notes": "Applied mulch to flower beds as requested",
+      "createdAt": "2024-12-10T14:15:00.000Z",
+      "updatedAt": "2024-12-18T13:00:00.000Z"
+    },
+    {
+      "id": "demo-job-3",
+      "customerId": "demo-customer-3",
+      "customerName": "Mike Wilson",
+      "serviceType": "Pressure Washing",
+      "description": "Pressure wash building exterior and parking lot",
+      "scheduledDate": "2024-12-22T08:00:00.000Z",
+      "estimatedDuration": 240,
+      "price": 300.00,
+      "status": "in-progress",
+      "paymentStatus": "unpaid",
+      "notes": "Need to coordinate with building management",
+      "createdAt": "2024-12-12T09:00:00.000Z",
+      "updatedAt": "2024-12-22T08:30:00.000Z"
+    },
+    {
+      "id": "demo-job-4",
+      "customerId": "demo-customer-4",
+      "customerName": "Lisa Brown",
+      "serviceType": "Tree Trimming",
+      "description": "Trim oak tree branches away from house",
+      "scheduledDate": "2024-12-25T10:00:00.000Z",
+      "estimatedDuration": 150,
+      "price": 200.00,
+      "status": "scheduled",
+      "paymentStatus": "unpaid",
+      "notes": "Be careful of power lines near the tree",
+      "createdAt": "2024-12-14T16:45:00.000Z",
+      "updatedAt": "2024-12-14T16:45:00.000Z"
+    },
+    {
+      "id": "demo-job-5",
+      "customerId": "demo-customer-1",
+      "customerName": "John Smith",
+      "serviceType": "Leaf Removal",
+      "description": "Remove fallen leaves from yard and gutters",
+      "scheduledDate": "2024-11-30T14:00:00.000Z",
+      "estimatedDuration": 90,
+      "price": 85.00,
+      "status": "completed",
+      "paymentStatus": "paid",
+      "completedDate": "2024-11-30T15:30:00.000Z",
+      "notes": "Also cleaned gutters as requested",
+      "createdAt": "2024-11-25T11:00:00.000Z",
+      "updatedAt": "2024-11-30T15:30:00.000Z"
+    },
+    {
+      "id": "demo-job-6",
+      "customerId": "demo-customer-2",
+      "customerName": "Sarah Johnson",
+      "serviceType": "Fertilizer Application",
+      "description": "Apply winter fertilizer to lawn areas",
+      "scheduledDate": "2024-12-28T09:00:00.000Z",
+      "estimatedDuration": 60,
+      "price": 120.00,
+      "status": "scheduled",
+      "paymentStatus": "unpaid",
+      "notes": "Use organic fertilizer as requested",
+      "createdAt": "2024-12-16T12:30:00.000Z",
+      "updatedAt": "2024-12-16T12:30:00.000Z"
+    }
+  ],
+  "serviceTypes": [
+    "Lawn Mowing",
+    "Garden Cleanup",
+    "Pressure Washing",
+    "Tree Trimming",
+    "Leaf Removal",
+    "Fertilizer Application",
+    "Hedge Trimming",
+    "Mulching",
+    "Weed Control",
+    "Sprinkler Repair",
+    "Landscape Design",
+    "Snow Removal",
+    "Gutter Cleaning",
+    "Deck Staining",
+    "Other"
+  ],
+  "dashboardStats": {
+    "totalCustomers": 4,
+    "totalJobs": 6,
+    "completedJobs": 2,
+    "unpaidJobs": 4,
+    "thisWeekJobs": 3,
+    "totalRevenue": 930.00,
+    "pendingRevenue": 705.00
+  },
+  "notifications": [
+    {
+      "id": "demo-notification-1",
+      "type": "reminder",
+      "title": "Upcoming Job Tomorrow",
+      "message": "Lawn Mowing for John Smith scheduled for tomorrow at 9:00 AM",
+      "timestamp": "2024-12-19T18:00:00.000Z",
+      "read": false,
+      "jobId": "demo-job-1"
+    },
+    {
+      "id": "demo-notification-2",
+      "type": "payment",
+      "title": "Payment Overdue",
+      "message": "Tree Trimming job for Lisa Brown is overdue for payment ($200.00)",
+      "timestamp": "2024-12-18T12:00:00.000Z",
+      "read": false,
+      "jobId": "demo-job-4"
+    },
+    {
+      "id": "demo-notification-3",
+      "type": "success",
+      "title": "Job Completed",
+      "message": "Garden Cleanup for Sarah Johnson has been marked as completed",
+      "timestamp": "2024-12-18T13:00:00.000Z",
+      "read": true,
+      "jobId": "demo-job-2"
+    }
+  ],
+  "recentActivity": [
+    {
+      "id": "demo-activity-1",
+      "type": "job_completed",
+      "description": "Completed Garden Cleanup for Sarah Johnson",
+      "timestamp": "2024-12-18T13:00:00.000Z",
+      "jobId": "demo-job-2",
+      "customerId": "demo-customer-2"
+    },
+    {
+      "id": "demo-activity-2",
+      "type": "job_started",
+      "description": "Started Pressure Washing for Mike Wilson",
+      "timestamp": "2024-12-22T08:00:00.000Z",
+      "jobId": "demo-job-3",
+      "customerId": "demo-customer-3"
+    },
+    {
+      "id": "demo-activity-3",
+      "type": "customer_added",
+      "description": "Added new customer: Lisa Brown",
+      "timestamp": "2024-02-10T16:45:00.000Z",
+      "customerId": "demo-customer-4"
+    },
+    {
+      "id": "demo-activity-4",
+      "type": "job_scheduled",
+      "description": "Scheduled Tree Trimming for Lisa Brown",
+      "timestamp": "2024-12-14T16:45:00.000Z",
+      "jobId": "demo-job-4",
+      "customerId": "demo-customer-4"
+    }
+  ]
+}

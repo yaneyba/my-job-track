@@ -96,8 +96,8 @@ const Login: React.FC = () => {
 
   const handleDemoFill = () => {
     setFormData({
-      email: 'demo@myjobtrack.app',
-      password: 'demo123'
+      email: import.meta.env.VITE_DEMO_EMAIL,
+      password: import.meta.env.VITE_DEMO_PASSWORD
     });
     // Clear any existing errors
     setErrors({});
@@ -338,8 +338,8 @@ const Login: React.FC = () => {
                 Want to explore the app? Use these demo credentials:
               </p>
               <div className="bg-white dark:bg-dark-700 rounded p-3 text-sm mb-3">
-                <p className="text-gray-700 dark:text-gray-300"><strong>Email:</strong> demo@myjobtrack.app</p>
-                <p className="text-gray-700 dark:text-gray-300"><strong>Password:</strong> demo123</p>
+                <p className="text-gray-700 dark:text-gray-300"><strong>Email:</strong> {import.meta.env.VITE_DEMO_EMAIL}</p>
+                <p className="text-gray-700 dark:text-gray-300"><strong>Password:</strong> {import.meta.env.VITE_DEMO_PASSWORD}</p>
               </div>
               <button
                 type="button"

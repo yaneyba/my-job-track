@@ -11,11 +11,11 @@ export interface BuildInfo {
 }
 
 export const BUILD_INFO: BuildInfo = {
-  "buildNumber": "20250707162416d-drxaclj",
-  "buildDate": "2025-07-07T16:24:16.437Z",
+  "buildNumber": "202507072043546-6bc09ab",
+  "buildDate": "2025-07-07T20:43:54.122Z",
   "gitBranch": "unknown",
-  "gitHash": "ww8k6ga",
-  "version": "1.0.0-build.20250707162220q-qiwnpa0",
+  "gitHash": "d1dy1nx",
+  "version": "1.0.0-build.20250707162416d-drxaclj",
   "environment": "development"
 };
 

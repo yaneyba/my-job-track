@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { getDemoCredentials, createDemoUser } from '@/hooks/useDemoData';
 
 export const useSampleData = () => {
   const { isAuthenticated, user } = useAuth();
@@ -10,15 +11,13 @@ export const useSampleData = () => {
       const storedUsers = localStorage.getItem('myjobtrack_users');
       const users = storedUsers ? JSON.parse(storedUsers) : [];
       
-      const demoUserExists = users.find((u: { email: string }) => u.email === 'demo@myjobtrack.app');
+      const credentials = getDemoCredentials();
+      const demoUserExists = users.find((u: { email: string }) => u.email === credentials.email);
+      
       if (!demoUserExists) {
         const demoUser = {
-          id: 'demo-user-id',
-          email: 'demo@myjobtrack.app',
-          password: 'demo123',
-          name: 'Demo User',
-          businessName: 'Demo Service Company',
-          createdAt: new Date().toISOString()
+          ...createDemoUser(),
+          password: credentials.password
         };
         users.push(demoUser);
         localStorage.setItem('myjobtrack_users', JSON.stringify(users));

@@ -52,8 +52,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (isMVPMode && useAPIProvider) {
           console.log('🎭 MVP mode with API: Auto-logging in demo user...');
           try {
-            const demoEmail = import.meta.env.VITE_DEMO_EMAIL || 'demo2@myjobtrack.app';
-            const demoPassword = import.meta.env.VITE_DEMO_PASSWORD || 'DemoUser2025!';
+            const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
+            const demoPassword = import.meta.env.VITE_DEMO_PASSWORD;
             
             const loginResult = await apiClient.login({
               email: demoEmail,
@@ -87,8 +87,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const storedUsers = localStorage.getItem('myjobtrack_users');
         const users: StoredUser[] = storedUsers ? JSON.parse(storedUsers) : [];
         
-        const demoEmail = import.meta.env.VITE_DEMO_EMAIL || 'demo2@myjobtrack.app';
-        const demoPassword = import.meta.env.VITE_DEMO_PASSWORD || 'DemoUser2025!';
+        const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
+        const demoPassword = import.meta.env.VITE_DEMO_PASSWORD;
         
         const demoUserExists = users.find((u: StoredUser) => u.email === demoEmail);
         if (!demoUserExists) {

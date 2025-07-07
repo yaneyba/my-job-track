@@ -61,20 +61,6 @@ const ShareButton: React.FC<ShareButtonProps> = ({
     }
   };
 
-  const handleNativeShare = async () => {
-    if (typeof navigator !== 'undefined' && 'share' in navigator) {
-      try {
-        await navigator.share({
-          title: appName,
-          text: 'Simple CRM for service professionals',
-          url: appUrl,
-        });
-      } catch (error) {
-        console.error('Error sharing:', error);
-      }
-    }
-  };
-
   const shareOptions = [
     {
       name: 'Email',
@@ -165,7 +151,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({
   const sizeClasses = getSizeClasses();
 
   const ShareContent = () => (
-    <div className="space-y-6">
+    <div className="space-y-6 relative z-10">
       {/* Header */}
       <div className="text-center">
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -179,22 +165,11 @@ const ShareButton: React.FC<ShareButtonProps> = ({
         </p>
       </div>
 
-      {/* Native Share (Mobile) */}
-      {typeof navigator !== 'undefined' && 'share' in navigator && (
-        <button
-          onClick={handleNativeShare}
-          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-4 px-6 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl"
-        >
-          <Share2 className="h-5 w-5 mr-2" />
-          Share App
-        </button>
-      )}
-
       {/* Quick Actions */}
       <div className="grid grid-cols-2 gap-3">
         <button
           onClick={handleCopyLink}
-          className={`flex items-center justify-center py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
+          className={`flex items-center justify-center py-3 px-4 rounded-lg font-medium transition-all duration-200 relative z-10 ${
             copiedLink 
               ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-800' 
               : 'bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-dark-600'
@@ -215,7 +190,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({
 
         <button
           onClick={() => setShowQRCode(true)}
-          className="flex items-center justify-center py-3 px-4 bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors duration-200 border border-gray-300 dark:border-dark-600"
+          className="flex items-center justify-center py-3 px-4 bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors duration-200 border border-gray-300 dark:border-dark-600 relative z-10"
         >
           <QrCode className="h-4 w-4 mr-2" />
           QR Code
@@ -228,7 +203,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({
           <h3 className="font-semibold text-gray-900 dark:text-white">Share Message</h3>
           <button
             onClick={handleCopyMessage}
-            className={`text-sm px-3 py-1 rounded-md font-medium transition-all duration-200 ${
+            className={`text-sm px-3 py-1 rounded-md font-medium transition-all duration-200 relative z-10 ${
               copiedMessage
                 ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200'
                 : 'bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-900/30'
@@ -250,7 +225,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({
             <button
               key={option.name}
               onClick={option.action}
-              className={`${option.color} text-white py-3 px-4 rounded-lg font-medium transition-all duration-200 flex flex-col items-center space-y-1 shadow-md hover:shadow-lg`}
+              className={`${option.color} text-white py-3 px-4 rounded-lg font-medium transition-all duration-200 flex flex-col items-center space-y-1 shadow-md hover:shadow-lg relative z-10`}
             >
               <option.icon className="h-5 w-5" />
               <span className="text-xs">{option.name}</span>
@@ -310,13 +285,26 @@ const ShareButton: React.FC<ShareButtonProps> = ({
 
         {/* Modal */}
         {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-70 flex items-center justify-center p-4 z-50">
-            <div className="bg-white dark:bg-dark-800 rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200 dark:border-dark-700">
-              <div className="p-6">
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-70 flex items-center justify-center p-4 z-50"
+            style={{ pointerEvents: 'auto' }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setShowModal(false);
+              }
+            }}
+          >
+            <div 
+              className="bg-white dark:bg-dark-800 rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200 dark:border-dark-700 relative z-10"
+              style={{ pointerEvents: 'auto' }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-6 relative z-10" style={{ pointerEvents: 'auto' }}>
                 <div className="flex justify-end mb-4">
                   <button
                     onClick={() => setShowModal(false)}
-                    className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg transition-colors duration-200"
+                    className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg transition-colors duration-200 relative z-20 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    style={{ pointerEvents: 'auto' }}
                   >
                     <X className="h-5 w-5" />
                   </button>
@@ -329,8 +317,15 @@ const ShareButton: React.FC<ShareButtonProps> = ({
 
         {/* QR Code Modal */}
         {showQRCode && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-70 flex items-center justify-center p-4 z-50">
-            <div className="bg-white dark:bg-dark-800 rounded-lg p-6 max-w-sm w-full shadow-2xl border border-gray-200 dark:border-dark-700">
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-70 flex items-center justify-center p-4 z-50"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setShowQRCode(false);
+              }
+            }}
+          >
+            <div className="bg-white dark:bg-dark-800 rounded-lg p-6 max-w-sm w-full shadow-2xl border border-gray-200 dark:border-dark-700 relative z-10">
               <div className="text-center mb-4">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Share MyJobTrack</h2>
                 <p className="text-gray-600 dark:text-gray-400">Scan to visit the app</p>
@@ -349,7 +344,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({
 
               <button
                 onClick={() => setShowQRCode(false)}
-                className="w-full py-3 px-4 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-dark-600 transition-colors duration-200"
+                className="w-full py-3 px-4 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-dark-600 transition-colors duration-200 relative z-20"
               >
                 Close
               </button>
@@ -370,14 +365,21 @@ const ShareButton: React.FC<ShareButtonProps> = ({
 
   // Modal variant
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-70 flex items-center justify-center p-4 z-50">
-      <div className="bg-white dark:bg-dark-800 rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200 dark:border-dark-700">
-        <div className="p-6">
+    <div 
+      className="fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-70 flex items-center justify-center p-4 z-50"
+      onClick={(e) => {
+        if (e.target === e.currentTarget && onClose) {
+          onClose();
+        }
+      }}
+    >
+      <div className="bg-white dark:bg-dark-800 rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200 dark:border-dark-700 relative z-10">
+        <div className="p-6 relative z-10">
           {onClose && (
             <div className="flex justify-end mb-4">
               <button
                 onClick={onClose}
-                className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg transition-colors duration-200"
+                className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg transition-colors duration-200 relative z-20 hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <X className="h-5 w-5" />
               </button>

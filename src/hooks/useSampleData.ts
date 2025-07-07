@@ -25,15 +25,27 @@ export const useSampleData = () => {
           // Clear existing users to prevent conflicts
           localStorage.removeItem('myjobtrack_users');
           
+          // Debug: Check what was cleared
+          console.log('Cleared existing users from localStorage');
+          
           const demoUser = {
             ...createDemoUser(),
             password: credentials.password
           };
           
-          console.log('Creating fresh demo user:', { email: demoUser.email, password: demoUser.password });
+          console.log('Creating fresh demo user:', { 
+            email: demoUser.email, 
+            password: demoUser.password,
+            id: demoUser.id 
+          });
           
           // Store the demo user
           localStorage.setItem('myjobtrack_users', JSON.stringify([demoUser]));
+          
+          // Debug: Verify what was stored
+          const storedUsers = JSON.parse(localStorage.getItem('myjobtrack_users') || '[]');
+          console.log('Stored users in localStorage:', storedUsers.map((u: any) => ({ email: u.email, id: u.id })));
+          
           console.log('Demo account created for demo mode');
         } catch (error) {
           console.error('Failed to create demo account:', error);

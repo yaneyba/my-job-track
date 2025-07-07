@@ -1,4 +1,5 @@
 import demoData from '@/data/demo.json';
+import { env } from '@/utils/env';
 
 export interface DemoUser {
   id: string;
@@ -91,8 +92,8 @@ export const useDemoData = (): DemoData => {
  */
 export const getDemoCredentials = () => {
   return {
-    email: import.meta.env.VITE_DEMO_EMAIL,
-    password: import.meta.env.VITE_DEMO_PASSWORD
+    email: env.demoEmail(),
+    password: env.demoPassword()
   };
 };
 

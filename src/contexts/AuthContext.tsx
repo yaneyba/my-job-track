@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useDemo } from './DemoContext';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
+import { env } from '@/utils/env';
 
 interface User {
   id: string;
@@ -55,8 +56,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const storedUsers = localStorage.getItem('myjobtrack_users');
         const users: StoredUser[] = storedUsers ? JSON.parse(storedUsers) : [];
         
-        const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
-        const demoPassword = import.meta.env.VITE_DEMO_PASSWORD;
+        const demoEmail = env.demoEmail();
+        const demoPassword = env.demoPassword();
         
         const demoUserExists = users.find((u: StoredUser) => u.email === demoEmail);
         if (!demoUserExists) {
@@ -86,7 +87,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           // Session expires after 30 days
           if (now - sessionData.timestamp < 30 * 24 * 60 * 60 * 1000) {
             // Enable demo mode if this is the demo user
-            const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
+            const demoEmail = env.demoEmail();
             if (userData.email === demoEmail) {
               console.log('🎭 Demo user session restored, enabling demo data provider');
               DataProviderFactory.enableDemoMode();
@@ -184,7 +185,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       };
       
       // Enable demo mode if this is the demo user
-      const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
+      const demoEmail = env.demoEmail();
       if (userData.email === demoEmail) {
         console.log('🎭 Demo user detected, enabling demo data provider');
         DataProviderFactory.enableDemoMode();
@@ -272,9 +273,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('myjobtrack_session');
     setUser(null);
     
-    // Reset data provider to API mode on logout
-    console.log('🚪 User logged out, resetting to API data provider');
-    DataProviderFactory.disableDemoMode();
+    // Keep demo mode if VITE_DEMO_MODE=true, otherwise switch to API mode
+    if (env.isDemoMode()) {
+      console.log('🚪 User logged out, staying in demo mode');
+      DataProviderFactory.enableDemoMode();
+    } else {
+      console.log('🚪 User logged out, resetting to API data provider');
+      DataProviderFactory.disableDemoMode();
+    }
   };
 
   const updateProfile = (updates: Partial<User>) => {

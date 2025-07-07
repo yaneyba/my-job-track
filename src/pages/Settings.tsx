@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useDemo } from '@/contexts/DemoContext';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import ThemeToggle from '@/components/UI/ThemeToggle';
 import CacheManager from '@/components/UI/CacheManager';
@@ -78,6 +79,7 @@ const Settings: React.FC = () => {
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
   const { isDark } = useTheme();
+  const { isDemoMode } = useDemo();
   const { language, setLanguage, t } = useLanguage();
 
   const breadcrumbItems = [

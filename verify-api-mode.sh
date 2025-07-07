@@ -12,9 +12,9 @@ echo "VITE_DEMO_PASSWORD: $VITE_DEMO_PASSWORD"
 echo "VITE_API_URL: $VITE_API_URL"
 echo
 
-echo "🗄️ Database Demo User Check:"
-echo "Checking if demo user exists in database..."
-npx wrangler d1 execute myjobtrack-db --command="SELECT email, name FROM users WHERE email = 'demo@myjobtrack.app';" --remote
+echo "🗄️ Database User Check:"
+echo "Checking users in database (demo user should NOT be here)..."
+npx wrangler d1 execute myjobtrack-db --command="SELECT email, name FROM users;" --remote
 
 echo
 echo "🌐 API Endpoint Check:"
@@ -25,7 +25,8 @@ echo
 echo "🎯 Current Mode:"
 if [ "$VITE_USE_API_PROVIDER" = "true" ]; then
     echo "✅ API MODE - Using database for authentication and data"
-    echo "   - Demo user: Database authentication"
+    echo "   - Demo user: NOT in database (clean separation)"
+    echo "   - Authentication: Real users only"
     echo "   - Customer/Job data: API endpoints"
 else
     echo "🎭 DEMO MODE - Using demo data provider"

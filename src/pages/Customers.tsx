@@ -69,6 +69,20 @@ export default function Customers() {
     }
   }, [location.state, loadCustomers]);
 
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredCustomers(customers);
+      return;
+    }
+
+    const filtered = customers.filter(customer =>
+      customer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      customer.phone.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      customer.address.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredCustomers(filtered);
+  }, [searchQuery, customers]);
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">

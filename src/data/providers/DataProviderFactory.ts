@@ -1,21 +1,18 @@
 import { IDataProvider } from './IDataProvider';
-import { LocalStorageDataProvider } from './LocalStorageDataProvider';
 import { ApiDataProvider } from './ApiDataProvider';
+import { DemoDataProvider } from './DemoDataProvider';
 
 export class DataProviderFactory {
   private static instance: IDataProvider | null = null;
 
   static getInstance(): IDataProvider {
     if (!this.instance) {
-      // Check environment variable to determine which provider to use
-      const useApiProvider = import.meta.env.VITE_USE_API_PROVIDER === 'true';
-      
-      if (useApiProvider) {
-        // Use API provider for production or when explicitly enabled
-        this.instance = new ApiDataProvider();
+      // Check if we should use demo data provider
+      if (import.meta.env.VITE_USE_DEMO_DATA === 'true') {
+        this.instance = new DemoDataProvider();
       } else {
-        // Use localStorage provider for development/demo mode
-        this.instance = new LocalStorageDataProvider();
+        // Use API provider by default
+        this.instance = new ApiDataProvider();
       }
     }
     return this.instance;

@@ -5,7 +5,6 @@ import { MVPProvider } from '@/contexts/MVPContext';
 import App from '@/App.tsx';
 import './index.css';
 import { checkIconRefresh } from '@/utils/iconManager';
-import '@/utils/clearSampleData'; // Auto-clear sample data to fix isolation
 
 // Create a client
 const queryClient = new QueryClient({

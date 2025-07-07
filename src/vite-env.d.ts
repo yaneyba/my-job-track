@@ -7,6 +7,9 @@ interface ImportMetaEnv {
   readonly VITE_API_KEY: string
   readonly VITE_ALLOWED_ORIGINS: string
   readonly VITE_USE_API_PROVIDER: string
+  readonly VITE_USE_DEMO_DATA: string
+  readonly VITE_DEMO_EMAIL: string
+  readonly VITE_DEMO_PASSWORD: string
 }
 
 interface ImportMeta {

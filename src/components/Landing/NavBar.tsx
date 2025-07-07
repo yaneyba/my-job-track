@@ -2,6 +2,7 @@ import React from 'react';
 import { LogIn } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ThemeToggle from '@/components/UI/ThemeToggle';
+import LanguageToggle from '@/components/UI/LanguageToggle';
 import Logo from '@/components/UI/Logo';
 
 const NavBar: React.FC = () => {
@@ -23,6 +24,9 @@ const NavBar: React.FC = () => {
           <div className="flex items-center space-x-4">
             {/* Theme Toggle */}
             <ThemeToggle size="sm" />
+            
+            {/* Language Toggle */}
+            <LanguageToggle size="sm" />
             
             {/* Sign In Button */}
             <button

@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNotifications } from '@/hooks/useNotifications';
 import ThemeToggle from '@/components/UI/ThemeToggle';
+import LanguageToggle from '@/components/UI/LanguageToggle';
 import ShareButton from '@/components/UI/ShareButton';
 import Logo from '@/components/UI/Logo';
 import NotificationAlert from '@/components/UI/NotificationAlert';
@@ -106,6 +107,9 @@ const Header: React.FC = () => {
 
               {/* Theme Toggle */}
               <ThemeToggle size="sm" />
+
+              {/* Language Toggle */}
+              <LanguageToggle size="sm" />
 
               {/* Share App - Same as Landing */}
               <ShareButton size="sm" />

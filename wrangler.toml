@@ -13,6 +13,7 @@ CORS_ORIGIN = "https://myjobtrack.app"
 binding = "DB"
 database_name = "myjobtrack-db"
 database_id = "d729dbcd-e5de-4073-9bcb-7d9f1544729d"
+migrations_dir = "database/migrations"
 
 # Development environment (use with: wrangler dev or wrangler deploy --env development)
 [env.development]
@@ -22,6 +23,7 @@ vars = { ENVIRONMENT = "development", CORS_ORIGIN = "http://localhost:5173" }
 binding = "DB"
 database_name = "myjobtrack-db"
 database_id = "d729dbcd-e5de-4073-9bcb-7d9f1544729d"
+migrations_dir = "database/migrations"
 
 # Production environment (use with: wrangler deploy --env production)
 [env.production]
@@ -31,3 +33,4 @@ vars = { ENVIRONMENT = "production", CORS_ORIGIN = "https://myjobtrack.app" }
 binding = "DB"
 database_name = "myjobtrack-db"
 database_id = "d729dbcd-e5de-4073-9bcb-7d9f1544729d"
+migrations_dir = "database/migrations"

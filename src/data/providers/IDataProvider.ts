@@ -4,7 +4,7 @@ export interface IDataProvider {
   // Customer methods
   getCustomers(): Customer[];
   getCustomer(id: string): Customer | undefined;
-  addCustomer(customer: Omit<Customer, 'id' | 'createdDate' | 'qrCodeUrl'>): Customer;
+  addCustomer(customer: Omit<Customer, 'id' | 'createdDate' | 'qrCodeUrl' | 'totalUnpaid'>): Customer;
   updateCustomer(id: string, updates: Partial<Customer>): Customer | undefined;
   deleteCustomer(id: string): boolean;
   searchCustomers(query: string): Customer[];
@@ -13,7 +13,7 @@ export interface IDataProvider {
   getJobs(): Job[];
   getJob(id: string): Job | undefined;
   getJobsByCustomer(customerId: string): Job[];
-  addJob(job: Omit<Job, 'id' | 'qrCodeUrl'>): Job;
+  addJob(job: Omit<Job, 'id' | 'qrCodeUrl' | 'createdDate' | 'customerName'>): Job;
   updateJob(id: string, updates: Partial<Job>): Job | undefined;
   deleteJob(id: string): boolean;
   getJobsByDate(date: string): Job[];

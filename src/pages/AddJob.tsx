@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
+import { env } from '@/utils/env';
 import { Customer } from '@/types';
-import { ArrowLeft, Calendar, User, Briefcase, DollarSign, FileText, Save, X, Plus } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Briefcase, DollarSign, FileText, Save, X, Plus, Info } from 'lucide-react';
 import { format } from 'date-fns';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 
@@ -20,6 +21,7 @@ const AddJob: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
+  const isDemoMode = env.isDemoMode();
 
   const commonServices = [
     'Lawn Mowing',
@@ -109,12 +111,13 @@ const AddJob: React.FC = () => {
     try {
       const job = dataProvider.addJob({
         customerId: formData.customerId,
-        customerName: formData.customerName,
+        title: formData.serviceType.trim(),
         serviceType: formData.serviceType.trim(),
         scheduledDate: formData.scheduledDate,
         price: parseFloat(formData.price),
         status: 'scheduled',
         paymentStatus: 'unpaid',
+        paid: false,
         notes: formData.notes.trim()
       });
 
@@ -127,7 +130,13 @@ const AddJob: React.FC = () => {
       });
     } catch (error) {
       console.error('Failed to schedule job:', error);
-      setErrors({ submit: 'Failed to schedule job. Please try again.' });
+      
+      if (isDemoMode) {
+        // In demo mode, show a different message
+        setErrors({ submit: 'Demo mode: This feature is simulated. Job data is stored locally only.' });
+      } else {
+        setErrors({ submit: 'Failed to schedule job. Please try again.' });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -207,6 +216,18 @@ const AddJob: React.FC = () => {
 
       {/* Form */}
       <div className="max-w-2xl mx-auto px-4 pb-8">
+        {/* Demo Mode Indicator */}
+        {isDemoMode && (
+          <div className="mb-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 transition-colors duration-200">
+            <div className="flex items-center">
+              <Info className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-2" />
+              <p className="text-blue-800 dark:text-blue-200 font-medium">
+                Demo Mode: Changes are saved locally and won't sync to a server.
+              </p>
+            </div>
+          </div>
+        )}
+        
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Customer Selection */}
           <div>
@@ -414,11 +435,23 @@ const AddJob: React.FC = () => {
             </div>
           </div>
 
-          {/* Submit Error */}
+          {/* Submit Error/Info */}
           {errors.submit && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 transition-colors duration-200">
-              <p className="text-red-600 dark:text-red-400 flex items-center transition-colors duration-200">
-                <X className="h-5 w-5 mr-2" />
+            <div className={`border rounded-xl p-4 transition-colors duration-200 ${
+              isDemoMode 
+                ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' 
+                : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+            }`}>
+              <p className={`flex items-center transition-colors duration-200 ${
+                isDemoMode 
+                  ? 'text-blue-600 dark:text-blue-400' 
+                  : 'text-red-600 dark:text-red-400'
+              }`}>
+                {isDemoMode ? (
+                  <Info className="h-5 w-5 mr-2" />
+                ) : (
+                  <X className="h-5 w-5 mr-2" />
+                )}
                 {errors.submit}
               </p>
             </div>

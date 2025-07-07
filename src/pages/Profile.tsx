@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { env } from '@/utils/env';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import {
   User,
@@ -20,7 +21,8 @@ import {
   Star,
   Award,
   Calendar,
-  Users
+  Users,
+  Info
 } from 'lucide-react';
 
 interface BusinessProfile {
@@ -56,6 +58,7 @@ const Profile: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const isDemoMode = env.isDemoMode();
 
   // Load profile from localStorage or use defaults
   const [profile, setProfile] = useState<BusinessProfile>(() => {
@@ -165,7 +168,13 @@ const Profile: React.FC = () => {
       setTimeout(() => setShowSuccess(false), 3000);
     } catch (error) {
       console.error('Failed to save profile:', error);
-      setErrors({ submit: 'Failed to save profile. Please try again.' });
+      
+      if (isDemoMode) {
+        // In demo mode, show a different message
+        setErrors({ submit: 'Demo mode: Profile changes are saved locally only.' });
+      } else {
+        setErrors({ submit: 'Failed to save profile. Please try again.' });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -772,9 +781,21 @@ const Profile: React.FC = () => {
           </div>
 
           {errors.submit && (
-            <div className="mt-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 transition-colors duration-200">
-              <p className="text-red-600 dark:text-red-400 flex items-center transition-colors duration-200">
-                <AlertTriangle className="h-5 w-5 mr-2" />
+            <div className={`mt-4 border rounded-lg p-4 transition-colors duration-200 ${
+              isDemoMode 
+                ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' 
+                : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+            }`}>
+              <p className={`flex items-center transition-colors duration-200 ${
+                isDemoMode 
+                  ? 'text-blue-600 dark:text-blue-400' 
+                  : 'text-red-600 dark:text-red-400'
+              }`}>
+                {isDemoMode ? (
+                  <Info className="h-5 w-5 mr-2" />
+                ) : (
+                  <AlertTriangle className="h-5 w-5 mr-2" />
+                )}
                 {errors.submit}
               </p>
             </div>

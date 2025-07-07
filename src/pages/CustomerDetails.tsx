@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Customer, Job } from '@/types';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
+import { env } from '@/utils/env';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import JobCard from '@/components/Job/JobCard';
 import QRCodeDisplay from '@/components/QR/QRCodeDisplay';
@@ -22,7 +23,8 @@ import {
   Plus,
   CheckCircle,
   Clock,
-  TrendingUp
+  TrendingUp,
+  Info
 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 
@@ -44,6 +46,7 @@ const CustomerDetails: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
+  const isDemoMode = env.isDemoMode();
 
   const serviceTypes = [
     'Lawn Care',
@@ -151,7 +154,13 @@ const CustomerDetails: React.FC = () => {
       }
     } catch (error) {
       console.error('Failed to update customer:', error);
-      setErrors({ submit: 'Failed to update customer. Please try again.' });
+      
+      if (isDemoMode) {
+        // In demo mode, show a different message
+        setErrors({ submit: 'Demo mode: This feature is simulated. Customer data is stored locally only.' });
+      } else {
+        setErrors({ submit: 'Failed to update customer. Please try again.' });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -456,9 +465,21 @@ const CustomerDetails: React.FC = () => {
                   </div>
 
                   {errors.submit && (
-                    <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 transition-colors duration-200">
-                      <p className="text-red-600 dark:text-red-400 flex items-center transition-colors duration-200">
-                        <X className="h-5 w-5 mr-2" />
+                    <div className={`border rounded-lg p-4 transition-colors duration-200 ${
+                      isDemoMode 
+                        ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' 
+                        : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+                    }`}>
+                      <p className={`flex items-center transition-colors duration-200 ${
+                        isDemoMode 
+                          ? 'text-blue-600 dark:text-blue-400' 
+                          : 'text-red-600 dark:text-red-400'
+                      }`}>
+                        {isDemoMode ? (
+                          <Info className="h-5 w-5 mr-2" />
+                        ) : (
+                          <X className="h-5 w-5 mr-2" />
+                        )}
                         {errors.submit}
                       </p>
                     </div>

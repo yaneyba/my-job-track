@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
-import { ArrowLeft, User, Phone, MapPin, Briefcase, Save, X } from 'lucide-react';
+import { env } from '@/utils/env';
+import { ArrowLeft, User, Phone, MapPin, Briefcase, Save, X, Info } from 'lucide-react';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 
 const AddCustomer: React.FC = () => {
@@ -15,6 +16,7 @@ const AddCustomer: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
+  const isDemoMode = env.isDemoMode();
 
   const serviceTypes = [
     'Lawn Care',
@@ -79,8 +81,7 @@ const AddCustomer: React.FC = () => {
         name: formData.name.trim(),
         phone: formData.phone.trim(),
         address: formData.address.trim(),
-        serviceType: formData.serviceType.trim(),
-        totalUnpaid: 0
+        serviceType: formData.serviceType.trim()
       });
 
       // Navigate to customer detail or back to customers list
@@ -92,7 +93,13 @@ const AddCustomer: React.FC = () => {
       });
     } catch (error) {
       console.error('Failed to add customer:', error);
-      setErrors({ submit: 'Failed to add customer. Please try again.' });
+      
+      if (isDemoMode) {
+        // In demo mode, show a different message
+        setErrors({ submit: 'Demo mode: This feature is simulated. Customer data is stored locally only.' });
+      } else {
+        setErrors({ submit: 'Failed to add customer. Please try again.' });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -159,6 +166,18 @@ const AddCustomer: React.FC = () => {
 
       {/* Form */}
       <div className="max-w-2xl mx-auto px-4 pb-8">
+        {/* Demo Mode Indicator */}
+        {isDemoMode && (
+          <div className="mb-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 transition-colors duration-200">
+            <div className="flex items-center">
+              <Info className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-2" />
+              <p className="text-blue-800 dark:text-blue-200 font-medium">
+                Demo Mode: Changes are saved locally and won't sync to a server.
+              </p>
+            </div>
+          </div>
+        )}
+        
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Customer Name */}
           <div>
@@ -294,11 +313,23 @@ const AddCustomer: React.FC = () => {
             )}
           </div>
 
-          {/* Submit Error */}
+          {/* Submit Error/Info */}
           {errors.submit && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 transition-colors duration-200">
-              <p className="text-red-600 dark:text-red-400 flex items-center transition-colors duration-200">
-                <X className="h-5 w-5 mr-2" />
+            <div className={`border rounded-xl p-4 transition-colors duration-200 ${
+              isDemoMode 
+                ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' 
+                : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+            }`}>
+              <p className={`flex items-center transition-colors duration-200 ${
+                isDemoMode 
+                  ? 'text-blue-600 dark:text-blue-400' 
+                  : 'text-red-600 dark:text-red-400'
+              }`}>
+                {isDemoMode ? (
+                  <Info className="h-5 w-5 mr-2" />
+                ) : (
+                  <X className="h-5 w-5 mr-2" />
+                )}
                 {errors.submit}
               </p>
             </div>

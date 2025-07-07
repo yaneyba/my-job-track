@@ -1,16 +1,15 @@
 import { IDataProvider } from './IDataProvider';
 import { ApiDataProvider } from './ApiDataProvider';
 import { DemoDataProvider } from './DemoDataProvider';
+import { env } from '@/utils/env';
 
 export class DataProviderFactory {
   private static instance: IDataProvider | null = null;
-  private static isDemoMode = false;
 
   static getInstance(): IDataProvider {
     if (!this.instance) {
       // Check if we should use demo data provider
-      // When API provider is disabled, use demo data (they are opposites)
-      if (this.isDemoMode) {
+      if (env.isDemoMode()) {
         this.instance = new DemoDataProvider();
       } else {
         // Use API provider by default
@@ -25,17 +24,14 @@ export class DataProviderFactory {
   }
 
   static enableDemoMode(): void {
-    this.isDemoMode = true;
     this.instance = new DemoDataProvider();
   }
 
   static disableDemoMode(): void {
-    this.isDemoMode = false;
     this.instance = new ApiDataProvider();
   }
 
   static reset(): void {
     this.instance = null;
-    this.isDemoMode = false;
   }
 }

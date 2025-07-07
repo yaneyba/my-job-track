@@ -19,7 +19,7 @@ const CTASection: React.FC = () => {
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
-            onClick={() => navigate('/app')}
+            onClick={() => navigate(isMVPMode ? '/login' : '/app')}
             className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center group"
           >
             {isMVPMode ? 'Try Demo' : 'Start Using MyJobTrack'}

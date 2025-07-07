@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useMVP } from './MVPContext';
-import apiClient from '@/lib/api';
+import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 
 interface User {
   id: string;
@@ -48,40 +48,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        // In MVP mode with API provider, auto-login with demo user
-        if (isMVPMode && useAPIProvider) {
-          console.log('🎭 MVP mode with API: Auto-logging in demo user...');
-          try {
-            const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
-            const demoPassword = import.meta.env.VITE_DEMO_PASSWORD;
-            
-            const loginResult = await apiClient.login({
-              email: demoEmail,
-              password: demoPassword
-            });
-            
-            if (loginResult.success && (loginResult as any).user) {
-              const apiUser = (loginResult as any).user;
-              const demoUser: User = {
-                id: apiUser.id,
-                email: apiUser.email,
-                name: apiUser.name,
-                businessName: apiUser.business_name || '',
-                createdAt: apiUser.created_at
-              };
-              setUser(demoUser);
-              console.log('✅ Demo user auto-login successful');
-              setIsLoading(false);
-              return;
-            } else {
-              console.warn('⚠️ Demo user login failed, falling back to local auth');
-            }
-          } catch (error) {
-            console.error('❌ Demo user API login failed:', error);
-            console.warn('🔄 Falling back to local authentication');
-          }
-        }
-
+        // SECURITY FIX: Removed auto-login for demo user to prevent security bypass
+        // Demo users must now properly authenticate through login flow
+        
         // Fallback to localStorage-based auth (original behavior)
         // First, ensure demo account exists
         const storedUsers = localStorage.getItem('myjobtrack_users');
@@ -117,6 +86,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           
           // Session expires after 30 days
           if (now - sessionData.timestamp < 30 * 24 * 60 * 60 * 1000) {
+            // Enable demo mode if this is the demo user
+            const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
+            if (userData.email === demoEmail) {
+              console.log('🎭 Demo user session restored, enabling demo data provider');
+              DataProviderFactory.enableDemoMode();
+            } else {
+              console.log('🔧 Regular user session restored, using API data provider');
+              DataProviderFactory.disableDemoMode();
+            }
             setUser(userData);
           } else {
             // Session expired, clear storage
@@ -173,6 +151,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         businessName: foundUser.businessName,
         createdAt: foundUser.createdAt
       };
+      
+      // Enable demo mode if this is the demo user
+      const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
+      if (userData.email === demoEmail) {
+        console.log('🎭 Demo user detected, enabling demo data provider');
+        DataProviderFactory.enableDemoMode();
+      } else {
+        console.log('🔧 Regular user, using API data provider');
+        DataProviderFactory.disableDemoMode();
+      }
       
       // Store session
       const sessionData = {
@@ -252,6 +240,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('myjobtrack_user');
     localStorage.removeItem('myjobtrack_session');
     setUser(null);
+    
+    // Reset data provider to API mode on logout
+    console.log('🚪 User logged out, resetting to API data provider');
+    DataProviderFactory.disableDemoMode();
   };
 
   const updateProfile = (updates: Partial<User>) => {

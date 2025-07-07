@@ -35,7 +35,7 @@ A modern, mobile-first job tracking application designed specifically for servic
 ## 📱 Demo Account
 
 The app includes a demo account for testing:
-- **Email**: `demo2@myjobtrack.app`
+- **Email**: `demo@myjobtrack.app`
 - **Password**: `DemoUser2025!`
 
 ## ⚙️ Environment Configuration

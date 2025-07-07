@@ -22,7 +22,7 @@ const Header: React.FC = () => {
 
   const getPageTitle = () => {
     const path = location.pathname;
-    if (path === '/app' || path === '/app/dashboard') return t('dashboard.welcome');
+    if (path === '/app' || path === '/app/dashboard') return t('nav.home');
     if (path === '/app/customers') return t('nav.customers');
     if (path === '/app/jobs') return t('nav.jobs');
     if (path === '/app/payments') return t('nav.payments');

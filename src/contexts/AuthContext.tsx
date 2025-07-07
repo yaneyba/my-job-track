@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useMVP } from './MVPContext';
+import apiClient from '@/lib/api';
 
 interface User {
   id: string;
@@ -39,21 +41,61 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { isMVPMode } = useMVP();
+  const useAPIProvider = import.meta.env.VITE_USE_API_PROVIDER === 'true';
 
   // Initialize demo account and check for existing session on app load
   useEffect(() => {
-    const initializeAuth = () => {
+    const initializeAuth = async () => {
       try {
+        // In MVP mode with API provider, auto-login with demo user
+        if (isMVPMode && useAPIProvider) {
+          console.log('🎭 MVP mode with API: Auto-logging in demo user...');
+          try {
+            const demoEmail = import.meta.env.VITE_DEMO_EMAIL || 'demo2@myjobtrack.app';
+            const demoPassword = import.meta.env.VITE_DEMO_PASSWORD || 'DemoUser2025!';
+            
+            const loginResult = await apiClient.login({
+              email: demoEmail,
+              password: demoPassword
+            });
+            
+            if (loginResult.success && (loginResult as any).user) {
+              const apiUser = (loginResult as any).user;
+              const demoUser: User = {
+                id: apiUser.id,
+                email: apiUser.email,
+                name: apiUser.name,
+                businessName: apiUser.business_name || '',
+                createdAt: apiUser.created_at
+              };
+              setUser(demoUser);
+              console.log('✅ Demo user auto-login successful');
+              setIsLoading(false);
+              return;
+            } else {
+              console.warn('⚠️ Demo user login failed, falling back to local auth');
+            }
+          } catch (error) {
+            console.error('❌ Demo user API login failed:', error);
+            console.warn('🔄 Falling back to local authentication');
+          }
+        }
+
+        // Fallback to localStorage-based auth (original behavior)
         // First, ensure demo account exists
         const storedUsers = localStorage.getItem('myjobtrack_users');
-      const users: StoredUser[] = storedUsers ? JSON.parse(storedUsers) : [];
+        const users: StoredUser[] = storedUsers ? JSON.parse(storedUsers) : [];
         
-        const demoUserExists = users.find((u: StoredUser) => u.email === 'demo@myjobtrack.app');
+        const demoEmail = import.meta.env.VITE_DEMO_EMAIL || 'demo2@myjobtrack.app';
+        const demoPassword = import.meta.env.VITE_DEMO_PASSWORD || 'DemoUser2025!';
+        
+        const demoUserExists = users.find((u: StoredUser) => u.email === demoEmail);
         if (!demoUserExists) {
           const demoUser = {
             id: 'demo-user-id',
-            email: 'demo@myjobtrack.app',
-            password: 'demo123',
+            email: demoEmail,
+            password: demoPassword,
             name: 'Demo User',
             businessName: 'Demo Service Company',
             createdAt: new Date().toISOString()
@@ -93,7 +135,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     initializeAuth();
-  }, []);
+  }, [isMVPMode, useAPIProvider]);
 
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {

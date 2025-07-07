@@ -10,6 +10,7 @@ export class ApiDataProvider implements IDataProvider {
 
   constructor() {
     console.log('🚀 ApiDataProvider initialized - using API mode!');
+    console.log('🔑 Current auth token:', apiClient.getToken() ? 'Present' : 'Missing');
     // Pre-fetch data on initialization
     this.refreshCache();
   }
@@ -21,21 +22,38 @@ export class ApiDataProvider implements IDataProvider {
         return; // Use cached data
       }
 
+      console.log('🔄 Refreshing cache from API...');
+
       // Fetch customers and jobs in parallel
       const [customers, jobs] = await Promise.all([
         apiClient.getCustomers(),
         apiClient.getJobs()
       ]);
 
-      this.customersCache = customers.map(this.mapApiCustomerToAppCustomer);
-      this.jobsCache = jobs.map(this.mapApiJobToAppJob);
-      this.lastFetchTime = now;
+      // Only update cache if we got valid data
+      if (Array.isArray(customers) && Array.isArray(jobs)) {
+        this.customersCache = customers.map(this.mapApiCustomerToAppCustomer);
+        this.jobsCache = jobs.map(this.mapApiJobToAppJob);
+        
+        // Update totalUnpaid for each customer after jobs are loaded
+        this.customersCache = this.customersCache.map(customer => ({
+          ...customer,
+          totalUnpaid: this.calculateCustomerUnpaid(customer.id)
+        }));
+        
+        this.lastFetchTime = now;
+        console.log(`✅ Cache refreshed: ${this.customersCache.length} customers, ${this.jobsCache.length} jobs`);
+      } else {
+        console.warn('⚠️ API returned invalid data format, keeping existing cache');
+      }
     } catch (error) {
-      console.error('Failed to refresh cache:', error);
+      console.error('❌ Failed to refresh cache:', error);
+      console.warn('🔄 Continuing with existing cache data');
+      // Don't update lastFetchTime on error so we'll retry sooner
     }
   }
 
-  private mapApiCustomerToAppCustomer(apiCustomer: any): Customer {
+  private mapApiCustomerToAppCustomer = (apiCustomer: any): Customer => {
     return {
       id: apiCustomer.id,
       name: apiCustomer.name,
@@ -46,12 +64,12 @@ export class ApiDataProvider implements IDataProvider {
       notes: apiCustomer.notes || '',
       serviceType: 'General Service', // Default service type
       createdDate: apiCustomer.created_at,
-      totalUnpaid: this.calculateCustomerUnpaid(apiCustomer.id),
+      totalUnpaid: 0, // Will be calculated later
       qrCodeUrl: `qr-customer-${apiCustomer.id}`
     };
   }
 
-  private mapApiJobToAppJob(apiJob: any): Job {
+  private mapApiJobToAppJob = (apiJob: any): Job => {
     // Map API status to app status
     const mapStatus = (apiStatus: string): 'scheduled' | 'in-progress' | 'completed' | 'pending' | 'cancelled' => {
       switch (apiStatus) {
@@ -97,6 +115,9 @@ export class ApiDataProvider implements IDataProvider {
   // Customer methods
   getCustomers(): Customer[] {
     // Trigger cache refresh in background if needed
+    const cacheAge = Date.now() - this.lastFetchTime;
+    console.log(`📋 Getting customers (cache age: ${Math.round(cacheAge/1000)}s, ${this.customersCache.length} in cache)`);
+    
     this.refreshCache();
     return this.customersCache;
   }
@@ -108,6 +129,8 @@ export class ApiDataProvider implements IDataProvider {
 
   async addCustomerAsync(customerData: Omit<Customer, 'id' | 'totalUnpaid' | 'createdDate' | 'qrCodeUrl'>): Promise<Customer> {
     try {
+      console.log('🌐 Sending customer to API:', customerData);
+      
       const apiCustomerData = {
         name: customerData.name,
         email: customerData.email || undefined,
@@ -117,20 +140,29 @@ export class ApiDataProvider implements IDataProvider {
         notes: customerData.notes || undefined
       };
       
+      console.log('📤 API payload:', apiCustomerData);
       const apiCustomer = await apiClient.createCustomer(apiCustomerData);
+      console.log('📥 API response:', apiCustomer);
+      
       const newCustomer = this.mapApiCustomerToAppCustomer(apiCustomer);
       
-      // Update cache
-      this.customersCache.push(newCustomer);
+      // Update cache (don't duplicate, this is for direct async calls)
+      const existingIndex = this.customersCache.findIndex(c => c.id === apiCustomer.id);
+      if (existingIndex === -1) {
+        this.customersCache.push(newCustomer);
+        console.log('💾 Added new customer to cache via async method');
+      }
       
       return newCustomer;
     } catch (error) {
-      console.error('Failed to add customer:', error);
+      console.error('❌ Failed to add customer via API:', error);
       throw error;
     }
   }
 
   addCustomer(customer: Omit<Customer, 'id' | 'createdDate' | 'qrCodeUrl' | 'totalUnpaid'>): Customer {
+    console.log('➕ Adding customer optimistically:', customer.name);
+    
     // For synchronous interface, create optimistic customer and sync in background
     const newCustomer: Customer = {
       ...customer,
@@ -141,18 +173,33 @@ export class ApiDataProvider implements IDataProvider {
     };
 
     this.customersCache.push(newCustomer);
+    console.log(`💾 Customer added to cache with temp ID: ${newCustomer.id}`);
 
-    // Sync to API in background
+    // Sync to API in background - but keep customer even if API fails
     this.addCustomerAsync(customer).then(savedCustomer => {
+      console.log(`✅ Customer synced to API successfully:`, savedCustomer);
       // Replace temporary customer with real one
       const index = this.customersCache.findIndex(c => c.id === newCustomer.id);
       if (index !== -1) {
         this.customersCache[index] = savedCustomer;
+        console.log(`🔄 Replaced temp customer with real customer ID: ${savedCustomer.id}`);
+      } else {
+        console.warn(`⚠️ Could not find temp customer ${newCustomer.id} in cache to replace`);
       }
     }).catch(error => {
-      console.error('Failed to sync customer to API:', error);
-      // Remove the temporary customer on error
-      this.customersCache = this.customersCache.filter(c => c.id !== newCustomer.id);
+      console.error('❌ Failed to sync customer to API:', error);
+      console.warn('🔄 Keeping customer in local cache since API is unavailable');
+      
+      // Convert temp ID to a more permanent local ID instead of removing
+      const index = this.customersCache.findIndex(c => c.id === newCustomer.id);
+      if (index !== -1) {
+        this.customersCache[index] = {
+          ...this.customersCache[index],
+          id: `local-${Date.now()}`, // Use local ID instead of temp
+          qrCodeUrl: `qr-customer-local-${Date.now()}`
+        };
+        console.log(`� Converted temp customer to local customer for offline use`);
+      }
     });
 
     return newCustomer;
@@ -271,10 +318,22 @@ export class ApiDataProvider implements IDataProvider {
       const index = this.jobsCache.findIndex(j => j.id === newJob.id);
       if (index !== -1) {
         this.jobsCache[index] = this.mapApiJobToAppJob(savedJob);
+        console.log(`✅ Job synced to API successfully: ${savedJob.id}`);
       }
     }).catch(error => {
-      console.error('Failed to sync job to API:', error);
-      this.jobsCache = this.jobsCache.filter(j => j.id !== newJob.id);
+      console.error('❌ Failed to sync job to API:', error);
+      console.warn('🔄 Keeping job in local cache since API is unavailable');
+      
+      // Convert temp ID to local ID instead of removing
+      const index = this.jobsCache.findIndex(j => j.id === newJob.id);
+      if (index !== -1) {
+        this.jobsCache[index] = {
+          ...this.jobsCache[index],
+          id: `local-job-${Date.now()}`,
+          qrCodeUrl: `qr-job-local-${Date.now()}`
+        };
+        console.log(`💾 Converted temp job to local job for offline use`);
+      }
     });
 
     return newJob;

@@ -264,7 +264,7 @@ const Settings: React.FC = () => {
           toggle: true, 
           value: notifications, 
           onChange: setNotifications 
-        }
+        },
         // Only show cache management when not using API provider
         ...(useApiProvider ? [] : [
           {

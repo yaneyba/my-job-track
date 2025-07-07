@@ -12,7 +12,6 @@ import { usePagination } from '@/hooks/usePagination';
 import { Plus, Users, CheckCircle, X } from 'lucide-react';
 
 const Customers: React.FC = () => {
-const Customers: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
   const [searchQuery, setSearchQuery] = useState('');

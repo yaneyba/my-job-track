@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { useMVP } from '@/contexts/MVPContext';
+import { useDemo } from '@/contexts/DemoContext';
 import Logo from '@/components/UI/Logo';
 import { 
   Calendar,
@@ -29,7 +29,7 @@ const Login: React.FC = () => {
   const [loginError, setLoginError] = useState('');
 
   const { login, isAuthenticated } = useAuth();
-  const { isMVPMode } = useMVP();
+  const { isDemoMode } = useDemo();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -313,8 +313,8 @@ const Login: React.FC = () => {
               </button>
             </form>
 
-            {/* Sign Up Link - Hidden in MVP mode */}
-            {!isMVPMode && (
+            {/* Sign Up Link - Hidden in Demo mode */}
+            {!isDemoMode && (
               <div className="mt-8 text-center">
                 <p className="text-gray-600 dark:text-gray-400">
                   Don't have an account?{' '}

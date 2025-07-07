@@ -47,10 +47,10 @@ Copy `.env.example` to `.env` and configure the following variables:
 VITE_API_URL=https://your-api-url.workers.dev
 VITE_USE_API_PROVIDER=true
 
-# MVP Mode Settings  
-VITE_USE_MVP_MODE=true
+# Demo Mode Settings  
+VITE_USE_DEMO_MODE=true
 
-# Demo User Credentials (for MVP mode auto-login)
+# Demo User Credentials (for demo mode auto-login)
 VITE_DEMO_EMAIL=demo@yourdomain.com
 VITE_DEMO_PASSWORD=YourSecurePassword123!
 ```
@@ -58,7 +58,7 @@ VITE_DEMO_PASSWORD=YourSecurePassword123!
 ### Environment Variables:
 - `VITE_API_URL`: Backend API endpoint (Cloudflare Worker)
 - `VITE_USE_API_PROVIDER`: Use API vs LocalStorage (true/false)
-- `VITE_USE_MVP_MODE`: Enable MVP demo mode (true/false)
+- `VITE_USE_DEMO_MODE`: Enable demo mode features (true/false)
 - `VITE_DEMO_EMAIL`: Demo user email for auto-login
 - `VITE_DEMO_PASSWORD`: Demo user password for auto-login
 

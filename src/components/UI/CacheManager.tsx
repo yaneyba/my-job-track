@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { RotateCcw, AlertTriangle } from 'lucide-react';
 import { forceClearCacheAndReload, checkForUpdates } from '@/utils/cacheBuster';
-import { useMVP } from '@/contexts/MVPContext';
+import { useDemo } from '@/contexts/DemoContext';
 
 export default function CacheManager() {
   const [isClearing, setIsClearing] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
   const useApiProvider = import.meta.env.VITE_USE_API_PROVIDER === 'true';
-  const { isMVPMode } = useMVP();
+  const { isDemoMode } = useDemo();
   
   // If using API provider, don't render the component
   if (useApiProvider) {
@@ -19,7 +19,7 @@ export default function CacheManager() {
             <p className="font-medium mb-1">Cache management is disabled in API mode</p>
             <p className="leading-relaxed">
               When using the API provider, cache management is handled automatically by the server.
-              {isMVPMode && " In MVP mode, data is stored on the server for demonstration purposes."}
+              {isDemoMode && " In Demo mode, data is stored on the server for demonstration purposes."}
             </p>
           </div>
         </div>

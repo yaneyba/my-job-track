@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { useMVP } from '@/contexts/MVPContext';
+import { useDemo } from '@/contexts/DemoContext';
 
 const CTASection: React.FC = () => {
   const navigate = useNavigate();
-  const { isMVPMode } = useMVP();
+  const { isDemoMode } = useDemo();
   
   return (
     <section className="py-20 bg-gradient-to-r from-gray-900 to-gray-800 dark:from-dark-950 dark:to-dark-900">
@@ -19,14 +19,14 @@ const CTASection: React.FC = () => {
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
-            onClick={() => navigate(isMVPMode ? '/login' : '/app')}
+            onClick={() => navigate(isDemoMode ? '/login' : '/app')}
             className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center group"
           >
-            {isMVPMode ? 'Try Demo' : 'Start Using MyJobTrack'}
+            {isDemoMode ? 'Try Demo' : 'Start Using MyJobTrack'}
             <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
           </button>
           <p className="text-gray-400 dark:text-gray-500">
-            {isMVPMode ? 'Demo mode • No signup required' : 'Sign up to use • Works offline'}
+            {isDemoMode ? 'Demo mode • No signup required' : 'Sign up to use • Works offline'}
           </p>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { LanguageProvider } from '@/contexts/LanguageContext';
-import { useMVP } from '@/contexts/MVPContext';
+import { useDemo } from '@/contexts/DemoContext';
 import ProtectedRoute from '@/components/Auth/ProtectedRoute';
 import Layout from '@/components/Layout/Layout';
 import Landing from '@/pages/Landing';
@@ -45,7 +45,7 @@ function App() {
 function AppContent() {
   // Initialize sample data on first load
   useSampleData();
-  const { isMVPMode } = useMVP();
+  const { isDemoMode } = useDemo();
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-dark-900 transition-colors duration-200">
@@ -53,8 +53,8 @@ function AppContent() {
         {/* Public Routes */}
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
-        {/* Only show signup route when not in MVP mode */}
-        {!isMVPMode && <Route path="/signup" element={<Signup />} />}
+        {/* Only show signup route when not in Demo mode */}
+        {!isDemoMode && <Route path="/signup" element={<Signup />} />}
         
         {/* Protected Routes */}
         <Route path="/app" element={

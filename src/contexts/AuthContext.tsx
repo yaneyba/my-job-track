@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useMVP } from './MVPContext';
+import { useDemo } from './DemoContext';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 
 interface User {
@@ -41,7 +41,7 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { isMVPMode } = useMVP();
+  const { isDemoMode } = useDemo();
   const useAPIProvider = import.meta.env.VITE_USE_API_PROVIDER === 'true';
 
   // Initialize demo account and check for existing session on app load
@@ -113,7 +113,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     initializeAuth();
-  }, [isMVPMode, useAPIProvider]);
+  }, [isDemoMode, useAPIProvider]);
 
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {

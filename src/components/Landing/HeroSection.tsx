@@ -1,12 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { useMVP } from '@/contexts/MVPContext';
+import { useDemo } from '@/contexts/DemoContext';
 import Logo from '@/components/UI/Logo';
 
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
-  const { isMVPMode } = useMVP();
+  const { isDemoMode } = useDemo();
   
   return (
     <header className="relative overflow-hidden" role="banner">
@@ -47,10 +47,10 @@ const HeroSection: React.FC = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
-              onClick={() => navigate(isMVPMode ? '/login' : '/app')}
+              onClick={() => navigate(isDemoMode ? '/login' : '/app')}
               className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-200 flex items-center group border-2 border-green-500 hover:border-green-400"
             >
-              {isMVPMode ? 'Try Demo' : 'Get Started'}
+              {isDemoMode ? 'Try Demo' : 'Get Started'}
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </button>
             <button

@@ -4,10 +4,10 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNotifications } from '@/hooks/useNotifications';
 import ThemeToggle from '@/components/UI/ThemeToggle';
-import ShareApp from '@/components/UI/ShareApp';
+import ShareButton from '@/components/UI/ShareButton';
 import Logo from '@/components/UI/Logo';
 import NotificationAlert from '@/components/UI/NotificationAlert';
-import { Bell, User, LogOut, X, Share2 } from 'lucide-react';
+import { Bell, User, LogOut, X } from 'lucide-react';
 
 const Header: React.FC = () => {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -109,10 +109,10 @@ const Header: React.FC = () => {
 
               {/* Share App - Small on mobile, regular on desktop */}
               <div className="sm:hidden">
-                <ShareApp size="sm" />
+                <ShareButton size="sm" />
               </div>
               <div className="hidden sm:block">
-                <ShareApp />
+                <ShareButton />
               </div>
 
               {/* Notifications */}

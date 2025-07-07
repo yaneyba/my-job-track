@@ -20,7 +20,7 @@ interface MVPProviderProps {
 }
 
 export const MVPProvider: React.FC<MVPProviderProps> = ({ children }) => {
-  // Read MVP mode from environment variable, default to true if not set
+  // Read MVP mode from environment variable
   const envMVPMode = import.meta.env.VITE_MVP_MODE === 'true';
   const [isMVPMode, setIsMVPMode] = useState(envMVPMode);
 

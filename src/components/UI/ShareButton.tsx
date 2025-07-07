@@ -16,14 +16,14 @@ import {
   Smartphone
 } from 'lucide-react';
 
-interface ShareAppProps {
+interface ShareButtonProps {
   onClose?: () => void;
   className?: string;
   variant?: 'button' | 'modal' | 'inline';
   size?: 'sm' | 'md' | 'lg';
 }
 
-const ShareApp: React.FC<ShareAppProps> = ({ 
+const ShareButton: React.FC<ShareButtonProps> = ({ 
   onClose, 
   className = '', 
   variant = 'button',
@@ -390,4 +390,4 @@ const ShareApp: React.FC<ShareAppProps> = ({
   );
 };
 
-export default ShareApp;
+export default ShareButton;

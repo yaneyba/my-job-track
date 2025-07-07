@@ -1,6 +1,6 @@
 import { IDataProvider } from './IDataProvider';
 import { Customer, Job, DashboardStats } from '@/types';
-import { DemoData } from '@/hooks/useDemoData';
+import { DemoData, getDemoCredentials, createDemoUser } from '@/hooks/useDemoData';
 import demoData from '@/data/demo.json';
 import QRCode from 'qrcode';
 import { parseISO, isWithinInterval } from 'date-fns';
@@ -8,12 +8,42 @@ import { parseISO, isWithinInterval } from 'date-fns';
 /**
  * Demo Data Provider - Read-only provider that serves data from demo.json
  * All write operations are disabled to maintain demo data integrity
+ * Includes authentication support for pure demo mode
  */
 export class DemoDataProvider implements IDataProvider {
   private demoData: DemoData;
 
   constructor() {
     this.demoData = demoData as DemoData;
+  }
+
+  // Authentication methods for demo mode
+  async authenticateUser(email: string, password: string): Promise<{ success: boolean; user?: any; error?: string }> {
+    const credentials = getDemoCredentials();
+    
+    if (email === credentials.email && password === credentials.password) {
+      const demoUser = createDemoUser();
+      return {
+        success: true,
+        user: {
+          id: demoUser.id,
+          email: demoUser.email,
+          name: demoUser.name,
+          businessName: demoUser.businessName,
+          phone: demoUser.phone,
+          address: demoUser.address
+        }
+      };
+    }
+    
+    return {
+      success: false,
+      error: 'Invalid demo credentials. Please check your environment variables.'
+    };
+  }
+
+  getDemoUser() {
+    return createDemoUser();
   }
 
   // Customer methods - Read-only

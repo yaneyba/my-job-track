@@ -1,5 +1,15 @@
 import demoData from '@/data/demo.json';
 
+export interface DemoUserTemplate {
+  id: string;
+  name: string;
+  businessName: string;
+  phone: string;
+  address: string;
+  bio: string;
+  createdAt: string;
+}
+
 export interface DemoCustomer {
   id: string;
   name: string;
@@ -59,6 +69,7 @@ export interface DemoStats {
 }
 
 export interface DemoData {
+  demoUserTemplate: DemoUserTemplate;
   customers: DemoCustomer[];
   jobs: DemoJob[];
   serviceTypes: string[];
@@ -81,6 +92,20 @@ export const getDemoCredentials = () => {
   return {
     email: import.meta.env.VITE_DEMO_EMAIL,
     password: import.meta.env.VITE_DEMO_PASSWORD
+  };
+};
+
+/**
+ * Create demo user object with environment credentials for demo mode
+ */
+export const createDemoUser = () => {
+  const credentials = getDemoCredentials();
+  const template = demoData.demoUserTemplate;
+  
+  return {
+    ...template,
+    email: credentials.email,
+    password: credentials.password
   };
 };
 

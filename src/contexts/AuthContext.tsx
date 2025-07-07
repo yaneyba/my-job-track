@@ -120,6 +120,38 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
+      // Check if we should use API provider or demo mode
+      const shouldUseAPI = useAPIProvider;
+      
+      if (!shouldUseAPI) {
+        // Demo mode: try authenticating with DemoDataProvider
+        const dataProvider = DataProviderFactory.getInstance();
+        if (dataProvider.authenticateUser) {
+          console.log('🎭 Attempting demo mode authentication');
+          const result = await dataProvider.authenticateUser(email, password);
+          
+          if (result.success) {
+            console.log('🎭 Demo authentication successful');
+            DataProviderFactory.enableDemoMode();
+            
+            // Store session for demo user
+            const sessionData = {
+              timestamp: new Date().getTime(),
+              userId: result.user.id
+            };
+            
+            localStorage.setItem('myjobtrack_user', JSON.stringify(result.user));
+            localStorage.setItem('myjobtrack_session', JSON.stringify(sessionData));
+            
+            setUser(result.user);
+            return { success: true };
+          } else {
+            return { success: false, error: result.error || 'Demo authentication failed' };
+          }
+        }
+      }
+      
+      // Fallback to localStorage-based auth (original behavior)
       // Get stored users
       const storedUsers = localStorage.getItem('myjobtrack_users');
       const users: StoredUser[] = storedUsers ? JSON.parse(storedUsers) : [];

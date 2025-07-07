@@ -1,4 +1,13 @@
 {
+  "demoUserTemplate": {
+    "id": "demo-user-id",
+    "name": "Demo User",
+    "businessName": "Demo Service Company",
+    "phone": "+1 (555) 123-4567",
+    "address": "123 Business St, Demo City, DC 12345",
+    "bio": "Professional service provider with 10+ years of experience in landscaping and home maintenance.",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
   "customers": [
     {
       "id": "demo-customer-1",

@@ -1,6 +1,10 @@
 import { Customer, Job, DashboardStats } from '@/types';
 
 export interface IDataProvider {
+  // Authentication methods (optional - for demo mode)
+  authenticateUser?(email: string, password: string): Promise<{ success: boolean; user?: any; error?: string }>;
+  getDemoUser?(): any;
+
   // Customer methods
   getCustomers(): Customer[];
   getCustomer(id: string): Customer | undefined;

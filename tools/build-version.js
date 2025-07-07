@@ -8,6 +8,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { execSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -120,6 +121,72 @@ export const getBuildDate = (): Date => {
   console.log(`Created TypeScript build info: ${buildInfoTsPath}`);
 }
 
+// Update service worker version numbers
+function updateServiceWorkerVersion(buildInfo) {
+  const swPath = path.resolve(__dirname, '../public/sw.js');
+  
+  if (!fs.existsSync(swPath)) {
+    console.warn('⚠️ Service worker file not found, skipping SW version update');
+    return;
+  }
+  
+  let swContent = fs.readFileSync(swPath, 'utf8');
+  
+  // Extract current version numbers and increment them
+  const cacheVersionMatch = swContent.match(/const CACHE_NAME = 'myjobtrack-v(\d+)'/);
+  const staticCacheVersionMatch = swContent.match(/const STATIC_CACHE_NAME = 'myjobtrack-static-v(\d+)'/);
+  const iconCacheVersionMatch = swContent.match(/const ICON_CACHE_NAME = 'myjobtrack-icons-v(\d+)'/);
+  
+  // Get git commit count for consistent versioning
+  const commitCount = getGitCommitCount();
+  const newVersion = commitCount || (Date.now() / 1000 | 0); // Fallback to timestamp
+  
+  // Update cache version with build info
+  swContent = swContent.replace(
+    /const CACHE_VERSION = "[^"]*";/,
+    `const CACHE_VERSION = "v${newVersion}-${buildInfo.gitHash}";`
+  );
+  
+  // Update main cache version
+  const currentCacheVersion = cacheVersionMatch ? parseInt(cacheVersionMatch[1]) : 1;
+  swContent = swContent.replace(
+    /const CACHE_NAME = 'myjobtrack-v\d+'/,
+    `const CACHE_NAME = 'myjobtrack-v${currentCacheVersion + 1}'`
+  );
+  
+  // Update static cache version
+  const currentStaticVersion = staticCacheVersionMatch ? parseInt(staticCacheVersionMatch[1]) : 1;
+  swContent = swContent.replace(
+    /const STATIC_CACHE_NAME = 'myjobtrack-static-v\d+'/,
+    `const STATIC_CACHE_NAME = 'myjobtrack-static-v${currentStaticVersion + 1}'`
+  );
+  
+  // Update icon cache version  
+  const currentIconVersion = iconCacheVersionMatch ? parseInt(iconCacheVersionMatch[1]) : 1;
+  swContent = swContent.replace(
+    /const ICON_CACHE_NAME = 'myjobtrack-icons-v\d+'/,
+    `const ICON_CACHE_NAME = 'myjobtrack-icons-v${currentIconVersion + 1}'`
+  );
+  
+  fs.writeFileSync(swPath, swContent);
+  console.log(`🔄 Updated service worker versions:`);
+  console.log(`   Cache: v${currentCacheVersion + 1}`);
+  console.log(`   Static: v${currentStaticVersion + 1}`);
+  console.log(`   Icons: v${currentIconVersion + 1}`);
+  console.log(`   Version: v${newVersion}-${buildInfo.gitHash}`);
+}
+
+// Get git commit count for consistent versioning
+function getGitCommitCount() {
+  try {
+    const count = execSync('git rev-list --count HEAD', { encoding: 'utf8' }).trim();
+    return parseInt(count);
+  } catch (error) {
+    console.warn('Could not get git commit count, using fallback');
+    return null;
+  }
+}
+
 // Main function to generate build
 function generateBuild() {
   console.log('🔨 Generating build number and version info...');
@@ -140,6 +207,9 @@ function generateBuild() {
   // Create build info files
   createBuildInfoFile(buildInfo);
   createBuildInfoTs(buildInfo);
+  
+  // Update service worker versions
+  updateServiceWorkerVersion(buildInfo);
   
   console.log('✅ Build number generation completed!');
   

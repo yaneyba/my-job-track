@@ -10,6 +10,7 @@ interface ImportMetaEnv {
   readonly VITE_USE_DEMO_DATA: string
   readonly VITE_DEMO_EMAIL: string
   readonly VITE_DEMO_PASSWORD: string
+  readonly VITE_ENABLE_AUTO_UPDATES: string
 }
 
 interface ImportMeta {

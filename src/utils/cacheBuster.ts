@@ -77,25 +77,33 @@ export const checkForUpdates = async (): Promise<boolean> => {
 
 // Initialize cache busting on app start
 export const initCacheBusting = (): void => {
-  // Check for updates every 5 minutes
-  setInterval(async () => {
-    const hasUpdate = await checkForUpdates();
-    if (hasUpdate) {
-      console.log('New version detected, clearing cache...');
-      // Optionally show a notification to user about update
-      if (confirm('A new version is available. Reload to update?')) {
-        await forceClearCacheAndReload();
-      }
-    }
-  }, 5 * 60 * 1000); // 5 minutes
-
-  // Listen for visibility change to check for updates when user returns
-  document.addEventListener('visibilitychange', async () => {
-    if (!document.hidden) {
+  // DISABLED: Automatic update checking was too aggressive
+  // The build process changes version on every build, causing constant update prompts
+  console.log('Cache busting initialized (automatic updates disabled in development)');
+  
+  // Only enable in production or when explicitly needed
+  if (import.meta.env.PROD && import.meta.env.VITE_ENABLE_AUTO_UPDATES === 'true') {
+    // Check for updates every 30 minutes (reduced from 5 minutes)
+    setInterval(async () => {
       const hasUpdate = await checkForUpdates();
       if (hasUpdate) {
-        console.log('Update detected on page focus');
+        console.log('New version detected, clearing cache...');
+        // Optionally show a notification to user about update
+        if (confirm('A new version is available. Reload to update?')) {
+          await forceClearCacheAndReload();
+        }
       }
-    }
-  });
+    }, 30 * 60 * 1000); // 30 minutes
+  }
+
+  // Listen for visibility change to check for updates when user returns
+  // DISABLED: This was also too aggressive
+  // document.addEventListener('visibilitychange', async () => {
+  //   if (!document.hidden) {
+  //     const hasUpdate = await checkForUpdates();
+  //     if (hasUpdate) {
+  //       console.log('Update detected on page focus');
+  //     }
+  //   }
+  // });
 };

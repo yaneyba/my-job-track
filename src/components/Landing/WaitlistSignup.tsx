@@ -52,7 +52,7 @@ export default function WaitlistSignup({ onSuccess, onError, className = '' }: W
 
   const handleTestApp = () => {
     // Set user as waitlisted and allow testing
-    localStorage.setItem('jobtrack_current_user', JSON.stringify({
+    localStorage.setItem('myjobtrack_user', JSON.stringify({
       id: 'waitlist-user',
       email,
       name: 'Test User',

@@ -34,6 +34,34 @@ export const DemoProvider: React.FC<DemoProviderProps> = ({ children }) => {
 
   const triggerWaitlistCTA = () => {
     if (isDemoMode) {
+      // Check if user is already waitlisted - if so, don't show modal
+      const currentUser = localStorage.getItem('myjobtrack_user');
+      if (currentUser) {
+        try {
+          const user = JSON.parse(currentUser);
+          if (user.isWaitlisted === true) {
+            // User is already in waitlist mode, don't show modal
+            return;
+          }
+        } catch (error) {
+          console.error('Error checking user waitlist status:', error);
+        }
+      }
+      
+      // Also check if the email was previously added to waitlist
+      const waitlistEmails = localStorage.getItem('jobtrack_waitlist_emails');
+      if (waitlistEmails) {
+        try {
+          const emails = JSON.parse(waitlistEmails);
+          if (emails.length > 0) {
+            // User has already signed up for waitlist, don't show modal
+            return;
+          }
+        } catch (error) {
+          console.error('Error checking waitlist emails:', error);
+        }
+      }
+      
       setShowWaitlistModal(true);
     }
   };

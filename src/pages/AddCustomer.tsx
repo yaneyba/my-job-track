@@ -15,8 +15,11 @@ const AddCustomer: React.FC = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  
+  // Force reset DataProviderFactory to ensure latest instance
+  DataProviderFactory.reset();
   const dataProvider = DataProviderFactory.getInstance();
-  const { isDemoMode, triggerWaitlistCTA } = useDemo();
+  const { isDemoMode } = useDemo();
 
   const serviceTypes = [
     'Lawn Care',
@@ -71,12 +74,6 @@ const AddCustomer: React.FC = () => {
     e.preventDefault();
     
     if (!validateForm()) {
-      return;
-    }
-
-    // In demo mode, trigger waitlist CTA instead of actually saving
-    if (isDemoMode) {
-      triggerWaitlistCTA();
       return;
     }
 

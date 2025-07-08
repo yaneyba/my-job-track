@@ -42,7 +42,7 @@ export class DataProviderFactory {
   static isWaitlistMode(): boolean {
     // Check if current user is in waitlist mode
     try {
-      const currentUser = localStorage.getItem('jobtrack_current_user');
+      const currentUser = localStorage.getItem('myjobtrack_user');
       if (currentUser) {
         const user = JSON.parse(currentUser);
         return user.isWaitlisted === true;

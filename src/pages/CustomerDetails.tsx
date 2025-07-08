@@ -46,7 +46,7 @@ const CustomerDetails: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
-  const { isDemoMode, triggerWaitlistCTA } = useDemo();
+  const { isDemoMode } = useDemo();
 
   const serviceTypes = [
     'Lawn Care',
@@ -136,12 +136,6 @@ const CustomerDetails: React.FC = () => {
 
   const handleSaveEdit = async () => {
     if (!customer || !validateEditForm()) return;
-
-    // In demo mode, trigger waitlist CTA instead of actually saving
-    if (isDemoMode) {
-      triggerWaitlistCTA();
-      return;
-    }
 
     setIsSubmitting(true);
     try {
@@ -281,13 +275,16 @@ const CustomerDetails: React.FC = () => {
               >
                 <Edit3 size={20} />
               </button>
-              <button
-                onClick={() => setShowDeleteConfirm(true)}
-                className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors duration-200"
-                title="Delete Customer"
-              >
-                <Trash2 size={20} />
-              </button>
+              {/* Only show delete button for user-created customers */}
+              {customer.id.startsWith('customer-') && (
+                <button
+                  onClick={() => setShowDeleteConfirm(true)}
+                  className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors duration-200"
+                  title="Delete Customer"
+                >
+                  <Trash2 size={20} />
+                </button>
+              )}
             </div>
           </div>
 

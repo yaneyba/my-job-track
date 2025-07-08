@@ -48,19 +48,21 @@ export class DemoDataProvider implements IDataProvider {
 
   // Customer methods - Read-only
   getCustomers(): Customer[] {
-    return this.demoData.customers.map(customer => ({
-      id: customer.id,
-      name: customer.name,
-      email: customer.email,
-      phone: customer.phone,
-      address: customer.address,
-      businessName: '',
-      notes: customer.notes,
-      serviceType: 'General Service',
-      totalUnpaid: this.calculateCustomerUnpaid(customer.id),
-      createdDate: customer.createdAt,
-      qrCodeUrl: `qr-customer-${customer.id}`
-    }));
+    return this.demoData.customers
+      .map(customer => ({
+        id: customer.id,
+        name: customer.name,
+        email: customer.email,
+        phone: customer.phone,
+        address: customer.address,
+        businessName: '',
+        notes: customer.notes,
+        serviceType: 'General Service',
+        totalUnpaid: this.calculateCustomerUnpaid(customer.id),
+        createdDate: customer.createdAt,
+        qrCodeUrl: `qr-customer-${customer.id}`
+      }))
+      .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
   }
 
   getCustomer(id: string): Customer | undefined {
@@ -82,19 +84,78 @@ export class DemoDataProvider implements IDataProvider {
     };
   }
 
-  addCustomer(_customerData: Omit<Customer, 'id' | 'createdDate' | 'qrCodeUrl'>): Customer {
-    console.warn('DemoDataProvider: Add customer operation disabled in demo mode');
-    throw new Error('Demo mode: Cannot add customers');
+  addCustomer(customerData: Omit<Customer, 'id' | 'createdDate' | 'qrCodeUrl' | 'totalUnpaid'>): Customer {
+    console.log('DemoDataProvider: addCustomer called with NEW implementation');
+    const customer: Customer = {
+      ...customerData,
+      id: `customer-${Date.now()}`,
+      createdDate: new Date().toISOString(),
+      qrCodeUrl: `qr-customer-${Date.now()}`,
+      totalUnpaid: 0
+    };
+    
+    // Add to demo data temporarily (in memory only)
+    this.demoData.customers.push({
+      id: customer.id,
+      name: customer.name,
+      email: customer.phone, // Use phone as email for demo
+      phone: customer.phone,
+      address: customer.address,
+      notes: `Service Type: ${customer.serviceType}`,
+      createdAt: customer.createdDate,
+      updatedAt: customer.createdDate
+    });
+    
+    console.log('DemoDataProvider: Customer added to demo data (temporary)');
+    return customer;
   }
 
-  updateCustomer(_id: string, _updates: Partial<Customer>): Customer | undefined {
-    console.warn('DemoDataProvider: Update customer operation disabled in demo mode');
-    throw new Error('Demo mode: Cannot update customers');
+  updateCustomer(id: string, updates: Partial<Customer>): Customer | undefined {
+    const customers = this.getCustomers();
+    const customerIndex = customers.findIndex(c => c.id === id);
+    
+    if (customerIndex === -1) {
+      console.warn('DemoDataProvider: Customer not found for update');
+      return undefined;
+    }
+    
+    const existingCustomer = customers[customerIndex];
+    const updatedCustomer = { ...existingCustomer, ...updates };
+    
+    // Update the in-memory demo data
+    const demoCustomerIndex = this.demoData.customers.findIndex(c => c.id === id);
+    if (demoCustomerIndex !== -1) {
+      this.demoData.customers[demoCustomerIndex] = {
+        ...this.demoData.customers[demoCustomerIndex],
+        name: updatedCustomer.name,
+        phone: updatedCustomer.phone,
+        address: updatedCustomer.address,
+        notes: updatedCustomer.serviceType ? `Service Type: ${updatedCustomer.serviceType}` : this.demoData.customers[demoCustomerIndex].notes,
+        updatedAt: new Date().toISOString()
+      };
+    }
+    
+    console.log('DemoDataProvider: Customer updated in demo data (temporary)');
+    return updatedCustomer;
   }
 
-  deleteCustomer(_id: string): boolean {
-    console.warn('DemoDataProvider: Delete customer operation disabled in demo mode');
-    throw new Error('Demo mode: Cannot delete customers');
+  deleteCustomer(id: string): boolean {
+    // Only allow deletion of customers created during this session (those with timestamp-based IDs)
+    if (!id.startsWith('customer-')) {
+      console.warn('DemoDataProvider: Cannot delete original demo customers');
+      throw new Error('Demo mode: Cannot delete original demo customers. Only newly created customers can be deleted.');
+    }
+    
+    // Find and remove from in-memory demo data
+    const customerIndex = this.demoData.customers.findIndex(c => c.id === id);
+    if (customerIndex === -1) {
+      console.warn('DemoDataProvider: Customer not found for deletion');
+      return false;
+    }
+    
+    this.demoData.customers.splice(customerIndex, 1);
+    console.log('DemoDataProvider: Customer deleted from demo data (temporary)');
+    return true;
   }
 
   searchCustomers(query: string): Customer[] {
@@ -110,29 +171,31 @@ export class DemoDataProvider implements IDataProvider {
 
   // Job methods - Read-only
   getJobs(): Job[] {
-    return this.demoData.jobs.map(job => ({
-      id: job.id,
-      customerId: job.customerId,
-      customerName: job.customerName,
-      title: job.serviceType,
-      description: job.description,
-      serviceType: job.serviceType,
-      scheduledDate: job.scheduledDate,
-      dueDate: job.scheduledDate,
-      price: job.price,
-      estimatedCost: job.price,
-      actualCost: job.price,
-      estimatedHours: job.estimatedDuration / 60,
-      actualHours: job.estimatedDuration / 60,
-      status: job.status,
-      paymentStatus: job.paymentStatus,
-      paid: job.paymentStatus === 'paid',
-      notes: job.notes,
-      completedDate: job.completedDate,
-      completedAt: job.completedDate,
-      createdDate: job.createdAt,
-      qrCodeUrl: `qr-job-${job.id}`
-    }));
+    return this.demoData.jobs
+      .map(job => ({
+        id: job.id,
+        customerId: job.customerId,
+        customerName: job.customerName,
+        title: job.serviceType,
+        description: job.description,
+        serviceType: job.serviceType,
+        scheduledDate: job.scheduledDate,
+        dueDate: job.scheduledDate,
+        price: job.price,
+        estimatedCost: job.price,
+        actualCost: job.price,
+        estimatedHours: job.estimatedDuration / 60,
+        actualHours: job.estimatedDuration / 60,
+        status: job.status,
+        paymentStatus: job.paymentStatus,
+        paid: job.paymentStatus === 'paid',
+        notes: job.notes,
+        completedDate: job.completedDate,
+        completedAt: job.completedDate,
+        createdDate: job.createdAt,
+        qrCodeUrl: `qr-job-${job.id}`
+      }))
+      .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
   }
 
   getJob(id: string): Job | undefined {
@@ -168,19 +231,87 @@ export class DemoDataProvider implements IDataProvider {
     return this.getJobs().filter(job => job.customerId === customerId);
   }
 
-  addJob(_jobData: Omit<Job, 'id' | 'qrCodeUrl' | 'createdDate' | 'customerName'>): Job {
-    console.warn('DemoDataProvider: Add job operation disabled in demo mode');
-    throw new Error('Demo mode: Cannot add jobs');
+  addJob(jobData: Omit<Job, 'id' | 'qrCodeUrl' | 'createdDate' | 'customerName'>): Job {
+    const customer = this.getCustomer(jobData.customerId);
+    const job: Job = {
+      ...jobData,
+      id: `job-${Date.now()}`,
+      qrCodeUrl: `qr-job-${Date.now()}`,
+      createdDate: new Date().toISOString(),
+      customerName: customer?.name || 'Unknown Customer'
+    };
+    
+    // Add to demo data temporarily (in memory only)
+    this.demoData.jobs.push({
+      id: job.id,
+      customerId: job.customerId,
+      customerName: job.customerName,
+      serviceType: job.serviceType,
+      description: job.description || '',
+      scheduledDate: job.scheduledDate,
+      completedDate: job.completedDate,
+      estimatedDuration: 120, // Default 2 hours
+      price: job.price,
+      status: job.status === 'pending' || job.status === 'cancelled' ? 'scheduled' : job.status,
+      paymentStatus: 'unpaid',
+      notes: job.notes,
+      createdAt: job.createdDate,
+      updatedAt: job.createdDate
+    });
+    
+    console.log('DemoDataProvider: Job added to demo data (temporary)');
+    return job;
   }
 
-  updateJob(_id: string, _updates: Partial<Job>): Job | undefined {
-    console.warn('DemoDataProvider: Update job operation disabled in demo mode');
-    throw new Error('Demo mode: Cannot update jobs');
+  updateJob(id: string, updates: Partial<Job>): Job | undefined {
+    const jobs = this.getJobs();
+    const jobIndex = jobs.findIndex(j => j.id === id);
+    
+    if (jobIndex === -1) {
+      console.warn('DemoDataProvider: Job not found for update');
+      return undefined;
+    }
+    
+    const existingJob = jobs[jobIndex];
+    const updatedJob = { ...existingJob, ...updates };
+    
+    // Update the in-memory demo data
+    const demoJobIndex = this.demoData.jobs.findIndex(j => j.id === id);
+    if (demoJobIndex !== -1) {
+      this.demoData.jobs[demoJobIndex] = {
+        ...this.demoData.jobs[demoJobIndex],
+        serviceType: updatedJob.serviceType,
+        description: updatedJob.description || '',
+        scheduledDate: updatedJob.scheduledDate,
+        completedDate: updatedJob.completedDate,
+        price: updatedJob.price,
+        status: updatedJob.status === 'pending' || updatedJob.status === 'cancelled' ? 'scheduled' : updatedJob.status,
+        notes: updatedJob.notes,
+        updatedAt: new Date().toISOString()
+      };
+    }
+    
+    console.log('DemoDataProvider: Job updated in demo data (temporary)');
+    return updatedJob;
   }
 
-  deleteJob(_id: string): boolean {
-    console.warn('DemoDataProvider: Delete job operation disabled in demo mode');
-    throw new Error('Demo mode: Cannot delete jobs');
+  deleteJob(id: string): boolean {
+    // Only allow deletion of jobs created during this session (those with timestamp-based IDs)
+    if (!id.startsWith('job-')) {
+      console.warn('DemoDataProvider: Cannot delete original demo jobs');
+      throw new Error('Demo mode: Cannot delete original demo jobs. Only newly created jobs can be deleted.');
+    }
+    
+    // Find and remove from in-memory demo data
+    const jobIndex = this.demoData.jobs.findIndex(j => j.id === id);
+    if (jobIndex === -1) {
+      console.warn('DemoDataProvider: Job not found for deletion');
+      return false;
+    }
+    
+    this.demoData.jobs.splice(jobIndex, 1);
+    console.log('DemoDataProvider: Job deleted from demo data (temporary)');
+    return true;
   }
 
   getJobsByDate(date: string): Job[] {

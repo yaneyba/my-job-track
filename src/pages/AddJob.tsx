@@ -21,7 +21,7 @@ const AddJob: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
-  const { isDemoMode, triggerWaitlistCTA } = useDemo();
+  const { isDemoMode } = useDemo();
 
   const commonServices = [
     'Lawn Mowing',
@@ -103,12 +103,6 @@ const AddJob: React.FC = () => {
     e.preventDefault();
     
     if (!validateForm()) {
-      return;
-    }
-
-    // In demo mode, trigger waitlist CTA instead of actually saving
-    if (isDemoMode) {
-      triggerWaitlistCTA();
       return;
     }
 

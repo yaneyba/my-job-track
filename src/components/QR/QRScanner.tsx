@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { useDemo } from '@/contexts/DemoContext';
-import { useTheme } from '@/contexts/ThemeContext';
 import QrScanner from 'qr-scanner';
 import { 
   X, 
@@ -46,7 +45,6 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
   const { isDemoMode, triggerWaitlistCTA } = useDemo();
-  const { isDark } = useTheme();
 
   const cleanup = () => {
     stopScanning();

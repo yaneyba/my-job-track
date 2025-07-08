@@ -33,10 +33,10 @@ const NavBar: React.FC = () => {
             {/* Sign In Button */}
             <button
               onClick={() => navigate('/login')}
-              className="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 border border-gray-300 dark:border-dark-600 hover:border-blue-300 dark:hover:border-blue-500 rounded-lg"
+              className="flex items-center px-2 sm:px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 border border-gray-300 dark:border-dark-600 hover:border-blue-300 dark:hover:border-blue-500 rounded-lg"
             >
-              <LogIn className="h-4 w-4 mr-2" />
-              {t('nav.signIn')}
+              <LogIn className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">{t('nav.signIn')}</span>
             </button>
           </div>
         </div>

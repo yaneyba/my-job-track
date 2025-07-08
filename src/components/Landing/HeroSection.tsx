@@ -81,6 +81,17 @@ const HeroSection: React.FC = () => {
                 <Smartphone className="mr-2 h-5 w-5" />
                 Try Interactive Demo
               </Link>
+              
+              {/* Mobile QR Scanner Button */}
+              <button
+                onClick={() => {
+                  document.getElementById('qr-demo')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="md:hidden bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg text-base font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center group"
+              >
+                <QrCode className="mr-2 h-5 w-5" />
+                QR Code Scanner
+              </button>
             </div>
           </div>
 

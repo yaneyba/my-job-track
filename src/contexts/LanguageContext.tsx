@@ -155,6 +155,19 @@ const translations = {
     'common.light': 'Light',
     'common.english': 'English',
     'common.spanish': 'Spanish',
+    
+    // Demo Mode Waitlist CTA
+    'demo.waitlist.title': 'Ready to Start Using MyJobTrack?',
+    'demo.waitlist.subtitle': 'You\'re using demo mode. Join our waitlist to get full access!',
+    'demo.waitlist.description': 'Get notified when MyJobTrack is available in your area. Be among the first to transform your service business.',
+    'demo.waitlist.email': 'Your Email',
+    'demo.waitlist.emailPlaceholder': 'Enter your email address',
+    'demo.waitlist.businessType': 'Business Type',
+    'demo.waitlist.businessTypePlaceholder': 'e.g., Landscaping, Cleaning, Handyman',
+    'demo.waitlist.joinButton': 'Join Waitlist',
+    'demo.waitlist.joinSuccess': 'Thanks! We\'ll notify you when MyJobTrack is available.',
+    'demo.waitlist.later': 'Maybe Later',
+    'demo.waitlist.benefits': 'Get early access, special pricing, and priority support.',
   },
   es: {
     // Navigation
@@ -287,6 +300,19 @@ const translations = {
     'common.light': 'Claro',
     'common.english': 'Inglés',
     'common.spanish': 'Español',
+    
+    // Demo Mode Waitlist CTA
+    'demo.waitlist.title': '¿Listo para Comenzar a Usar MyJobTrack?',
+    'demo.waitlist.subtitle': 'Estás usando el modo demo. ¡Únete a nuestra lista de espera para obtener acceso completo!',
+    'demo.waitlist.description': 'Recibe notificaciones cuando MyJobTrack esté disponible en tu área. Sé uno de los primeros en transformar tu negocio de servicios.',
+    'demo.waitlist.email': 'Tu Email',
+    'demo.waitlist.emailPlaceholder': 'Ingresa tu dirección de email',
+    'demo.waitlist.businessType': 'Tipo de Negocio',
+    'demo.waitlist.businessTypePlaceholder': 'ej., Jardinería, Limpieza, Técnico',
+    'demo.waitlist.joinButton': 'Unirse a Lista de Espera',
+    'demo.waitlist.joinSuccess': '¡Gracias! Te notificaremos cuando MyJobTrack esté disponible.',
+    'demo.waitlist.later': 'Tal vez Después',
+    'demo.waitlist.benefits': 'Obtén acceso temprano, precios especiales y soporte prioritario.',
   }
 };
 

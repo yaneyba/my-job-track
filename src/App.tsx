@@ -6,6 +6,7 @@ import { LanguageProvider } from '@/contexts/LanguageContext';
 import { useDemo } from '@/contexts/DemoContext';
 import ProtectedRoute from '@/components/Auth/ProtectedRoute';
 import Layout from '@/components/Layout/Layout';
+import WaitlistModal from '@/components/UI/WaitlistModal';
 import Landing from '@/pages/Landing';
 import Login from '@/pages/Login';
 import Signup from '@/pages/Signup';
@@ -45,7 +46,7 @@ function App() {
 function AppContent() {
   // Initialize sample data on first load
   useSampleData();
-  const { isDemoMode } = useDemo();
+  const { isDemoMode, showWaitlistModal, setShowWaitlistModal } = useDemo();
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-dark-900 transition-colors duration-200">
@@ -141,6 +142,12 @@ function AppContent() {
           </ProtectedRoute>
         } />
       </Routes>
+      
+      {/* Waitlist Modal for Demo Mode */}
+      <WaitlistModal 
+        isOpen={showWaitlistModal} 
+        onClose={() => setShowWaitlistModal(false)} 
+      />
     </div>
   );
 }

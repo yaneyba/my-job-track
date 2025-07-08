@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Customer, Job } from '@/types';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
-import { env } from '@/utils/env';
+import { useDemo } from '@/contexts/DemoContext';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import JobCard from '@/components/Job/JobCard';
 import QRCodeDisplay from '@/components/QR/QRCodeDisplay';
@@ -46,7 +46,7 @@ const CustomerDetails: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
-  const isDemoMode = env.isDemoMode();
+  const { isDemoMode, triggerWaitlistCTA } = useDemo();
 
   const serviceTypes = [
     'Lawn Care',
@@ -137,6 +137,12 @@ const CustomerDetails: React.FC = () => {
   const handleSaveEdit = async () => {
     if (!customer || !validateEditForm()) return;
 
+    // In demo mode, trigger waitlist CTA instead of actually saving
+    if (isDemoMode) {
+      triggerWaitlistCTA();
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const updates = {
@@ -154,13 +160,7 @@ const CustomerDetails: React.FC = () => {
       }
     } catch (error) {
       console.error('Failed to update customer:', error);
-      
-      if (isDemoMode) {
-        // In demo mode, show a different message
-        setErrors({ submit: 'Demo mode: This feature is simulated. Customer data is stored locally only.' });
-      } else {
-        setErrors({ submit: 'Failed to update customer. Please try again.' });
-      }
+      setErrors({ submit: 'Failed to update customer. Please try again.' });
     } finally {
       setIsSubmitting(false);
     }

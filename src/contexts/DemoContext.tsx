@@ -4,6 +4,9 @@ import { env } from '@/utils/env';
 interface DemoContextType {
   isDemoMode: boolean;
   setDemoMode: (enabled: boolean) => void;
+  showWaitlistModal: boolean;
+  setShowWaitlistModal: (show: boolean) => void;
+  triggerWaitlistCTA: () => void;
 }
 
 const DemoContext = createContext<DemoContextType | undefined>(undefined);
@@ -23,13 +26,26 @@ interface DemoProviderProps {
 export const DemoProvider: React.FC<DemoProviderProps> = ({ children }) => {
   // Read Demo mode from environment variable
   const [isDemoMode, setIsDemoMode] = useState(env.isDemoMode());
+  const [showWaitlistModal, setShowWaitlistModal] = useState(false);
 
   const setDemoMode = (enabled: boolean) => {
     setIsDemoMode(enabled);
   };
 
+  const triggerWaitlistCTA = () => {
+    if (isDemoMode) {
+      setShowWaitlistModal(true);
+    }
+  };
+
   return (
-    <DemoContext.Provider value={{ isDemoMode, setDemoMode }}>
+    <DemoContext.Provider value={{ 
+      isDemoMode, 
+      setDemoMode,
+      showWaitlistModal,
+      setShowWaitlistModal,
+      triggerWaitlistCTA
+    }}>
       {children}
     </DemoContext.Provider>
   );

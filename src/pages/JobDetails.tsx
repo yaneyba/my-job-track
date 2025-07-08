@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Job, Customer } from '@/types';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
-import { env } from '@/utils/env';
+import { useDemo } from '@/contexts/DemoContext';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import StatusBadge from '@/components/UI/StatusBadge';
 import QRCodeDisplay from '@/components/QR/QRCodeDisplay';
@@ -44,7 +44,7 @@ const JobDetails: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
-  const isDemoMode = env.isDemoMode();
+  const { isDemoMode, triggerWaitlistCTA } = useDemo();
 
   const breadcrumbItems = [
     { label: 'Home', href: '/app' },
@@ -135,6 +135,12 @@ const JobDetails: React.FC = () => {
   const handleSaveEdit = async () => {
     if (!job || !validateEditForm()) return;
 
+    // In demo mode, trigger waitlist CTA instead of actually saving
+    if (isDemoMode) {
+      triggerWaitlistCTA();
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const updates = {
@@ -152,13 +158,7 @@ const JobDetails: React.FC = () => {
       }
     } catch (error) {
       console.error('Failed to update job:', error);
-      
-      if (isDemoMode) {
-        // In demo mode, show a different message
-        setErrors({ submit: 'Demo mode: This feature is simulated. Job data is stored locally only.' });
-      } else {
-        setErrors({ submit: 'Failed to update job. Please try again.' });
-      }
+      setErrors({ submit: 'Failed to update job. Please try again.' });
     } finally {
       setIsSubmitting(false);
     }

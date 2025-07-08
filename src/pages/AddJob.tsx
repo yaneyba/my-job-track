@@ -21,7 +21,7 @@ const AddJob: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
-  const { isDemoMode } = useDemo();
+  const { isDemoMode, triggerWaitlistCTA } = useDemo();
 
   const commonServices = [
     'Lawn Mowing',
@@ -106,6 +106,12 @@ const AddJob: React.FC = () => {
       return;
     }
 
+    // In demo mode, trigger waitlist CTA instead of actually saving
+    if (isDemoMode) {
+      triggerWaitlistCTA();
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -130,13 +136,7 @@ const AddJob: React.FC = () => {
       });
     } catch (error) {
       console.error('Failed to schedule job:', error);
-      
-      if (isDemoMode) {
-        // In demo mode, show a different message
-        setErrors({ submit: 'Demo mode: This feature is simulated. Job data is stored locally only.' });
-      } else {
-        setErrors({ submit: 'Failed to schedule job. Please try again.' });
-      }
+      setErrors({ submit: 'Failed to schedule job. Please try again.' });
     } finally {
       setIsSubmitting(false);
     }

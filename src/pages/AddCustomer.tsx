@@ -16,7 +16,7 @@ const AddCustomer: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
-  const { isDemoMode } = useDemo();
+  const { isDemoMode, triggerWaitlistCTA } = useDemo();
 
   const serviceTypes = [
     'Lawn Care',
@@ -74,6 +74,12 @@ const AddCustomer: React.FC = () => {
       return;
     }
 
+    // In demo mode, trigger waitlist CTA instead of actually saving
+    if (isDemoMode) {
+      triggerWaitlistCTA();
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -93,13 +99,7 @@ const AddCustomer: React.FC = () => {
       });
     } catch (error) {
       console.error('Failed to add customer:', error);
-      
-      if (isDemoMode) {
-        // In demo mode, show a different message
-        setErrors({ submit: 'Demo mode: This feature is simulated. Customer data is stored locally only.' });
-      } else {
-        setErrors({ submit: 'Failed to add customer. Please try again.' });
-      }
+      setErrors({ submit: 'Failed to add customer. Please try again.' });
     } finally {
       setIsSubmitting(false);
     }

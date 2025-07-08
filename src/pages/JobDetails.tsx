@@ -44,7 +44,7 @@ const JobDetails: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
-  const { isDemoMode, triggerWaitlistCTA } = useDemo();
+  const { isDemoMode } = useDemo();
 
   const breadcrumbItems = [
     { label: 'Home', href: '/app' },

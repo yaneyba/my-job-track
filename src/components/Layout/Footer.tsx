@@ -2,6 +2,7 @@ import React from 'react';
 import { Heart, ExternalLink } from 'lucide-react';
 import Logo from '@/components/UI/Logo';
 import BuildInfoDisplay from '@/components/UI/BuildInfoDisplay';
+import { BUILD_INFO } from '@/build-info';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -113,6 +114,9 @@ const Footer: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-gray-400">
             <div className="flex items-center space-x-4 mb-2 sm:mb-0">
+              <span className="text-gray-500 font-mono text-xs">
+                {(BUILD_INFO.buildNumber.split('-')[1] || BUILD_INFO.buildNumber).substring(0, 7)}
+              </span>
               <span>📱 Mobile Optimized</span>
               <span>🔒 Data Stored Locally</span>
               <span>⚡ Works Offline</span>

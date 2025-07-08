@@ -167,17 +167,13 @@ const Settings: React.FC = () => {
       setTimeout(() => {
         console.log('Navigating to /app...');
         navigate('/app', { 
-          state: { message: 'All data has been cleared successfully.' }
+          state: { message: isDemoMode ? 'User data cleared. Demo data has been restored.' : 'All data has been cleared successfully.' }
         });
       }, 100);
     } catch (error) {
       console.error('Failed to clear data:', error);
-      // Check if it's a demo mode error
-      if (error instanceof Error && error.message.includes('Demo mode')) {
-        setImportError('Clear data is not available in demo mode. Demo data cannot be permanently deleted.');
-        setShowClearConfirm(false); // Close modal and show error message instead
-      }
-      // For other errors, keep modal open so user can try again
+      setImportError('Failed to clear data. Please try again.');
+      setShowClearConfirm(false); // Close modal and show error message
     } finally {
       console.log('Setting isClearing to false');
       setIsClearing(false);
@@ -581,19 +577,34 @@ const Settings: React.FC = () => {
             
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
               <p className="text-red-800 dark:text-red-200 text-sm mb-3">
-                <strong>{t('common.warning')}:</strong> This will permanently delete:
+                <strong>{t('common.warning')}:</strong> {isDemoMode 
+                  ? 'This will clear your added data and restore demo data:'
+                  : 'This will permanently delete:'
+                }
               </p>
               <ul className="text-red-700 dark:text-red-300 text-sm space-y-1">
-                <li>• All {customers.length} {t('common.customers').toLowerCase()}</li>
-                <li>• All {jobs.length} {t('common.jobs').toLowerCase()}</li>
-                <li>• All payment records</li>
-                <li>• All app data</li>
+                {isDemoMode ? (
+                  <>
+                    <li>• All customers you added ({customers.filter(c => c.id.startsWith('customer-')).length})</li>
+                    <li>• All jobs you created ({jobs.filter(j => j.id.startsWith('job-')).length})</li>
+                    <li>• Demo data will be restored</li>
+                  </>
+                ) : (
+                  <>
+                    <li>• All {customers.length} {t('common.customers').toLowerCase()}</li>
+                    <li>• All {jobs.length} {t('common.jobs').toLowerCase()}</li>
+                    <li>• All payment records</li>
+                    <li>• All app data</li>
+                  </>
+                )}
               </ul>
             </div>
             
             <p className="text-gray-600 dark:text-gray-400 mb-6 text-sm">
-              Make sure you have exported your data if you want to keep a backup. 
-              This action will reset the app to its initial state.
+              {isDemoMode 
+                ? 'This will clear any data you have added and restore the original demo data. The demo customers and jobs will remain for exploration.'
+                : 'Make sure you have exported your data if you want to keep a backup. This action will reset the app to its initial state.'
+              }
             </p>
             
             <div className="flex space-x-3">

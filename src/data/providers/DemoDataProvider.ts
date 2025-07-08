@@ -400,8 +400,24 @@ export class DemoDataProvider implements IDataProvider {
   }
 
   clearAllData(): void {
-    console.warn('DemoDataProvider: Clear data operation disabled in demo mode');
-    throw new Error('Demo mode: Cannot clear data');
+    console.log('DemoDataProvider: Clearing user-created data, preserving original demo data');
+    
+    // Import fresh demo data to reset everything
+    const originalData = require('@/data/demo.json') as DemoData;
+    
+    // Reset to original demo data - this clears all user-created data
+    // while preserving the original demo customers and jobs
+    this.demoData = {
+      customers: [...originalData.customers],
+      jobs: [...originalData.jobs],
+      demoUser: originalData.demoUser,
+      serviceTypes: originalData.serviceTypes,
+      dashboardStats: originalData.dashboardStats,
+      notifications: originalData.notifications,
+      recentActivity: originalData.recentActivity
+    };
+    
+    console.log('DemoDataProvider: User data cleared, demo data preserved');
   }
 
   // Helper methods

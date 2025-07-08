@@ -5,7 +5,7 @@ import {
   NavBar,
   HeroSection,
   FeaturesSection,
-  QRCodeShowcase,
+  QRCodeDemo,
   BenefitsSection,
   TestimonialsSection,
   CTASection,
@@ -49,8 +49,8 @@ const Landing: React.FC = () => {
       {/* Features Section */}
       <FeaturesSection />
 
-      {/* QR Code Showcase */}
-      <QRCodeShowcase />
+      {/* QR Code Demo */}
+      <QRCodeDemo />
 
       {/* Benefits Section */}
       <BenefitsSection />

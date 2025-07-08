@@ -1,17 +1,20 @@
 import React from 'react';
 import { Star } from 'lucide-react';
 import { testimonials } from '@/data/testimonials';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const TestimonialsSection: React.FC = () => {
+  const { t } = useLanguage();
+  
   return (
     <section className="py-20 bg-white dark:bg-dark-800 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-200">
-            Trusted by Service Providers
+            {t('landing.testimonials.title')}
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 transition-colors duration-200">
-            See what our users have to say about MyJobTrack.
+            {t('landing.testimonials.subtitle')}
           </p>
         </div>
         

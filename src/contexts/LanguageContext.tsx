@@ -76,6 +76,10 @@ const translations = {
     'landing.cta.testDescription': 'Join our waitlist and start testing immediately with local data storage.',
     'landing.cta.backToMain': '← Back to main page',
     
+    // Testimonials
+    'landing.testimonials.title': 'Trusted by Service Providers',
+    'landing.testimonials.subtitle': 'See what our users have to say about MyJobTrack.',
+    
     // Authentication
     'auth.leftSideTitle': 'Everything You Need in One Place',
     'auth.leftSideSubtitle': 'Simple tools that work for real service professionals',
@@ -241,6 +245,10 @@ const translations = {
     'landing.cta.testTitle': '¿Listo para Probar Job Track?',
     'landing.cta.testDescription': 'Únete a nuestra lista de espera y comienza a probar inmediatamente con almacenamiento de datos local.',
     'landing.cta.backToMain': '← Volver a la página principal',
+    
+    // Testimonials
+    'landing.testimonials.title': 'Confiado por Profesionales de Servicios',
+    'landing.testimonials.subtitle': 'Mira lo que nuestros usuarios dicen sobre MyJobTrack.',
     
     // Authentication
     'auth.leftSideTitle': 'Todo lo que Necesitas en Un Solo Lugar',

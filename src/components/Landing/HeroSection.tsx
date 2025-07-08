@@ -205,12 +205,18 @@ const HeroSection: React.FC = () => {
               </div>
 
               {/* Animated Elements */}
-              <div className="absolute -top-4 -right-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse z-20">
+              <button
+                onClick={() => navigate(isDemoMode ? "/login" : "/app")}
+                className="absolute -top-4 -right-4 bg-green-500 hover:bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse z-20 transition-colors duration-200 cursor-pointer"
+              >
                 Try Demo
-              </div>
-              <div className="absolute -bottom-3 -left-3 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-20">
+              </button>
+              <button
+                onClick={() => navigate(isDemoMode ? "/login" : "/app")}
+                className="absolute -bottom-3 -left-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-20 transition-colors duration-200 cursor-pointer"
+              >
                 Simple & Fast
-              </div>
+              </button>
             </div>
 
             {/* Decorative Elements */}

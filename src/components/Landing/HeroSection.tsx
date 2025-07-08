@@ -170,6 +170,7 @@ const HeroSection: React.FC = () => {
             {/* Decorative Elements */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-full blur-3xl -z-10"></div>
             <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-green-500/30 rounded-full blur-3xl -z-10"></div>
+          </div>
         </div>
       </div>
     </header>
@@ -177,6 +178,3 @@ const HeroSection: React.FC = () => {
 };
 
 export default HeroSection;
-
-  )
-}

@@ -96,7 +96,7 @@ const Header: React.FC = () => {
             </div>
 
             {/* Right Side Actions */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-1 sm:space-x-3">
               {/* User Info - Desktop */}
               <div className="hidden md:block text-right mr-3">
                 <p className="text-sm font-medium text-gray-900 dark:text-white">{user?.name}</p>
@@ -105,26 +105,32 @@ const Header: React.FC = () => {
                 )}
               </div>
 
-              {/* Theme Toggle */}
-              <ThemeToggle size="sm" />
+              {/* Theme Toggle - Hidden on mobile */}
+              <div className="hidden sm:block">
+                <ThemeToggle size="sm" />
+              </div>
 
-              {/* Language Toggle */}
-              <LanguageToggle size="sm" />
+              {/* Language Toggle - Hidden on mobile */}
+              <div className="hidden sm:block">
+                <LanguageToggle size="sm" />
+              </div>
 
-              {/* Share App - Same as Landing */}
-              <ShareButton size="sm" />
+              {/* Share App - Hidden on mobile */}
+              <div className="hidden sm:block">
+                <ShareButton size="sm" />
+              </div>
 
               {/* Notifications */}
               <div className="relative">
                 <button 
                   onClick={() => setShowNotifications(!showNotifications)}
-                  className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors relative"
+                  className="p-2 sm:p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors relative"
                   title="Notifications"
                 >
-                  <Bell className="h-5 w-5" />
+                  <Bell className="h-5 w-5 sm:h-5 sm:w-5" />
                   {/* Notification badge - only show for unread notifications */}
                   {unreadCount > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
                       {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
                   )}
@@ -216,22 +222,23 @@ const Header: React.FC = () => {
               {/* Profile */}
               <button 
                 onClick={() => navigate('/app/profile')}
-                className={`p-2 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors ${
+                className={`p-2 sm:p-2 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors ${
                   location.pathname.includes('/profile')
                     ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
                     : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
                 }`}
+                title="Profile"
               >
-                <User className="h-5 w-5" />
+                <User className="h-5 w-5 sm:h-5 sm:w-5" />
               </button>
 
               {/* Logout */}
               <button 
                 onClick={handleLogout}
-                className="p-2 text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                className="p-2 sm:p-2 text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                 title="Sign Out"
               >
-                <LogOut className="h-5 w-5" />
+                <LogOut className="h-5 w-5 sm:h-5 sm:w-5" />
               </button>
             </div>
           </div>

@@ -6,7 +6,6 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useDemo } from '@/contexts/DemoContext';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import ThemeToggle from '@/components/UI/ThemeToggle';
-import CacheManager from '@/components/UI/CacheManager';
 import {
   Settings as SettingsIcon,
   Download,
@@ -27,7 +26,7 @@ import {
   Bell,
   HelpCircle,
   ExternalLink,
-  RefreshCw,
+  RotateCcw,
   Palette,
   Languages,
   Globe
@@ -275,16 +274,7 @@ const Settings: React.FC = () => {
           toggle: true, 
           value: notifications, 
           onChange: setNotifications 
-        },
-        // Only show cache management when in demo mode
-        ...(isDemoMode ? [
-          {
-            title: t('settings.cacheManagement'),
-            description: t('settings.cacheDescription'),
-            icon: RefreshCw,
-            component: <CacheManager />
-          }
-        ] : [])
+        }
       ]
     },
     {
@@ -443,75 +433,57 @@ const Settings: React.FC = () => {
               <div className="space-y-4">
                 {section.items.map((item, itemIndex) => (
                   <div key={itemIndex}>
-                    {'component' in item && item.title === t('settings.cacheManagement') ? (
-                      // Special layout for Cache Management - always stacked
-                      <div className="p-4 bg-gray-50 dark:bg-dark-700 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors">
-                        <div className="flex items-start mb-4">
-                          <div className="bg-white dark:bg-dark-800 p-2 rounded-lg mr-4 shadow-sm flex-shrink-0">
-                            <item.icon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{item.title}</h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{item.description}</p>
-                          </div>
+                    {/* Regular layout for all items */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 dark:bg-dark-700 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors">
+                      <div className="flex items-start sm:items-center flex-1 mb-4 sm:mb-0">
+                        <div className="bg-white dark:bg-dark-800 p-2 rounded-lg mr-4 shadow-sm flex-shrink-0">
+                          <item.icon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
                         </div>
-                        <div className="w-full">
-                          {item.component}
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{item.title}</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{item.description}</p>
                         </div>
                       </div>
-                    ) : (
-                      // Regular layout for other items
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 dark:bg-dark-700 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-600 transition-colors">
-                        <div className="flex items-start sm:items-center flex-1 mb-4 sm:mb-0">
-                          <div className="bg-white dark:bg-dark-800 p-2 rounded-lg mr-4 shadow-sm flex-shrink-0">
-                            <item.icon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                      
+                      <div className="flex-shrink-0 w-full sm:w-auto sm:ml-4">
+                        {'component' in item ? (
+                          <div className="w-full">
+                            {item.component}
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{item.title}</h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{item.description}</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex-shrink-0 w-full sm:w-auto sm:ml-4">
-                          {'component' in item ? (
-                            <div className="w-full">
-                              {item.component}
-                            </div>
-                          ) : 'toggle' in item ? (
-                            <button
-                              onClick={() => item.onChange(!(item.value as boolean))}
-                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                                item.value ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
+                        ) : 'toggle' in item ? (
+                          <button
+                            onClick={() => item.onChange(!(item.value as boolean))}
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                              item.value ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
+                            }`}
+                          >
+                            <span
+                              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                                item.value ? 'translate-x-6' : 'translate-x-1'
                               }`}
-                            >
-                              <span
-                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                  item.value ? 'translate-x-6' : 'translate-x-1'
-                                }`}
-                              />
-                            </button>
-                          ) : 'external' in item ? (
-                            <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium text-sm flex items-center">
-                              {t('common.open')}
-                              <ExternalLink className="h-4 w-4 ml-1" />
-                            </button>
-                          ) : (
-                            <button
-                              onClick={item.action}
-                              className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors w-full sm:w-auto ${
-                                item.variant === 'primary'
-                                  ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                                  : item.variant === 'danger'
-                                  ? 'bg-red-600 hover:bg-red-700 text-white'
-                                  : 'bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200'
-                              }`}
-                            >
-                              {item.title}
-                            </button>
-                          )}
-                        </div>
+                            />
+                          </button>
+                        ) : 'external' in item ? (
+                          <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium text-sm flex items-center">
+                            {t('common.open')}
+                            <ExternalLink className="h-4 w-4 ml-1" />
+                          </button>
+                        ) : (
+                          <button
+                            onClick={item.action}
+                            className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors w-full sm:w-auto ${
+                              item.variant === 'primary'
+                                ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                                : item.variant === 'danger'
+                                ? 'bg-red-600 hover:bg-red-700 text-white'
+                                : 'bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200'
+                            }`}
+                          >
+                            {item.title}
+                          </button>
+                        )}
                       </div>
-                    )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -615,7 +587,7 @@ const Settings: React.FC = () => {
               >
                 {isClearing ? (
                   <>
-                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    <RotateCcw className="h-4 w-4 mr-2 animate-spin" />
                     Clearing...
                   </>
                 ) : (

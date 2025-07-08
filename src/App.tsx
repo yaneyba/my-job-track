@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { LanguageProvider } from '@/contexts/LanguageContext';
@@ -22,14 +21,8 @@ import ScanQR from '@/pages/ScanQR';
 import Settings from '@/pages/Settings';
 import Profile from '@/pages/Profile';
 import { useSampleData } from '@/hooks/useSampleData';
-import { initCacheBusting } from '@/utils/cacheBuster';
 
 function App() {
-  useEffect(() => {
-    // Initialize cache busting on app start
-    initCacheBusting();
-  }, []);
-
   return (
     <LanguageProvider>
       <ThemeProvider>

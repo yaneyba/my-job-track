@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDemo } from '@/contexts/DemoContext';
 import QRScanner from '@/components/QR/QRScanner';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import { 
@@ -9,11 +10,13 @@ import {
   ArrowRight,
   User,
   Calendar,
-  Zap
+  Zap,
+  Info
 } from 'lucide-react';
 
 const ScanQR: React.FC = () => {
   const [showScanner, setShowScanner] = useState(false);
+  const { isDemoMode } = useDemo();
 
   const breadcrumbItems = [
     { label: 'Home', href: '/app' },
@@ -74,6 +77,23 @@ const ScanQR: React.FC = () => {
           Click the button below to open your camera and start scanning QR codes. 
           Make sure to allow camera access when prompted.
         </p>
+        
+        {/* Demo Mode Notice */}
+        {isDemoMode && (
+          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 mb-6 transition-colors duration-200">
+            <div className="flex items-start">
+              <Info className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5 mr-3 flex-shrink-0" />
+              <div>
+                <h3 className="text-sm font-medium text-amber-800 dark:text-amber-200 mb-1">
+                  Demo Mode Active
+                </h3>
+                <p className="text-sm text-amber-700 dark:text-amber-300">
+                  QR scanning is fully functional in demo mode. When you scan a QR code, you'll be prompted to join the waitlist to access the full feature.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
         
         <button
           onClick={() => setShowScanner(true)}

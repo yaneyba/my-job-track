@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
+import { useDemo } from '@/contexts/DemoContext';
 import QrScanner from 'qr-scanner';
 import { 
   X, 
@@ -43,6 +44,7 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
   const scannerRef = useRef<QrScanner | null>(null);
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
+  const { isDemoMode, triggerWaitlistCTA } = useDemo();
 
   const cleanup = () => {
     stopScanning();
@@ -224,6 +226,13 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
 
   const handleNavigateToResult = () => {
     if (!scanResult) return;
+
+    // In demo mode, trigger waitlist CTA instead of navigating
+    if (isDemoMode) {
+      triggerWaitlistCTA();
+      onClose();
+      return;
+    }
 
     if (scanResult.type === 'customer') {
       navigate(`/app/customers/${scanResult.id}`);

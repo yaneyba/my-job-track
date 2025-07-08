@@ -1,8 +1,8 @@
-const CACHE_VERSION = "v155-rnccbmm";
+const CACHE_VERSION = "v164-lzieup5";
 // Version this cache - increment when you want to force cache refresh
-const CACHE_NAME = 'myjobtrack-v10'; // Fixed version instead of Date.now()
-const STATIC_CACHE_NAME = 'myjobtrack-static-v10';
-const ICON_CACHE_NAME = 'myjobtrack-icons-v9';
+const CACHE_NAME = 'myjobtrack-v11'; // Fixed version instead of Date.now()
+const STATIC_CACHE_NAME = 'myjobtrack-static-v11';
+const ICON_CACHE_NAME = 'myjobtrack-icons-v10';
 
 // Cache strategies for different types of resources
 const urlsToCache = [

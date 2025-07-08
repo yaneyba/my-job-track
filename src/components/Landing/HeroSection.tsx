@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Smartphone } from 'lucide-react';
 import { useDemo } from '@/contexts/DemoContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Logo from '@/components/UI/Logo';
@@ -51,6 +51,13 @@ const HeroSection: React.FC = () => {
             >
               {isDemoMode ? t('landing.cta.secondary') : t('landing.cta.primary')}
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+            <button
+              onClick={() => document.getElementById('qr-demo')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-white/20 hover:bg-white/30 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-200 flex items-center group border-2 border-white/30 hover:border-white/40"
+            >
+              <Smartphone className="mr-2 h-5 w-5" />
+              Try Interactive Demo
             </button>
             <button
               onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Calendar, Users, QrCode } from 'lucide-react';
+import { Plus, Calendar, Users, QrCode, Smartphone } from 'lucide-react';
 import QuickActionButton from '@/components/UI/QuickActionButton';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -36,6 +36,12 @@ const QuickActionsPanel: React.FC = () => {
           icon={QrCode}
           label={t('dashboard.scanQR')}
           onClick={() => navigate('/app/scan')}
+          variant="secondary"
+        />
+        <QuickActionButton
+          icon={Smartphone}
+          label="QR Demo"
+          onClick={() => navigate('/app/qr-demo')}
           variant="secondary"
         />
       </div>

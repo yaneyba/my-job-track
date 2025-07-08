@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { useDemo } from '@/contexts/DemoContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import QrScanner from 'qr-scanner';
 import { 
   X, 
@@ -45,6 +46,7 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
   const { isDemoMode, triggerWaitlistCTA } = useDemo();
+  const { isDark } = useTheme();
 
   const cleanup = () => {
     stopScanning();
@@ -251,7 +253,7 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl">
+      <div className="bg-white dark:bg-dark-800 rounded-2xl max-w-md w-full overflow-hidden shadow-2xl transition-colors duration-200">
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
           <div className="flex items-center justify-between">
@@ -272,68 +274,68 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-6 transition-colors duration-200">
           {hasPermission === null ? (
             /* Loading */
-            <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">Initializing camera...</p>
+            <div className="text-center py-8 transition-colors duration-200">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-4 transition-colors duration-200"></div>
+              <p className="text-gray-600 dark:text-gray-400 transition-colors duration-200">Initializing camera...</p>
             </div>
           ) : hasPermission === false ? (
             /* No Permission */
-            <div className="text-center py-8">
-              <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Camera Access Required</h3>
-              <p className="text-gray-600 mb-6">
+            <div className="text-center py-8 transition-colors duration-200">
+              <AlertCircle className="h-16 w-16 text-red-500 dark:text-red-400 mx-auto mb-4 transition-colors duration-200" />
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-200">Camera Access Required</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6 transition-colors duration-200">
                 Please allow camera access to scan QR codes. Check your browser settings and try again.
               </p>
               <button
                 onClick={initializeScanner}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
               >
                 Try Again
               </button>
             </div>
           ) : scanResult ? (
             /* Scan Result */
-            <div className="text-center py-4">
-              <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="h-8 w-8 text-green-600" />
+            <div className="text-center py-4 transition-colors duration-200">
+              <div className="bg-green-100 dark:bg-green-900/30 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 transition-colors duration-200">
+                <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400 transition-colors duration-200" />
               </div>
               
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">QR Code Scanned!</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-200">QR Code Scanned!</h3>
               
-              <div className="bg-gray-50 rounded-lg p-4 mb-6">
+              <div className="bg-gray-50 dark:bg-dark-700 rounded-lg p-4 mb-6 transition-colors duration-200">
                 <div className="flex items-center justify-center mb-2">
                   {scanResult.type === 'customer' ? (
-                    <User className="h-5 w-5 text-blue-600 mr-2" />
+                    <User className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-2 transition-colors duration-200" />
                   ) : (
-                    <Calendar className="h-5 w-5 text-green-600 mr-2" />
+                    <Calendar className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 transition-colors duration-200" />
                   )}
-                  <span className="text-sm font-medium text-gray-600 capitalize">
+                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400 capitalize transition-colors duration-200">
                     {scanResult.type}
                   </span>
                 </div>
                 
-                <p className="font-semibold text-gray-900">
+                <p className="font-semibold text-gray-900 dark:text-white transition-colors duration-200">
                   {scanResult.type === 'customer' ? scanResult.name : scanResult.serviceType}
                 </p>
                 
                 {scanResult.phone && (
-                  <p className="text-sm text-gray-600 mt-1">{scanResult.phone}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 transition-colors duration-200">{scanResult.phone}</p>
                 )}
               </div>
 
               <div className="flex space-x-3">
                 <button
                   onClick={handleNavigateToResult}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition-colors"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-colors duration-200"
                 >
                   View Details
                 </button>
                 <button
                   onClick={resetScanner}
-                  className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium transition-colors"
+                  className="flex-1 bg-gray-100 hover:bg-gray-200 dark:bg-dark-700 dark:hover:bg-dark-600 text-gray-700 dark:text-gray-300 py-3 px-4 rounded-lg font-medium transition-colors duration-200"
                 >
                   Scan Again
                 </button>
@@ -343,7 +345,7 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
             /* Scanner Interface */
             <div>
               {/* Camera View */}
-              <div className="relative bg-black rounded-lg overflow-hidden mb-4" style={{ aspectRatio: '1' }}>
+              <div className="relative bg-black rounded-lg overflow-hidden mb-4 transition-colors duration-200" style={{ aspectRatio: '1' }}>
                 <video
                   ref={videoRef}
                   className="w-full h-full object-cover"
@@ -355,21 +357,21 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="relative">
                     {/* Scanning Frame */}
-                    <div className="w-48 h-48 border-2 border-white rounded-lg relative">
+                    <div className="w-48 h-48 border-2 border-white rounded-lg relative transition-colors duration-200">
                       {/* Corner indicators */}
-                      <div className="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-blue-400 rounded-tl-lg"></div>
-                      <div className="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-blue-400 rounded-tr-lg"></div>
-                      <div className="absolute bottom-0 left-0 w-6 h-6 border-b-4 border-l-4 border-blue-400 rounded-bl-lg"></div>
-                      <div className="absolute bottom-0 right-0 w-6 h-6 border-b-4 border-r-4 border-blue-400 rounded-br-lg"></div>
+                      <div className="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-blue-400 dark:border-blue-500 rounded-tl-lg transition-colors duration-200"></div>
+                      <div className="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-blue-400 dark:border-blue-500 rounded-tr-lg transition-colors duration-200"></div>
+                      <div className="absolute bottom-0 left-0 w-6 h-6 border-b-4 border-l-4 border-blue-400 dark:border-blue-500 rounded-bl-lg transition-colors duration-200"></div>
+                      <div className="absolute bottom-0 right-0 w-6 h-6 border-b-4 border-r-4 border-blue-400 dark:border-blue-500 rounded-br-lg transition-colors duration-200"></div>
                       
                       {/* Scanning line animation */}
                       {isScanning && (
-                        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent animate-pulse"></div>
+                        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-blue-400 dark:via-blue-500 to-transparent animate-pulse transition-colors duration-200"></div>
                       )}
                     </div>
                     
                     {/* Instructions */}
-                    <p className="text-white text-center mt-4 text-sm bg-black/50 px-3 py-1 rounded-full">
+                    <p className="text-white text-center mt-4 text-sm bg-black/50 px-3 py-1 rounded-full transition-colors duration-200">
                       {isProcessing ? 'Processing...' : 'Position QR code within the frame'}
                     </p>
                   </div>
@@ -380,7 +382,7 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
                   {/* Flashlight Toggle */}
                   <button
                     onClick={toggleFlashlight}
-                    className="bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-colors"
+                    className="bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-colors duration-200"
                     title={isFlashlightOn ? 'Turn off flashlight' : 'Turn on flashlight'}
                   >
                     {isFlashlightOn ? (
@@ -394,7 +396,7 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
                   {cameras.length > 1 && (
                     <button
                       onClick={switchCamera}
-                      className="bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-colors"
+                      className="bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-colors duration-200"
                       title="Switch camera"
                     >
                       <RotateCcw className="h-5 w-5" />
@@ -405,18 +407,18 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
 
               {/* Error Message */}
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4 transition-colors duration-200">
                   <div className="flex items-center">
-                    <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
-                    <p className="text-red-800 text-sm">{error}</p>
+                    <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 mr-2 transition-colors duration-200" />
+                    <p className="text-red-800 dark:text-red-200 text-sm transition-colors duration-200">{error}</p>
                   </div>
                 </div>
               )}
 
               {/* Instructions */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h4 className="font-semibold text-blue-900 mb-2">How to scan:</h4>
-                <ul className="text-blue-800 text-sm space-y-1">
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 transition-colors duration-200">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2 transition-colors duration-200">How to scan:</h4>
+                <ul className="text-blue-800 dark:text-blue-200 text-sm space-y-1 transition-colors duration-200">
                   <li>• Hold your device steady</li>
                   <li>• Position the QR code within the frame</li>
                   <li>• Ensure good lighting for best results</li>

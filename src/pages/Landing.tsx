@@ -19,7 +19,7 @@ const Landing: React.FC = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-dark-900 transition-colors duration-200">
       {/* Fixed Action Buttons */}
-      <div className="fixed top-4 right-4 z-50 flex justify-end items-start pointer-events-none">
+      <div className="fixed top-20 right-4 z-50 flex justify-end items-start pointer-events-none">
         {/* Share Button */}
         <ShareButton 
           variant="button" 

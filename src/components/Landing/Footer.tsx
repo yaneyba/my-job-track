@@ -20,11 +20,9 @@ const Footer: React.FC = () => {
             <p className="mt-1">© 2024 MyJobTrack. All rights reserved.</p>
           </div>
         </div>
-        {/* Build number character - bottom left */}
-        <div className="absolute bottom-4 left-4">
-          <span className="text-xs text-gray-600 opacity-50">
-            {BUILD_INFO.gitHash.substring(0, 7)}
-          </span>
+        {/* Build hash - bottom left corner */}
+        <div className="absolute bottom-2 left-4 text-xs text-gray-600 opacity-50">
+          {BUILD_INFO.gitHash}
         </div>
       </div>
     </footer>

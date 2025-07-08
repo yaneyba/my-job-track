@@ -52,10 +52,10 @@ const HeroSection: React.FC = () => {
             <p className="text-lg text-blue-50 mb-6 drop-shadow-md">
               {t('landing.subtitle')}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start items-center">
               <button
                 onClick={() => navigate(isDemoMode ? '/login' : '/app')}
-                className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-200 flex items-center group border-2 border-green-500 hover:border-green-400"
+                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg text-base font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center group"
               >
                 {isDemoMode ? t('landing.cta.secondary') : t('landing.cta.primary')}
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -66,7 +66,7 @@ const HeroSection: React.FC = () => {
                   e.preventDefault();
                   document.getElementById('qr-demo')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="bg-white/20 hover:bg-white/30 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-200 flex items-center group border-2 border-white/30 hover:border-white/40"
+                className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-lg text-base font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center group border border-white/30 hover:border-white/50"
               >
                 <Smartphone className="mr-2 h-5 w-5" />
                 Try Interactive Demo

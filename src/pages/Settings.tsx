@@ -152,23 +152,34 @@ const Settings: React.FC = () => {
   };
 
   const handleClearAllData = async () => {
+    console.log('handleClearAllData started');
     setIsClearing(true);
     try {
+      console.log('About to wait 1 second...');
       // Add a small delay for better UX
       await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log('Calling dataProvider.clearAllData()...');
       dataProvider.clearAllData();
       console.log('Data cleared successfully, closing modal');
       setShowClearConfirm(false); // Close modal on success
+      console.log('Modal should be closed now, about to navigate...');
       // Small delay before navigation to ensure modal closes
       setTimeout(() => {
+        console.log('Navigating to /app...');
         navigate('/app', { 
           state: { message: 'All data has been cleared successfully.' }
         });
       }, 100);
     } catch (error) {
       console.error('Failed to clear data:', error);
-      // Don't close modal on error - let user try again
+      // Check if it's a demo mode error
+      if (error instanceof Error && error.message.includes('Demo mode')) {
+        setImportError('Clear data is not available in demo mode. Demo data cannot be permanently deleted.');
+        setShowClearConfirm(false); // Close modal and show error message instead
+      }
+      // For other errors, keep modal open so user can try again
     } finally {
+      console.log('Setting isClearing to false');
       setIsClearing(false);
     }
   };

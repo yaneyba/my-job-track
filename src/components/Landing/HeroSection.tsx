@@ -44,7 +44,7 @@ const HeroSection: React.FC = () => {
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
               <span itemProp="name">Simple CRM for Service Pros</span>
-              <span className="sr-only">- MyJobTrack for Landscapers, Handymen & Service Professionals</span>
+              <span className="sr-only">- MyJobTrack for Landscapers, Handymen, Cleaners & Service Professionals</span>
             </h1>
             <h2 className="text-xl md:text-2xl text-blue-100 mb-4 leading-relaxed drop-shadow-md">
               {t('landing.title')}

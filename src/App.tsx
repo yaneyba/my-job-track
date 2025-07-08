@@ -20,6 +20,7 @@ import Payments from '@/pages/Payments';
 import ScanQR from '@/pages/ScanQR';
 import Settings from '@/pages/Settings';
 import Profile from '@/pages/Profile';
+import QRDemo from '@/pages/QRDemo';
 import { useSampleData } from '@/hooks/useSampleData';
 
 function App() {
@@ -67,6 +68,7 @@ function AppContent() {
           <Route path="payments" element={<Payments />} />
           <Route path="scan" element={<ScanQR />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="qr-demo" element={<QRDemo />} />
           <Route path="profile" element={<Profile />} />
         </Route>
 
@@ -122,6 +124,11 @@ function AppContent() {
         <Route path="/scan" element={
           <ProtectedRoute>
             <ScanQR />
+            </ProtectedRoute>
+          } />
+        <Route path="/qr-demo" element={
+            <ProtectedRoute>
+              <QRDemo />
           </ProtectedRoute>
         } />
         <Route path="/settings" element={

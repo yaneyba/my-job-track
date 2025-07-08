@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { X, Mail, Briefcase, ArrowRight, CheckCircle, Star } from 'lucide-react';
+import { X, Mail, Briefcase, ArrowRight, CheckCircle, Star, AlertCircle } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { waitlistService, WaitlistSubmission } from '@/services/waitlist';
 
 interface WaitlistModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ const WaitlistModal: React.FC<WaitlistModalProps> = ({ isOpen, onClose }) => {
   const [businessType, setBusinessType] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
@@ -21,23 +23,38 @@ const WaitlistModal: React.FC<WaitlistModalProps> = ({ isOpen, onClose }) => {
     if (!email.trim()) return;
 
     setIsSubmitting(true);
+    setError(null);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // In a real app, you'd send this to your backend/newsletter service
-    console.log('Waitlist signup:', { email, businessType });
-    
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    
-    // Auto-close after showing success
-    setTimeout(() => {
-      onClose();
-      setIsSuccess(false);
-      setEmail('');
-      setBusinessType('');
-    }, 2500);
+    try {
+      // Create waitlist submission data
+      const submission: WaitlistSubmission = {
+        email: email.trim(),
+        businessType: businessType.trim() || undefined,
+        source: 'demo-mode'
+      };
+      
+      // Call the waitlist service
+      const response = await waitlistService.addToWaitlist(submission);
+      
+      if (response.success) {
+        setIsSuccess(true);
+        
+        // Auto-close after showing success
+        setTimeout(() => {
+          onClose();
+          setIsSuccess(false);
+          setEmail('');
+          setBusinessType('');
+        }, 2500);
+      } else {
+        setError(response.message || 'An error occurred. Please try again.');
+      }
+    } catch (err) {
+      console.error('Error submitting to waitlist:', err);
+      setError('An unexpected error occurred. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

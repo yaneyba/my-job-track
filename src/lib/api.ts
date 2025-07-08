@@ -276,6 +276,14 @@ class ApiClient {
     const endpoint = year ? `/api/dashboard/revenue/monthly?year=${year}` : '/api/dashboard/revenue/monthly';
     return this.request(endpoint);
   }
+
+  // Waitlist endpoints
+  async addToWaitlist(data: { email: string; businessType?: string; source?: string }): Promise<ApiResponse> {
+    return this.request('/api/waitlist', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
 }
 
 export const apiClient = new ApiClient();

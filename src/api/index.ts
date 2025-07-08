@@ -5,6 +5,7 @@ import { AuthService } from './services/auth';
 import { CustomerService } from './services/customers';
 import { JobService } from './services/jobs';
 import { DashboardService } from './services/dashboard';
+import { handleWaitlistRequest } from './services/waitlist-handler';
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -32,6 +33,8 @@ export default {
         return await handleJobRoutes(request, jobService, authService, path);
       } else if (path.startsWith('/api/dashboard')) {
         return await handleDashboardRoutes(request, dashboardService, authService, path);
+      } else if (path.startsWith('/api/waitlist')) {
+        return await handleWaitlistRequest(request, env);
       } else {
         return new Response('Not Found', { 
           status: 404,

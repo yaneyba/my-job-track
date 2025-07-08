@@ -20,10 +20,10 @@ const Footer: React.FC = () => {
             <p className="mt-1">© 2024 MyJobTrack. All rights reserved.</p>
           </div>
         </div>
-        {/* Build number character - bottom left */}
+        {/* Build commit hash - bottom left */}
         <div className="absolute bottom-4 left-4">
           <span className="text-xs text-gray-600 dark:text-gray-600 opacity-50">
-            {BUILD_INFO.buildNumber.charAt(0)}
+            {BUILD_INFO.buildNumber.split('-')[1] || BUILD_INFO.buildNumber.charAt(0)}
           </span>
         </div>
       </div>

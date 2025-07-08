@@ -1,5 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Customer, Job, DashboardStats } from '@/types';
+import { 
+  Customer, 
+  Job, 
+  DashboardStats, 
+  AnalyticsEvent, 
+  SessionInitData, 
+  AnalyticsQuery, 
+  ConversionRate, 
+  FeatureUsage, 
+  DemoEngagement, 
+  UserJourney 
+} from '@/types';
 import { IDataProvider } from './IDataProvider';
 import { format, startOfDay, endOfDay, isWithinInterval, parseISO } from 'date-fns';
 
@@ -400,5 +411,195 @@ export class LocalStorageDataProvider implements IDataProvider {
     } catch (error) {
       return 'Unknown';
     }
+  }
+
+  // Analytics methods - store in localStorage for waitlisted users
+  async trackEvent(event: AnalyticsEvent): Promise<void> {
+    try {
+      const storageKey = `${LocalStorageDataProvider.STORAGE_PREFIX}analytics_events`;
+      const events = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      events.push(event);
+      
+      // Keep only last 200 events for waitlisted users
+      if (events.length > 200) {
+        events.splice(0, events.length - 200);
+      }
+      
+      localStorage.setItem(storageKey, JSON.stringify(events));
+      console.log('📊 Waitlist Analytics Event Tracked:', event);
+    } catch (error) {
+      console.warn('Failed to track waitlist analytics event:', error);
+    }
+  }
+
+  async initializeSession(sessionData: SessionInitData): Promise<void> {
+    try {
+      const storageKey = `${LocalStorageDataProvider.STORAGE_PREFIX}analytics_session`;
+      localStorage.setItem(storageKey, JSON.stringify(sessionData));
+      console.log('📊 Waitlist Analytics Session Initialized:', sessionData);
+    } catch (error) {
+      console.warn('Failed to initialize waitlist analytics session:', error);
+    }
+  }
+
+  async getAnalyticsData(query: AnalyticsQuery): Promise<any> {
+    // For waitlisted users, we can return real analytics from stored events
+    const storageKey = `${LocalStorageDataProvider.STORAGE_PREFIX}analytics_events`;
+    const events: AnalyticsEvent[] = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    
+    switch (query.query) {
+      case 'conversion_rates':
+        return this.calculateConversionRatesFromEvents(events, query.timeframe);
+      case 'popular_features':
+        return this.calculatePopularFeaturesFromEvents(events, query.timeframe);
+      case 'demo_engagement':
+        return this.calculateDemoEngagementFromEvents(events, query.timeframe);
+      case 'user_journeys':
+        return this.calculateUserJourneysFromEvents(events, query.timeframe);
+      default:
+        return null;
+    }
+  }
+
+  private calculateConversionRatesFromEvents(events: AnalyticsEvent[], timeframe: string): ConversionRate[] {
+    const conversionEvents = events.filter(e => e.event === 'waitlist_signup_completed');
+    const ctaEvents = events.filter(e => e.event === 'waitlist_cta_triggered');
+    
+    const sourceStats: Record<string, { total: number; conversions: number }> = {};
+    
+    ctaEvents.forEach(event => {
+      const source = event.properties.source || 'unknown';
+      if (!sourceStats[source]) {
+        sourceStats[source] = { total: 0, conversions: 0 };
+      }
+      sourceStats[source].total++;
+    });
+    
+    conversionEvents.forEach(event => {
+      const source = event.properties.source || 'unknown';
+      if (sourceStats[source]) {
+        sourceStats[source].conversions++;
+      }
+    });
+    
+    return Object.entries(sourceStats).map(([source, stats]) => ({
+      conversion_source: source,
+      total_sessions: stats.total,
+      conversions: stats.conversions,
+      conversion_rate: stats.total > 0 ? (stats.conversions / stats.total) * 100 : 0
+    }));
+  }
+
+  private calculatePopularFeaturesFromEvents(events: AnalyticsEvent[], timeframe: string): FeatureUsage[] {
+    const featureEvents = events.filter(e => e.event === 'feature_interaction');
+    const featureStats: Record<string, { count: number; sessions: Set<string> }> = {};
+    
+    featureEvents.forEach(event => {
+      const feature = event.properties.feature || 'unknown';
+      if (!featureStats[feature]) {
+        featureStats[feature] = { count: 0, sessions: new Set() };
+      }
+      featureStats[feature].count++;
+      if (event.sessionId) {
+        featureStats[feature].sessions.add(event.sessionId);
+      }
+    });
+    
+    return Object.entries(featureStats)
+      .map(([feature, stats]) => ({
+        feature_name: feature,
+        feature_category: this.categorizeFeature(feature),
+        usage_count: stats.count,
+        unique_sessions: stats.sessions.size
+      }))
+      .sort((a, b) => b.usage_count - a.usage_count);
+  }
+
+  private calculateDemoEngagementFromEvents(events: AnalyticsEvent[], timeframe: string): DemoEngagement[] {
+    const demoEvents = events.filter(e => e.demoMode);
+    const sessionStats: Record<string, { sessions: Set<string>; conversions: number; pageViews: number }> = {};
+    
+    demoEvents.forEach(event => {
+      const date = new Date(event.timestamp).toISOString().split('T')[0];
+      if (!sessionStats[date]) {
+        sessionStats[date] = { sessions: new Set(), conversions: 0, pageViews: 0 };
+      }
+      
+      if (event.sessionId) {
+        sessionStats[date].sessions.add(event.sessionId);
+      }
+      
+      if (event.event === 'waitlist_signup_completed') {
+        sessionStats[date].conversions++;
+      }
+      
+      if (event.event === 'page_view') {
+        sessionStats[date].pageViews++;
+      }
+    });
+    
+    return Object.entries(sessionStats).map(([date, stats]) => ({
+      date,
+      sessions: stats.sessions.size,
+      avg_duration: 180, // Mock average duration
+      avg_page_views: stats.sessions.size > 0 ? stats.pageViews / stats.sessions.size : 0,
+      conversions: stats.conversions,
+      conversion_rate: stats.sessions.size > 0 ? (stats.conversions / stats.sessions.size) * 100 : 0
+    }));
+  }
+
+  private calculateUserJourneysFromEvents(events: AnalyticsEvent[], timeframe: string): UserJourney[] {
+    // This would require more complex session tracking
+    // For now, return mock data similar to demo provider
+    return [
+      {
+        pages_visited: '["/, "/waitlist-test", "/add-customer", "/waitlist"]',
+        session_count: 8,
+        avg_duration: 210,
+        conversions: 3
+      },
+      {
+        pages_visited: '["/, "/waitlist-test", "/jobs", "/waitlist"]',
+        session_count: 5,
+        avg_duration: 165,
+        conversions: 1
+      }
+    ];
+  }
+
+  private categorizeFeature(feature: string): string {
+    if (feature.includes('customer')) return 'customer_management';
+    if (feature.includes('job')) return 'job_management';
+    if (feature.includes('qr')) return 'qr_features';
+    if (feature.includes('theme') || feature.includes('language')) return 'settings';
+    return 'other';
+  }
+
+  async getConversionRates(timeframe: string): Promise<ConversionRate[]> {
+    return this.calculateConversionRatesFromEvents(
+      JSON.parse(localStorage.getItem(`${LocalStorageDataProvider.STORAGE_PREFIX}analytics_events`) || '[]'),
+      timeframe
+    );
+  }
+
+  async getPopularFeatures(timeframe: string): Promise<FeatureUsage[]> {
+    return this.calculatePopularFeaturesFromEvents(
+      JSON.parse(localStorage.getItem(`${LocalStorageDataProvider.STORAGE_PREFIX}analytics_events`) || '[]'),
+      timeframe
+    );
+  }
+
+  async getDemoEngagement(timeframe: string): Promise<DemoEngagement[]> {
+    return this.calculateDemoEngagementFromEvents(
+      JSON.parse(localStorage.getItem(`${LocalStorageDataProvider.STORAGE_PREFIX}analytics_events`) || '[]'),
+      timeframe
+    );
+  }
+
+  async getUserJourneys(timeframe: string): Promise<UserJourney[]> {
+    return this.calculateUserJourneysFromEvents(
+      JSON.parse(localStorage.getItem(`${LocalStorageDataProvider.STORAGE_PREFIX}analytics_events`) || '[]'),
+      timeframe
+    );
   }
 }

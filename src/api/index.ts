@@ -7,6 +7,7 @@ import { JobService } from './services/jobs';
 import { DashboardService } from './services/dashboard';
 import { handleWaitlistRequest } from './services/waitlist-handler';
 import { handleSpamMonitoringRequest } from './services/spam-monitoring';
+import { handleAnalyticsTrack, handleSessionInit, handleAnalyticsQuery } from './analytics-handler';
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -38,6 +39,8 @@ export default {
         return await handleWaitlistRequest(request, env);
       } else if (path === '/api/admin/spam-stats') {
         return await handleSpamMonitoringRequest(request, env.DB);
+      } else if (path.startsWith('/api/analytics/')) {
+        return await handleAnalyticsRoutes(request, path, env);
       } else {
         return new Response('Not Found', { 
           status: 404,
@@ -332,6 +335,26 @@ async function handleDashboardRoutes(request: Request, dashboardService: Dashboa
     return new Response(JSON.stringify(revenue), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
+  }
+  
+  return new Response('Not Found', { 
+    status: 404,
+    headers: corsHeaders
+  });
+}
+
+// Analytics route handler
+async function handleAnalyticsRoutes(request: Request, path: string, env: Env): Promise<Response> {
+  if (path === '/api/analytics/track') {
+    return await handleAnalyticsTrack(request, env);
+  }
+  
+  if (path === '/api/analytics/session') {
+    return await handleSessionInit(request, env);
+  }
+  
+  if (path.startsWith('/api/analytics/query')) {
+    return await handleAnalyticsQuery(request, env);
   }
   
   return new Response('Not Found', { 

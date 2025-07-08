@@ -44,3 +44,6 @@ export interface DashboardStats {
   unpaidJobsCount: number;
   thisWeekEarnings: number;
 }
+
+// Re-export analytics types
+export * from './analytics';

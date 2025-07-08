@@ -284,6 +284,30 @@ class ApiClient {
       body: JSON.stringify(data),
     });
   }
+
+  // Analytics endpoints
+  async trackAnalyticsEvent(event: any): Promise<void> {
+    await this.request('/api/analytics/track', {
+      method: 'POST',
+      body: JSON.stringify(event),
+    });
+  }
+
+  async initializeAnalyticsSession(sessionData: any): Promise<void> {
+    await this.request('/api/analytics/session', {
+      method: 'POST',
+      body: JSON.stringify(sessionData),
+    });
+  }
+
+  async getAnalyticsData(query: string, timeframe: string, filters?: any): Promise<any> {
+    const params = new URLSearchParams({
+      query,
+      timeframe,
+      ...(filters && { filters: JSON.stringify(filters) })
+    });
+    return await this.request(`/api/analytics/query?${params}`);
+  }
 }
 
 export const apiClient = new ApiClient();

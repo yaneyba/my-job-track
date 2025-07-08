@@ -1,4 +1,15 @@
-import { Customer, Job, DashboardStats } from '@/types';
+import { 
+  Customer, 
+  Job, 
+  DashboardStats, 
+  AnalyticsEvent, 
+  SessionInitData, 
+  AnalyticsQuery, 
+  ConversionRate, 
+  FeatureUsage, 
+  DemoEngagement, 
+  UserJourney 
+} from '@/types';
 import { IDataProvider } from './IDataProvider';
 import apiClient from '@/lib/api';
 
@@ -491,5 +502,68 @@ export class ApiDataProvider implements IDataProvider {
     
     // Note: API-based clearing would need separate endpoint
     console.warn('Full data clearing should be handled via API endpoints');
+  }
+
+  // Analytics methods implementation
+  async trackEvent(event: AnalyticsEvent): Promise<void> {
+    try {
+      await apiClient.trackAnalyticsEvent(event);
+    } catch (error) {
+      console.warn('Failed to track analytics event:', error);
+      // Don't throw - analytics failures shouldn't break the app
+    }
+  }
+
+  async initializeSession(sessionData: SessionInitData): Promise<void> {
+    try {
+      await apiClient.initializeAnalyticsSession(sessionData);
+    } catch (error) {
+      console.warn('Failed to initialize analytics session:', error);
+    }
+  }
+
+  async getAnalyticsData(query: AnalyticsQuery): Promise<any> {
+    try {
+      return await apiClient.getAnalyticsData(query.query, query.timeframe, query.filters);
+    } catch (error) {
+      console.error('Failed to get analytics data:', error);
+      return null;
+    }
+  }
+
+  async getConversionRates(timeframe: string): Promise<ConversionRate[]> {
+    try {
+      return await apiClient.getAnalyticsData('conversion_rates', timeframe);
+    } catch (error) {
+      console.error('Failed to get conversion rates:', error);
+      return [];
+    }
+  }
+
+  async getPopularFeatures(timeframe: string): Promise<FeatureUsage[]> {
+    try {
+      return await apiClient.getAnalyticsData('popular_features', timeframe);
+    } catch (error) {
+      console.error('Failed to get popular features:', error);
+      return [];
+    }
+  }
+
+  async getDemoEngagement(timeframe: string): Promise<DemoEngagement[]> {
+    try {
+      return await apiClient.getAnalyticsData('demo_engagement', timeframe);
+    } catch (error) {
+      console.error('Failed to get demo engagement:', error);
+      return [];
+    }
+  }
+
+  async getUserJourneys(timeframe: string): Promise<UserJourney[]> {
+    try {
+      return await apiClient.getAnalyticsData('user_journeys', timeframe);
+    } catch (error) {
+      console.error('Failed to get user journeys:', error);
+      return [];
+    }
   }
 }

@@ -1,4 +1,15 @@
-import { Customer, Job, DashboardStats } from '@/types';
+import { 
+  Customer, 
+  Job, 
+  DashboardStats, 
+  AnalyticsEvent, 
+  SessionInitData, 
+  AnalyticsQuery, 
+  ConversionRate, 
+  FeatureUsage, 
+  DemoEngagement, 
+  UserJourney 
+} from '@/types';
 
 export interface IDataProvider {
   // Authentication methods (optional - for demo mode)
@@ -34,4 +45,13 @@ export interface IDataProvider {
   exportData(): { customers: Customer[]; jobs: Job[] };
   importData(data: { customers: Customer[]; jobs: Job[] }): boolean;
   clearAllData(): void;
+
+  // Analytics methods
+  trackEvent(event: AnalyticsEvent): Promise<void>;
+  initializeSession(sessionData: SessionInitData): Promise<void>;
+  getAnalyticsData(query: AnalyticsQuery): Promise<any>;
+  getConversionRates(timeframe: string): Promise<ConversionRate[]>;
+  getPopularFeatures(timeframe: string): Promise<FeatureUsage[]>;
+  getDemoEngagement(timeframe: string): Promise<DemoEngagement[]>;
+  getUserJourneys(timeframe: string): Promise<UserJourney[]>;
 }

@@ -1,5 +1,16 @@
 import { IDataProvider } from './IDataProvider';
-import { Customer, Job, DashboardStats } from '@/types';
+import { 
+  Customer, 
+  Job, 
+  DashboardStats, 
+  AnalyticsEvent, 
+  SessionInitData, 
+  AnalyticsQuery, 
+  ConversionRate, 
+  FeatureUsage, 
+  DemoEngagement, 
+  UserJourney 
+} from '@/types';
 import { DemoData, getDemoCredentials, createDemoUser } from '@/hooks/useDemoData';
 import demoData from '@/data/demo.json';
 import QRCode from 'qrcode';
@@ -418,6 +429,151 @@ export class DemoDataProvider implements IDataProvider {
     };
     
     console.log('DemoDataProvider: User data cleared, demo data preserved');
+  }
+
+  // Analytics methods - for demo mode, we'll store in localStorage for simulation
+  async trackEvent(event: AnalyticsEvent): Promise<void> {
+    try {
+      // In demo mode, store events in localStorage for simulation
+      const events = JSON.parse(localStorage.getItem('demo_analytics_events') || '[]');
+      events.push(event);
+      
+      // Keep only last 100 events
+      if (events.length > 100) {
+        events.splice(0, events.length - 100);
+      }
+      
+      localStorage.setItem('demo_analytics_events', JSON.stringify(events));
+      console.log('📊 Demo Analytics Event Tracked:', event);
+    } catch (error) {
+      console.warn('Failed to track demo analytics event:', error);
+    }
+  }
+
+  async initializeSession(sessionData: SessionInitData): Promise<void> {
+    try {
+      // Store session data in localStorage for demo mode
+      localStorage.setItem('demo_analytics_session', JSON.stringify(sessionData));
+      console.log('📊 Demo Analytics Session Initialized:', sessionData);
+    } catch (error) {
+      console.warn('Failed to initialize demo analytics session:', error);
+    }
+  }
+
+  async getAnalyticsData(query: AnalyticsQuery): Promise<any> {
+    // Return mock analytics data for demo mode
+    switch (query.query) {
+      case 'conversion_rates':
+        return this.getConversionRates(query.timeframe);
+      case 'popular_features':
+        return this.getPopularFeatures(query.timeframe);
+      case 'demo_engagement':
+        return this.getDemoEngagement(query.timeframe);
+      case 'user_journeys':
+        return this.getUserJourneys(query.timeframe);
+      default:
+        return null;
+    }
+  }
+
+  async getConversionRates(timeframe: string): Promise<ConversionRate[]> {
+    // Return mock conversion data for demo
+    return [
+      {
+        conversion_source: 'add_customer',
+        total_sessions: 45,
+        conversions: 12,
+        conversion_rate: 26.7
+      },
+      {
+        conversion_source: 'schedule_job',
+        total_sessions: 32,
+        conversions: 8,
+        conversion_rate: 25.0
+      },
+      {
+        conversion_source: 'qr_scan',
+        total_sessions: 18,
+        conversions: 3,
+        conversion_rate: 16.7
+      }
+    ];
+  }
+
+  async getPopularFeatures(timeframe: string): Promise<FeatureUsage[]> {
+    // Return mock feature usage data
+    return [
+      {
+        feature_name: 'add_customer',
+        feature_category: 'customer_management',
+        usage_count: 156,
+        unique_sessions: 89
+      },
+      {
+        feature_name: 'schedule_job',
+        feature_category: 'job_management',
+        usage_count: 143,
+        unique_sessions: 76
+      },
+      {
+        feature_name: 'qr_scan',
+        feature_category: 'qr_features',
+        usage_count: 67,
+        unique_sessions: 34
+      },
+      {
+        feature_name: 'theme_toggle',
+        feature_category: 'settings',
+        usage_count: 23,
+        unique_sessions: 19
+      }
+    ];
+  }
+
+  async getDemoEngagement(timeframe: string): Promise<DemoEngagement[]> {
+    // Return mock demo engagement data
+    const today = new Date();
+    const mockData: DemoEngagement[] = [];
+    
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i);
+      
+      mockData.push({
+        date: date.toISOString().split('T')[0],
+        sessions: 15 + Math.floor(Math.random() * 10),
+        avg_duration: 120 + Math.floor(Math.random() * 180),
+        avg_page_views: 3.2 + Math.random() * 2,
+        conversions: 2 + Math.floor(Math.random() * 4),
+        conversion_rate: 15 + Math.random() * 15
+      });
+    }
+    
+    return mockData;
+  }
+
+  async getUserJourneys(timeframe: string): Promise<UserJourney[]> {
+    // Return mock user journey data
+    return [
+      {
+        pages_visited: '["/, "/demo", "/add-customer", "/waitlist"]',
+        session_count: 23,
+        avg_duration: 245,
+        conversions: 8
+      },
+      {
+        pages_visited: '["/, "/demo", "/jobs", "/add-job", "/waitlist"]',
+        session_count: 18,
+        avg_duration: 198,
+        conversions: 5
+      },
+      {
+        pages_visited: '["/, "/demo", "/qr", "/waitlist"]',
+        session_count: 12,
+        avg_duration: 156,
+        conversions: 2
+      }
+    ];
   }
 
   // Helper methods

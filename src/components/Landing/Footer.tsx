@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
         {/* Build number character - bottom left */}
         <div className="absolute bottom-4 left-4">
           <span className="text-xs text-gray-600 opacity-50">
-            {(BUILD_INFO.buildNumber.split('-')[1] || BUILD_INFO.buildNumber).substring(0, 7)}
+            {BUILD_INFO.gitHash.substring(0, 7)}
           </span>
         </div>
       </div>

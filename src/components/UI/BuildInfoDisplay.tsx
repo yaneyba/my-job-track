@@ -41,7 +41,8 @@ const BuildInfoDisplay: React.FC<BuildInfoDisplayProps> = ({
   };
 
   const getShortVersion = () => {
-    return `v${buildInfo.version} (${buildInfo.buildNumber?.slice(-8) || 'dev'})`;
+    // Just show v1.0.0 instead of the full build number
+    return `v${buildInfo.version?.split('-')[0] || buildInfo.version || '1.0.0'}`;
   };
 
   if (variant === 'badge') {

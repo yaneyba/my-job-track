@@ -105,18 +105,40 @@ export async function handleWaitlistRequest(request: Request, env: any): Promise
   } catch (error) {
     console.error('Waitlist request error:', error);
     
-    // Handle known errors
-    if (error instanceof Error && error.message === 'Email already exists in waitlist') {
-      return new Response(JSON.stringify({ 
-        success: true,
-        message: 'Thank you! This email is already on our waitlist.'
-      }), { 
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          ...corsHeaders
-        }
-      });
+    // Handle known errors with specific messages
+    if (error instanceof Error) {
+      // Email already exists
+      if (error.message === 'Email already exists in waitlist') {
+        return new Response(JSON.stringify({ 
+          success: true,
+          message: 'Thank you! This email is already on our waitlist.'
+        }), { 
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            ...corsHeaders
+          }
+        });
+      }
+      
+      // Rate limiting and spam prevention errors
+      if (error.message.includes('Rate limit exceeded') ||
+          error.message.includes('Too many') ||
+          error.message.includes('Disposable email') ||
+          error.message.includes('Invalid browser') ||
+          error.message.includes('Automated requests') ||
+          error.message.includes('Multiple similar')) {
+        return new Response(JSON.stringify({ 
+          error: error.message,
+          success: false
+        }), { 
+          status: 429, // Too Many Requests
+          headers: {
+            'Content-Type': 'application/json',
+            ...corsHeaders
+          }
+        });
+      }
     }
     
     // Generic error response

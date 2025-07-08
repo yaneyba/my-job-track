@@ -6,6 +6,7 @@ import { CustomerService } from './services/customers';
 import { JobService } from './services/jobs';
 import { DashboardService } from './services/dashboard';
 import { handleWaitlistRequest } from './services/waitlist-handler';
+import { handleSpamMonitoringRequest } from './services/spam-monitoring';
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -35,6 +36,8 @@ export default {
         return await handleDashboardRoutes(request, dashboardService, authService, path);
       } else if (path.startsWith('/api/waitlist')) {
         return await handleWaitlistRequest(request, env);
+      } else if (path === '/api/admin/spam-stats') {
+        return await handleSpamMonitoringRequest(request, env.DB);
       } else {
         return new Response('Not Found', { 
           status: 404,

@@ -59,12 +59,6 @@ const HeroSection: React.FC = () => {
               <Smartphone className="mr-2 h-5 w-5" />
               Try Interactive Demo
             </button>
-            <button
-              onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-              className="text-blue-100 hover:text-white px-4 py-2 text-lg font-medium transition-colors duration-200 underline decoration-2 underline-offset-4 decoration-blue-300 hover:decoration-white"
-            >
-              Learn More
-            </button>
           </div>
         </div>
       </div>

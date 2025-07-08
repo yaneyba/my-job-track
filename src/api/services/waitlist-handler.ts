@@ -1,4 +1,5 @@
 import { WaitlistService, WaitlistSubmission } from '../services/waitlist';
+import { notifySlackOnWaitlistSignup } from './slack';
 import { handleCors, corsHeaders } from '../utils/cors';
 
 export async function handleWaitlistRequest(request: Request, env: any): Promise<Response> {
@@ -71,6 +72,19 @@ export async function handleWaitlistRequest(request: Request, env: any): Promise
     
     // Add to waitlist
     const result = await waitlistService.addToWaitlist(data, request);
+    
+    // Send Slack notification (don't fail the request if this fails)
+    try {
+      const webhookUrl = env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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';
+      await notifySlackOnWaitlistSignup({
+        email: result.email,
+        businessType: result.businessType,
+        source: result.source
+      }, webhookUrl);
+    } catch (slackError) {
+      console.error('Failed to send Slack notification:', slackError);
+      // Don't fail the request if Slack notification fails
+    }
     
     return new Response(JSON.stringify({ 
       success: true,

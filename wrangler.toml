@@ -7,6 +7,7 @@ compatibility_flags = ["nodejs_compat"]
 [vars]
 ENVIRONMENT = "production"
 CORS_ORIGIN = "https://myjobtrack.app"
+# SLACK_WEBHOOK_URL is set as a secret via: wrangler secret put SLACK_WEBHOOK_URL
 
 # D1 Database bindings
 [[d1_databases]]
@@ -18,6 +19,7 @@ migrations_dir = "database/migrations"
 # Development environment (use with: wrangler dev or wrangler deploy --env development)
 [env.development]
 vars = { ENVIRONMENT = "development", CORS_ORIGIN = "http://localhost:5173" }
+# SLACK_WEBHOOK_URL is set as a secret via: wrangler secret put SLACK_WEBHOOK_URL --env development
 
 [[env.development.d1_databases]]
 binding = "DB"
@@ -28,6 +30,7 @@ migrations_dir = "database/migrations"
 # Production environment (use with: wrangler deploy --env production)
 [env.production]
 vars = { ENVIRONMENT = "production", CORS_ORIGIN = "https://myjobtrack.app" }
+# SLACK_WEBHOOK_URL is set as a secret via: wrangler secret put SLACK_WEBHOOK_URL --env production
 
 [[env.production.d1_databases]]
 binding = "DB"

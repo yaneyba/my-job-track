@@ -3,6 +3,7 @@ export interface Env {
   DB: any; // D1Database type will be available at runtime
   CORS_ORIGIN?: string;
   ENVIRONMENT?: string;
+  SLACK_WEBHOOK_URL?: string;
 }
 
 // Database types

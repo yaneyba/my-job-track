@@ -5,13 +5,14 @@ import { useDemo } from '@/contexts/DemoContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Logo from '@/components/UI/Logo';
 
+// Hero section with balanced layout between text and interactive demo
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
   const { isDemoMode } = useDemo();
   const { t } = useLanguage();
   
   return (
-    <header className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-purple-900 dark:from-blue-950 dark:via-blue-900 dark:to-purple-950 overflow-hidden" role="banner">
+    <header className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-purple-900 dark:from-blue-950 dark:via-blue-900 dark:to-purple-950 overflow-hidden min-h-[85vh]" role="banner">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
@@ -22,7 +23,7 @@ const HeroSection: React.FC = () => {
       <div className="relative max-w-7xl mx-auto px-4 py-16 md:py-24 lg:py-28">
         <div className="grid md:grid-cols-2 gap-8 items-center">
           {/* Left Side - Text Content */}
-          <div className="text-center md:text-left">
+          <div className="text-center md:text-left md:max-w-md">
             <div className="mb-6 inline-block md:hidden">
               <Logo 
                 size="lg"
@@ -45,10 +46,10 @@ const HeroSection: React.FC = () => {
               <span itemProp="name">Simple CRM for Service Pros</span>
               <span className="sr-only">- MyJobTrack for Landscapers, Handymen & Service Professionals</span>
             </h1>
-            <h2 className="text-xl md:text-2xl text-blue-100 mb-6 max-w-xl leading-relaxed drop-shadow-md">
+            <h2 className="text-xl md:text-2xl text-blue-100 mb-4 leading-relaxed drop-shadow-md">
               {t('landing.title')}
             </h2>
-            <p className="text-lg text-blue-50 mb-8 max-w-xl drop-shadow-md">
+            <p className="text-lg text-blue-50 mb-6 drop-shadow-md">
               {t('landing.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center">
@@ -74,8 +75,8 @@ const HeroSection: React.FC = () => {
           </div>
           
           {/* Right Side - Interactive Demo Preview */}
-          <div className="hidden md:block relative">
-            <div className="relative z-10 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 shadow-2xl transform rotate-1 hover:rotate-0 transition-all duration-500">
+          <div className="hidden md:flex justify-center items-center relative">
+            <div className="relative z-10 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 shadow-2xl transform rotate-1 hover:rotate-0 transition-all duration-500 max-w-sm">
               {/* Phone Frame */}
               <div className="bg-gray-900 rounded-xl overflow-hidden border-8 border-gray-800 shadow-inner">
                 {/* App Interface Preview */}
@@ -96,7 +97,7 @@ const HeroSection: React.FC = () => {
                   </div>
                   
                   {/* App Content */}
-                  <div className="bg-gray-100 dark:bg-gray-900 p-4 h-full">
+                  <div className="bg-gray-100 dark:bg-gray-900 p-4 flex-1">
                     {/* Today's Jobs Section */}
                     <div className="mb-4">
                       <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Today's Jobs</h4>
@@ -159,17 +160,17 @@ const HeroSection: React.FC = () => {
               </div>
               
               {/* Animated Elements */}
-              <div className="absolute -top-4 -right-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse">
+              <div className="absolute -top-4 -right-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse z-20">
                 Try Demo
               </div>
-              <div className="absolute -bottom-3 -left-3 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+              <div className="absolute -bottom-3 -left-3 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-20">
                 Simple & Fast
               </div>
             </div>
             
             {/* Decorative Elements */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-full blur-3xl -z-10"></div>
-            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-green-500/30 rounded-full blur-3xl -z-10"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-full blur-3xl -z-10"></div>
+            <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-green-500/30 rounded-full blur-3xl -z-10"></div>
           </div>
         </div>
       </div>

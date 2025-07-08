@@ -12,7 +12,7 @@ const HeroSection: React.FC = () => {
   const { t } = useLanguage();
   
   return (
-    <header className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-purple-900 dark:from-blue-950 dark:via-blue-900 dark:to-purple-950 overflow-hidden min-h-[85vh]" role="banner">
+    <header className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-purple-900 dark:from-blue-950 dark:via-blue-900 dark:to-purple-950 overflow-hidden" role="banner">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
@@ -20,7 +20,7 @@ const HeroSection: React.FC = () => {
         <div className="absolute -bottom-24 left-1/3 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
       </div>
       
-      <div className="relative max-w-7xl mx-auto px-4 py-16 md:py-24 lg:py-28">
+      <div className="relative max-w-7xl mx-auto px-4 py-12 md:py-16 lg:py-20">
         <div className="grid md:grid-cols-2 gap-8 items-center">
           {/* Left Side - Text Content */}
           <div className="text-center md:text-left md:max-w-md">

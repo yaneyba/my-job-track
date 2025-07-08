@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useDemo } from './DemoContext';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
+import { LocalStorageDataProvider } from '@/data/providers/LocalStorageDataProvider';
 import { env } from '@/utils/env';
 
 interface User {
@@ -9,6 +10,7 @@ interface User {
   name: string;
   businessName?: string;
   createdAt: string;
+  isWaitlisted?: boolean;
 }
 
 interface StoredUser extends User {
@@ -86,14 +88,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           
           // Session expires after 30 days
           if (now - sessionData.timestamp < 30 * 24 * 60 * 60 * 1000) {
-            // Enable demo mode if this is the demo user
-            const demoEmail = env.demoEmail();
-            if (userData.email === demoEmail) {
-              console.log('🎭 Demo user session restored, enabling demo data provider');
-              DataProviderFactory.enableDemoMode();
+            // Check if this is a waitlisted user
+            if (userData.isWaitlisted) {
+              console.log('🧪 Waitlisted user session restored, enabling local storage data provider');
+              DataProviderFactory.enableWaitlistMode();
             } else {
-              console.log('🔧 Regular user session restored, using API data provider');
-              DataProviderFactory.disableDemoMode();
+              // Enable demo mode if this is the demo user
+              const demoEmail = env.demoEmail();
+              if (userData.email === demoEmail) {
+                console.log('🎭 Demo user session restored, enabling demo data provider');
+                DataProviderFactory.enableDemoMode();
+              } else {
+                console.log('🔧 Regular user session restored, using API data provider');
+                DataProviderFactory.disableDemoMode();
+              }
             }
             setUser(userData);
           } else {
@@ -119,6 +127,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Check if user is waitlisted first
+      if (LocalStorageDataProvider.isWaitlistedUser(email)) {
+        console.log('🧪 Waitlisted user detected, enabling local storage mode');
+        
+        const localProvider = new LocalStorageDataProvider();
+        const result = await localProvider.authenticateUser(email, password);
+        
+        if (result.success) {
+          console.log('🧪 Waitlist authentication successful');
+          DataProviderFactory.enableWaitlistMode();
+          
+          // Store session for waitlisted user
+          const sessionData = {
+            timestamp: new Date().getTime(),
+            userId: result.user.id
+          };
+          
+          localStorage.setItem('myjobtrack_user', JSON.stringify(result.user));
+          localStorage.setItem('myjobtrack_session', JSON.stringify(sessionData));
+          
+          setUser(result.user);
+          return { success: true };
+        }
+      }
       
       // Check if we should use API provider or demo mode
       const shouldUseAPI = !isDemoMode;
@@ -281,6 +314,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       console.log('🚪 User logged out, resetting to API data provider');
       DataProviderFactory.disableDemoMode();
     }
+    
+    // Reset data provider factory to ensure clean state
+    DataProviderFactory.reset();
   };
 
   const updateProfile = (updates: Partial<User>) => {

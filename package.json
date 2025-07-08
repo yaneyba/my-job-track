@@ -1,7 +1,7 @@
 {
   "name": "myjobtrack",
   "private": true,
-  "version": "1.0.0-build.20250708041001f-fvw4bu9",
+  "version": "1.0.0-build.20250708163316q-qw4wq1u",
   "type": "module",
   "scripts": {
     "dev": "vite",

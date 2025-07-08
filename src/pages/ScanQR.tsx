@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDemo } from '@/contexts/DemoContext';
+import { useAuth } from '@/contexts/AuthContext';
 import QRScanner from '@/components/QR/QRScanner';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import { 
@@ -11,12 +12,16 @@ import {
   User,
   Calendar,
   Zap,
-  Info
+  Info,
+  TestTube,
+  Lock
 } from 'lucide-react';
 
 const ScanQR: React.FC = () => {
   const [showScanner, setShowScanner] = useState(false);
   const { isDemoMode } = useDemo();
+  const { user } = useAuth();
+  const isWaitlistedUser = user?.isWaitlisted === true;
 
   const breadcrumbItems = [
     { label: 'Home', href: '/app' },
@@ -94,14 +99,45 @@ const ScanQR: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Waitlist Test Mode Notice */}
+        {isWaitlistedUser && (
+          <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4 mb-6 transition-colors duration-200">
+            <div className="flex items-start">
+              <TestTube className="h-5 w-5 text-purple-600 dark:text-purple-400 mt-0.5 mr-3 flex-shrink-0" />
+              <div>
+                <h3 className="text-sm font-medium text-purple-800 dark:text-purple-200 mb-1">
+                  QR Scanner Disabled in Test Mode
+                </h3>
+                <p className="text-sm text-purple-700 dark:text-purple-300">
+                  The QR scanner is disabled while you're testing the app. You can still generate and view QR codes from customer and job detail pages, but camera scanning is not available in test mode.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
         
         <button
           onClick={() => setShowScanner(true)}
-          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 dark:from-blue-500 dark:to-purple-500 dark:hover:from-blue-600 dark:hover:to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center mx-auto group"
+          disabled={isWaitlistedUser}
+          className={`${
+            isWaitlistedUser 
+              ? 'bg-gray-400 cursor-not-allowed' 
+              : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 dark:from-blue-500 dark:to-purple-500 dark:hover:from-blue-600 dark:hover:to-purple-600'
+          } text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center mx-auto group`}
         >
-          <Camera className="h-6 w-6 mr-3" />
-          Start Scanning
-          <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+          {isWaitlistedUser ? (
+            <>
+              <Lock className="h-6 w-6 mr-3" />
+              Scanning Disabled in Test Mode
+            </>
+          ) : (
+            <>
+              <Camera className="h-6 w-6 mr-3" />
+              Start Scanning
+              <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            </>
+          )}
         </button>
       </div>
 

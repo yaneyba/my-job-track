@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDemo } from '@/contexts/DemoContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import Logo from '@/components/UI/Logo';
 import { 
   Calendar,
@@ -30,6 +31,7 @@ const Login: React.FC = () => {
 
   const { login, isAuthenticated } = useAuth();
   const { isDemoMode } = useDemo();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -45,13 +47,13 @@ const Login: React.FC = () => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = t('auth.emailRequired');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = t('auth.emailInvalid');
     }
 
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = t('auth.passwordRequired');
     }
 
     setErrors(newErrors);
@@ -73,11 +75,11 @@ const Login: React.FC = () => {
         const from = location.state?.from?.pathname || '/app';
         navigate(from, { replace: true });
       } else {
-        setLoginError(result.error || 'Login failed');
+        setLoginError(result.error || t('auth.loginError'));
       }
     } catch (error) {
       console.error('Login error:', error);
-      setLoginError('An unexpected error occurred. Please try again.');
+      setLoginError(t('auth.loginError'));
     } finally {
       setIsSubmitting(false);
     }
@@ -107,23 +109,23 @@ const Login: React.FC = () => {
   const features = [
     {
       icon: Users,
-      title: 'Customer Management',
-      description: 'Keep track of all your customers and their service history'
+      title: t('auth.features.customers'),
+      description: t('auth.features.customersDesc')
     },
     {
       icon: Calendar,
-      title: 'Job Scheduling',
-      description: 'Schedule and track jobs with ease'
+      title: t('auth.features.jobs'),
+      description: t('auth.features.jobsDesc')
     },
     {
       icon: QrCode,
-      title: 'QR Code Integration',
-      description: 'Generate QR codes for instant on-site access'
+      title: t('auth.features.qr'),
+      description: t('auth.features.qrDesc')
     },
     {
       icon: DollarSign,
-      title: 'Payment Tracking',
-      description: 'Track payments and never miss a payment again'
+      title: t('auth.features.payments'),
+      description: t('auth.features.paymentsDesc')
     }
   ];
 
@@ -149,10 +151,10 @@ const Login: React.FC = () => {
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-bold text-white mb-4">
-                  Everything you need to manage your service business
+                  {t('auth.leftSideTitle')}
                 </h2>
                 <p className="text-blue-100 text-lg">
-                  Built specifically for landscapers, cleaners, handymen, and other service providers.
+                  {t('auth.leftSideSubtitle')}
                 </p>
               </div>
 
@@ -172,7 +174,7 @@ const Login: React.FC = () => {
 
               <div className="flex items-center text-white/80 text-sm">
                 <CheckCircle className="h-4 w-4 mr-2" />
-                <span>Works offline • Easy to use • Professional features</span>
+                <span>{t('auth.leftSideFeatures')}</span>
               </div>
             </div>
           </div>
@@ -196,8 +198,8 @@ const Login: React.FC = () => {
 
             {/* Form Header */}
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome Back</h2>
-              <p className="text-gray-600 dark:text-gray-400">Sign in to your account to continue</p>
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{t('auth.welcomeBack')}</h2>
+              <p className="text-gray-600 dark:text-gray-400">{t('auth.signInToAccount')}</p>
             </div>
 
             {/* Login Error */}
@@ -213,7 +215,7 @@ const Login: React.FC = () => {
               {/* Email */}
               <div>
                 <label htmlFor="email" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Email Address
+                  {t('auth.email')}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -226,7 +228,7 @@ const Login: React.FC = () => {
                     autoComplete="off"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    placeholder="Enter your email"
+                    placeholder={t('auth.emailPlaceholder')}
                     className={`
                       block w-full pl-12 pr-4 py-4 text-lg border rounded-xl
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
@@ -246,7 +248,7 @@ const Login: React.FC = () => {
               {/* Password */}
               <div>
                 <label htmlFor="password" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Password
+                  {t('auth.password')}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -259,7 +261,7 @@ const Login: React.FC = () => {
                     autoComplete="new-password"
                     value={formData.password}
                     onChange={(e) => handleInputChange('password', e.target.value)}
-                    placeholder="Enter your password"
+                    placeholder={t('auth.passwordPlaceholder')}
                     className={`
                       block w-full pl-12 pr-12 py-4 text-lg border rounded-xl
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
@@ -302,11 +304,11 @@ const Login: React.FC = () => {
                 {isSubmitting ? (
                   <>
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Signing In...
+                    {t('auth.signingIn')}
                   </>
                 ) : (
                   <>
-                    Sign In
+                    {t('auth.signIn')}
                     <ArrowRight className="h-5 w-5 ml-2" />
                   </>
                 )}
@@ -317,12 +319,12 @@ const Login: React.FC = () => {
             {!isDemoMode && (
               <div className="mt-8 text-center">
                 <p className="text-gray-600 dark:text-gray-400">
-                  Don't have an account?{' '}
+                  {t('auth.noAccount')}{' '}
                   <Link
                     to="/signup"
                     className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold"
                   >
-                    Sign up now
+                    {t('auth.signUp')}
                   </Link>
                 </p>
               </div>
@@ -332,14 +334,14 @@ const Login: React.FC = () => {
             <div className="mt-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
               <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2 flex items-center">
                 <Briefcase className="h-4 w-4 mr-2" />
-                Try the Demo
+                {t('auth.demo.title')}
               </h3>
               <p className="text-blue-800 dark:text-blue-200 text-sm mb-3">
-                Want to explore the app? Use these demo credentials:
+                {t('auth.demo.description')}
               </p>
               <div className="bg-white dark:bg-dark-700 rounded p-3 text-sm mb-3">
-                <p className="text-gray-700 dark:text-gray-300"><strong>Email:</strong> {import.meta.env.VITE_DEMO_EMAIL}</p>
-                <p className="text-gray-700 dark:text-gray-300"><strong>Password:</strong> {import.meta.env.VITE_DEMO_PASSWORD}</p>
+                <p className="text-gray-700 dark:text-gray-300"><strong>{t('auth.email')}:</strong> {import.meta.env.VITE_DEMO_EMAIL}</p>
+                <p className="text-gray-700 dark:text-gray-300"><strong>{t('auth.password')}:</strong> {import.meta.env.VITE_DEMO_PASSWORD}</p>
               </div>
               <button
                 type="button"
@@ -347,7 +349,7 @@ const Login: React.FC = () => {
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center"
               >
                 <ArrowRight className="h-4 w-4 mr-2" />
-                Auto-fill Demo Credentials
+                {t('auth.demo.autoFill')}
               </button>
             </div>
 
@@ -357,7 +359,7 @@ const Login: React.FC = () => {
                 to="/"
                 className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 text-sm transition-colors duration-200"
               >
-                ← Back to homepage
+                ← {t('auth.backToHome')}
               </Link>
             </div>
           </div>

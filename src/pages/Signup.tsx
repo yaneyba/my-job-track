@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
+import Logo from '@/components/UI/Logo';
 import { 
-  Calendar, 
+  Calendar,
   Mail, 
   Lock, 
   Eye, 
@@ -30,6 +32,7 @@ const Signup: React.FC = () => {
   const [signupError, setSignupError] = useState('');
 
   const { signup, isAuthenticated } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -45,25 +48,25 @@ const Signup: React.FC = () => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Full name is required';
+      newErrors.name = t('auth.fullNameRequired');
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = t('auth.emailRequired');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = t('auth.emailInvalid');
     }
 
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = t('auth.passwordRequired');
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = t('auth.passwordMinLength');
     }
 
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
+      newErrors.confirmPassword = t('auth.confirmPasswordRequired');
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+      newErrors.confirmPassword = t('auth.passwordsDoNotMatch');
     }
 
     setErrors(newErrors);
@@ -90,11 +93,11 @@ const Signup: React.FC = () => {
         const from = location.state?.from?.pathname || '/app';
         navigate(from, { replace: true });
       } else {
-        setSignupError(result.error || 'Signup failed');
+        setSignupError(result.error || t('auth.signupError'));
       }
     } catch (error) {
       console.error('Signup error:', error);
-      setSignupError('An unexpected error occurred. Please try again.');
+      setSignupError(t('auth.unexpectedError'));
     } finally {
       setIsSubmitting(false);
     }
@@ -112,12 +115,12 @@ const Signup: React.FC = () => {
   };
 
   const benefits = [
-    'Unlimited customers and jobs',
-    'QR code generation and scanning',
-    'Payment tracking and management',
-    'Works offline on your device',
-    'No monthly fees or subscriptions',
-    'Data stored securely on your device'
+    t('auth.benefits.unlimited'),
+    t('auth.benefits.qrCode'),
+    t('auth.benefits.paymentTracking'),
+    t('auth.benefits.worksOffline'),
+    t('auth.benefits.noFees'),
+    t('auth.benefits.secureData')
   ];
 
   return (
@@ -127,24 +130,25 @@ const Signup: React.FC = () => {
         <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-green-600 to-blue-600 p-12 flex-col justify-center">
           <div className="max-w-md">
             {/* Logo */}
-            <Link to="/" className="flex items-center mb-8 hover:opacity-80 transition-opacity">
-              <div className="bg-white/20 p-3 rounded-xl mr-4">
-                <Calendar className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-white">MyJobTrack</h1>
-                <p className="text-blue-100">Simple Job Tracking</p>
-              </div>
-            </Link>
+            <div className="mb-8">
+              <Logo 
+                size="lg" 
+                variant="horizontal" 
+                theme="white" 
+                showTagline={true}
+                tagline="Simple Job Tracking"
+                clickable={true}
+              />
+            </div>
 
             {/* Benefits */}
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-bold text-white mb-4">
-                  Join thousands of service providers
+                  {t('auth.joinThousands')}
                 </h2>
                 <p className="text-blue-100 text-lg">
-                  Start managing your business more efficiently with our simple, powerful tools.
+                  {t('auth.startManaging')}
                 </p>
               </div>
 
@@ -160,11 +164,10 @@ const Signup: React.FC = () => {
               <div className="bg-white/10 rounded-lg p-4">
                 <div className="flex items-center mb-2">
                   <Users className="h-5 w-5 text-white mr-2" />
-                  <span className="text-white font-semibold">Perfect for:</span>
+                  <span className="text-white font-semibold">{t('auth.whyChoose')}</span>
                 </div>
                 <p className="text-blue-100 text-sm">
-                  Landscapers • House Cleaners • Handymen • Pool Services • 
-                  Pest Control • HVAC • Plumbers • Electricians • And more!
+                  {t('auth.perfectFor')}
                 </p>
               </div>
             </div>
@@ -189,8 +192,8 @@ const Signup: React.FC = () => {
 
             {/* Form Header */}
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Create Your Account</h2>
-              <p className="text-gray-600 dark:text-gray-400">Start tracking your jobs in minutes</p>
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{t('auth.createAccount')}</h2>
+              <p className="text-gray-600 dark:text-gray-400">{t('auth.getStartedDesc')}</p>
             </div>
 
             {/* Signup Error */}
@@ -206,7 +209,7 @@ const Signup: React.FC = () => {
               {/* Full Name */}
               <div>
                 <label htmlFor="name" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Full Name *
+                  {t('auth.fullName')} *
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -219,7 +222,7 @@ const Signup: React.FC = () => {
                     autoComplete="off"
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    placeholder="Enter your full name"
+                    placeholder={t('auth.fullNamePlaceholder')}
                     className={`
                       block w-full pl-12 pr-4 py-4 text-lg border rounded-xl
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
@@ -239,7 +242,7 @@ const Signup: React.FC = () => {
               {/* Email */}
               <div>
                 <label htmlFor="email" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Email Address *
+                  {t('auth.email')} *
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -252,7 +255,7 @@ const Signup: React.FC = () => {
                     autoComplete="off"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    placeholder="Enter your email"
+                    placeholder={t('auth.emailPlaceholder')}
                     className={`
                       block w-full pl-12 pr-4 py-4 text-lg border rounded-xl
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
@@ -272,7 +275,7 @@ const Signup: React.FC = () => {
               {/* Business Name (Optional) */}
               <div>
                 <label htmlFor="businessName" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Business Name <span className="text-gray-500 dark:text-gray-400 font-normal">(Optional)</span>
+                  {t('auth.businessName')} <span className="text-gray-500 dark:text-gray-400 font-normal">(Optional)</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -285,7 +288,7 @@ const Signup: React.FC = () => {
                     autoComplete="off"
                     value={formData.businessName}
                     onChange={(e) => handleInputChange('businessName', e.target.value)}
-                    placeholder="Your business name"
+                    placeholder={t('auth.businessNamePlaceholder')}
                     className="
                       block w-full pl-12 pr-4 py-4 text-lg border border-gray-300 dark:border-dark-600 rounded-xl
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
@@ -298,7 +301,7 @@ const Signup: React.FC = () => {
               {/* Password */}
               <div>
                 <label htmlFor="password" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Password *
+                  {t('auth.password')} *
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -311,7 +314,7 @@ const Signup: React.FC = () => {
                     autoComplete="new-password"
                     value={formData.password}
                     onChange={(e) => handleInputChange('password', e.target.value)}
-                    placeholder="Create a password"
+                    placeholder={t('auth.passwordPlaceholder')}
                     className={`
                       block w-full pl-12 pr-12 py-4 text-lg border rounded-xl
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
@@ -342,7 +345,7 @@ const Signup: React.FC = () => {
               {/* Confirm Password */}
               <div>
                 <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Confirm Password *
+                  {t('auth.confirmPassword')} *
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -355,7 +358,7 @@ const Signup: React.FC = () => {
                     autoComplete="new-password"
                     value={formData.confirmPassword}
                     onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                    placeholder="Confirm your password"
+                    placeholder={t('auth.confirmPasswordPlaceholder')}
                     className={`
                       block w-full pl-12 pr-12 py-4 text-lg border rounded-xl
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
@@ -398,11 +401,11 @@ const Signup: React.FC = () => {
                 {isSubmitting ? (
                   <>
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Creating Account...
+                    {t('auth.creatingAccount')}
                   </>
                 ) : (
                   <>
-                    Create Account
+                    {t('auth.createAccount')}
                     <ArrowRight className="h-5 w-5 ml-2" />
                   </>
                 )}
@@ -412,12 +415,12 @@ const Signup: React.FC = () => {
             {/* Login Link */}
             <div className="mt-8 text-center">
               <p className="text-gray-600 dark:text-gray-400">
-                Already have an account?{' '}
+                {t('auth.hasAccount')}{' '}
                 <Link
                   to="/login"
                   className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold"
                 >
-                  Sign in here
+                  {t('auth.signIn')}
                 </Link>
               </p>
             </div>
@@ -425,8 +428,7 @@ const Signup: React.FC = () => {
             {/* Terms */}
             <div className="mt-6 text-center">
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                By creating an account, you agree to our Terms of Service and Privacy Policy.
-                Your data is stored locally on your device.
+                {t('auth.terms')}
               </p>
             </div>
 
@@ -436,7 +438,7 @@ const Signup: React.FC = () => {
                 to="/"
                 className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 text-sm transition-colors duration-200"
               >
-                ← Back to homepage
+                ← {t('auth.backToHome')}
               </Link>
             </div>
           </div>

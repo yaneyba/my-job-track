@@ -1,5 +1,6 @@
 import React from 'react';
 import { Smartphone, Shield, Zap } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface BenefitItem {
   icon: React.FC<{ className?: string }>;
@@ -8,21 +9,23 @@ interface BenefitItem {
 }
 
 const BenefitsSection: React.FC = () => {
+  const { t } = useLanguage();
+  
   const benefits: BenefitItem[] = [
     {
       icon: Smartphone,
-      title: 'Built for Your Phone',
-      description: 'Large buttons, simple navigation. Use it with gloves on. Works great even in bright sunlight.'
+      title: t('landing.benefits.mobile.title'),
+      description: t('landing.benefits.mobile.description')
     },
     {
       icon: Shield,
-      title: 'No Learning Curve',
-      description: 'If you can text, you can use MyJobTrack. Set up in 5 minutes. Start tracking jobs immediately.'
+      title: t('landing.benefits.simple.title'),
+      description: t('landing.benefits.simple.description')
     },
     {
       icon: Zap,
-      title: 'Lightning Fast',
-      description: 'Add customers in 30 seconds. Schedule jobs in 1 minute. Built for busy landscapers and handymen.'
+      title: t('landing.benefits.offline.title'),
+      description: t('landing.benefits.offline.description')
     }
   ];
 
@@ -31,10 +34,10 @@ const BenefitsSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-200">
-            Why Service Providers Love MyJobTrack
+            {t('landing.benefits.title')}
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto transition-colors duration-200">
-            Designed by service providers, for service providers. Simple, fast, and effective.
+            {t('landing.benefits.subtitle')}
           </p>
         </div>
         

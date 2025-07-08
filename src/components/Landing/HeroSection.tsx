@@ -2,11 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { useDemo } from '@/contexts/DemoContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import Logo from '@/components/UI/Logo';
 
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
   const { isDemoMode } = useDemo();
+  const { t } = useLanguage();
   
   return (
     <header className="relative overflow-hidden" role="banner">
@@ -37,20 +39,17 @@ const HeroSection: React.FC = () => {
             <span className="sr-only">- Simple CRM for Landscapers, Handymen & Service Pros</span>
           </h1>
           <h2 className="text-xl sm:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
-            <span className="text-green-300 font-semibold">Simple CRM</span> built for 
-            <span className="font-semibold text-white"> service providers </span> 
-            who value simplicity and speed.
+            {t('landing.title')}
           </h2>
           <p className="text-lg text-blue-50 mb-8 max-w-2xl mx-auto drop-shadow-md">
-            Track jobs, manage customers, and get paid faster. <strong className="text-white">No complexity, no learning curve</strong> - 
-            just what you need to run your landscaping, handyman, or contracting business.
+            {t('landing.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
               onClick={() => navigate(isDemoMode ? '/login' : '/app')}
               className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-200 flex items-center group border-2 border-green-500 hover:border-green-400"
             >
-              {isDemoMode ? 'Try Demo' : 'Get Started'}
+              {isDemoMode ? t('landing.cta.secondary') : t('landing.cta.primary')}
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </button>
             <button

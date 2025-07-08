@@ -1,9 +1,10 @@
 import React from 'react';
 import Logo from '@/components/UI/Logo';
+import { BUILD_INFO } from '@/build-info';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-900 dark:bg-dark-950 py-12 transition-colors duration-200">
+    <footer className="bg-gray-900 dark:bg-dark-950 py-12 transition-colors duration-200 relative">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
@@ -18,6 +19,12 @@ const Footer: React.FC = () => {
             <p>Built for service providers who value simplicity and speed.</p>
             <p className="mt-1">© 2024 MyJobTrack. All rights reserved.</p>
           </div>
+        </div>
+        {/* Build number character - bottom left */}
+        <div className="absolute bottom-4 left-4">
+          <span className="text-xs text-gray-600 dark:text-gray-600 opacity-50">
+            {BUILD_INFO.buildNumber.charAt(0)}
+          </span>
         </div>
       </div>
     </footer>

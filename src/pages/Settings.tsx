@@ -157,12 +157,17 @@ const Settings: React.FC = () => {
       // Add a small delay for better UX
       await new Promise(resolve => setTimeout(resolve, 1000));
       dataProvider.clearAllData();
-      setShowClearConfirm(false);
-      navigate('/app', { 
-        state: { message: 'All data has been cleared successfully.' }
-      });
+      console.log('Data cleared successfully, closing modal');
+      setShowClearConfirm(false); // Close modal on success
+      // Small delay before navigation to ensure modal closes
+      setTimeout(() => {
+        navigate('/app', { 
+          state: { message: 'All data has been cleared successfully.' }
+        });
+      }, 100);
     } catch (error) {
       console.error('Failed to clear data:', error);
+      // Don't close modal on error - let user try again
     } finally {
       setIsClearing(false);
     }

@@ -47,7 +47,7 @@ const CTASection: React.FC = () => {
                   onClick={() => setShowWaitlist(true)}
                   className="bg-gray-700 hover:bg-gray-600 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
                 >
-                  Join Waitlist & Test Now
+                  {t('landing.cta.waitlist')}
                 </button>
               )}
             </div>

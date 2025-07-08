@@ -11,8 +11,12 @@ export class ApiDataProvider implements IDataProvider {
   constructor() {
     console.log('🚀 ApiDataProvider initialized - using API mode!');
     console.log('🔑 Current auth token:', apiClient.getToken() ? 'Present' : 'Missing');
-    // Pre-fetch data on initialization
-    this.refreshCache();
+    // Pre-fetch data on initialization only if we have a token
+    if (apiClient.getToken()) {
+      this.refreshCache();
+    } else {
+      console.log('⚠️ No auth token found, skipping initial cache refresh');
+    }
   }
 
   private async refreshCache(): Promise<void> {
@@ -20,6 +24,12 @@ export class ApiDataProvider implements IDataProvider {
       const now = Date.now();
       if (now - this.lastFetchTime < this.CACHE_TTL) {
         return; // Use cached data
+      }
+
+      // Check if we have a valid token before making API calls
+      if (!apiClient.getToken()) {
+        console.log('⚠️ No auth token available, skipping cache refresh');
+        return;
       }
 
       console.log('🔄 Refreshing cache from API...');
@@ -47,7 +57,12 @@ export class ApiDataProvider implements IDataProvider {
         console.warn('⚠️ API returned invalid data format, keeping existing cache');
       }
     } catch (error) {
-      console.error('❌ Failed to refresh cache:', error);
+      // Check if this is an authentication error (expected when logging out from demo mode)
+      if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+        console.log('⚠️ API request failed (likely due to missing authentication), keeping existing cache');
+      } else {
+        console.error('❌ Failed to refresh cache:', error);
+      }
       console.warn('🔄 Continuing with existing cache data');
       // Don't update lastFetchTime on error so we'll retry sooner
     }

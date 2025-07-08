@@ -95,7 +95,7 @@ const QRCodeDemo: React.FC = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-700 dark:to-purple-700 overflow-hidden relative">
+    <section id="qr-demo" className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-700 dark:to-purple-700 overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="text-center text-white mb-12">
           <QrCode className="h-16 w-16 mx-auto mb-6 opacity-90" />

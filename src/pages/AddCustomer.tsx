@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
-import { env } from '@/utils/env';
+import { useDemo } from '@/contexts/DemoContext';
 import { ArrowLeft, User, Phone, MapPin, Briefcase, Save, X, Info } from 'lucide-react';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 
@@ -16,7 +16,7 @@ const AddCustomer: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
-  const isDemoMode = env.isDemoMode();
+  const { isDemoMode } = useDemo();
 
   const serviceTypes = [
     'Lawn Care',

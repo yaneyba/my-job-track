@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
-import { env } from '@/utils/env';
+import { useDemo } from '@/contexts/DemoContext';
 import { Customer } from '@/types';
 import { ArrowLeft, Calendar, User, Briefcase, DollarSign, FileText, Save, X, Plus, Info } from 'lucide-react';
 import { format } from 'date-fns';
@@ -21,7 +21,7 @@ const AddJob: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
-  const isDemoMode = env.isDemoMode();
+  const { isDemoMode } = useDemo();
 
   const commonServices = [
     'Lawn Mowing',

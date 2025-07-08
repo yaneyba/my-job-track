@@ -47,7 +47,7 @@ const Jobs: React.FC = () => {
     try {
       const jobData = dataProvider.getJobs();
       // Sort jobs by scheduled date (most recent first)
-      const sortedJobs = jobData.sort((a: Job, b: Job) => 
+      const sortedJobs = jobData.sort((a, b) => 
         parseISO(b.scheduledDate).getTime() - parseISO(a.scheduledDate).getTime()
       );
       setJobs(sortedJobs);
@@ -74,7 +74,7 @@ const Jobs: React.FC = () => {
     }
   }, [location.state, loadJobs]);
 
-  const handleJobStatusChange = (jobId: string, status: 'scheduled' | 'in-progress' | 'completed') => {
+  const handleJobStatusChange = (jobId: string, status: Job['status']) => {
     const updates: Partial<Job> = { status };
     if (status === 'completed') {
       updates.completedDate = new Date().toISOString();
@@ -83,7 +83,7 @@ const Jobs: React.FC = () => {
     loadJobs();
   };
 
-  const handleJobPaymentStatusChange = (jobId: string, paymentStatus: 'paid' | 'unpaid') => {
+  const handleJobPaymentStatusChange = (jobId: string, paymentStatus: Job['paymentStatus']) => {
     dataProvider.updateJob(jobId, { paymentStatus });
     loadJobs();
   };

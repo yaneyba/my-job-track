@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Customer, Job } from '@/types';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { useDemo } from '@/contexts/DemoContext';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import JobCard from '@/components/Job/JobCard';
 import QRCodeDisplay from '@/components/QR/QRCodeDisplay';
@@ -30,6 +31,7 @@ import { format, parseISO } from 'date-fns';
 
 const CustomerDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const { trackPageView, trackFeatureInteraction } = useAnalytics();
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [customerJobs, setCustomerJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
@@ -78,6 +80,8 @@ const CustomerDetails: React.FC = () => {
       const customerData = dataProvider.getCustomer(id!);
       if (customerData) {
         setCustomer(customerData);
+        // Track page view
+        trackPageView();
         const jobs = dataProvider.getJobsByCustomer(id!);
         // Sort jobs by scheduled date (most recent first)
         const sortedJobs = jobs.sort((a, b) => 
@@ -151,6 +155,7 @@ const CustomerDetails: React.FC = () => {
         setCustomer(updatedCustomer);
         setIsEditing(false);
         setErrors({});
+        trackFeatureInteraction('customer_management', 'customer_updated', { customerId: updatedCustomer.id });
       }
     } catch (error) {
       console.error('Failed to update customer:', error);
@@ -168,6 +173,7 @@ const CustomerDetails: React.FC = () => {
       navigate('/app/customers', {
         state: { message: `Customer "${customer.name}" has been deleted.` }
       });
+      trackFeatureInteraction('customer_management', 'customer_deleted', { customerId: customer.id });
     }
   };
 

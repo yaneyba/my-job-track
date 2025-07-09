@@ -8,6 +8,7 @@ import QRCodeDisplay from '@/components/QR/QRCodeDisplay';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import Pagination from '@/components/UI/Pagination';
 import { usePagination } from '@/hooks/usePagination';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 import { Plus, Calendar, CheckCircle, X } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 
@@ -20,6 +21,7 @@ const Jobs: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dataProvider = DataProviderFactory.getInstance();
+  const { trackPageView, trackFeatureInteraction } = useAnalytics();
 
   const breadcrumbItems = [
     { label: 'Home', href: '/app' },
@@ -59,6 +61,9 @@ const Jobs: React.FC = () => {
   }, [dataProvider]);
 
   useEffect(() => {
+    // Track page view
+    trackPageView();
+    
     loadJobs();
     
     // Check for success message from navigation state
@@ -72,9 +77,16 @@ const Jobs: React.FC = () => {
         setSuccessMessage('');
       }, 5000);
     }
-  }, [location.state, loadJobs]);
+  }, [location.state, loadJobs, trackPageView]);
 
   const handleJobStatusChange = (jobId: string, status: Job['status']) => {
+    // Track status change
+    trackFeatureInteraction('job_management', 'change_job_status', {
+      job_id: jobId,
+      from_status: jobs.find(job => job.id === jobId)?.status,
+      to_status: status
+    });
+    
     const updates: Partial<Job> = { status };
     if (status === 'completed') {
       updates.completedDate = new Date().toISOString();
@@ -84,6 +96,13 @@ const Jobs: React.FC = () => {
   };
 
   const handleJobPaymentStatusChange = (jobId: string, paymentStatus: Job['paymentStatus']) => {
+    // Track payment status change
+    trackFeatureInteraction('job_management', 'change_payment_status', {
+      job_id: jobId,
+      from_payment_status: jobs.find(job => job.id === jobId)?.paymentStatus,
+      to_payment_status: paymentStatus
+    });
+    
     dataProvider.updateJob(jobId, { paymentStatus });
     loadJobs();
   };
@@ -135,7 +154,13 @@ const Jobs: React.FC = () => {
         <QuickActionButton
           icon={Plus}
           label="Schedule Job"
-          onClick={() => navigate('/app/jobs/new')}
+          onClick={() => {
+            trackFeatureInteraction('job_management', 'schedule_job_click', {
+              source: 'jobs_page_header',
+              jobs_count: jobs.length
+            });
+            navigate('/app/jobs/new');
+          }}
           size="sm"
         />
       </div>
@@ -150,7 +175,16 @@ const Jobs: React.FC = () => {
         ].map(({ key, label }) => (
           <button
             key={key}
-            onClick={() => setFilter(key as typeof filter)}
+            onClick={() => {
+              if (key !== filter) {
+                trackFeatureInteraction('job_management', 'filter_jobs', {
+                  from_filter: filter,
+                  to_filter: key,
+                  jobs_total: jobs.length
+                });
+              }
+              setFilter(key as typeof filter);
+            }}
             className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors duration-200 ${
               filter === key
                 ? 'bg-white dark:bg-dark-800 text-blue-600 dark:text-blue-400 shadow-sm'
@@ -170,8 +204,21 @@ const Jobs: React.FC = () => {
               <JobCard
                 key={job.id}
                 job={job}
-                onClick={() => navigate(`/app/jobs/${job.id}`)}
-                onQRCodeClick={() => setSelectedQRJob(job)}
+                onClick={() => {
+                  trackFeatureInteraction('job_management', 'view_job_details', {
+                    job_id: job.id,
+                    job_status: job.status,
+                    service_type: job.serviceType
+                  });
+                  navigate(`/app/jobs/${job.id}`);
+                }}
+                onQRCodeClick={() => {
+                  trackFeatureInteraction('qr_code', 'generate_job_qr', {
+                    job_id: job.id,
+                    source: 'jobs_page'
+                  });
+                  setSelectedQRJob(job);
+                }}
                 onStatusChange={handleJobStatusChange}
                 onPaymentStatusChange={handleJobPaymentStatusChange}
               />
@@ -198,7 +245,13 @@ const Jobs: React.FC = () => {
             <QuickActionButton
               icon={Plus}
               label="Schedule Your First Job"
-              onClick={() => navigate('/app/jobs/new')}
+              onClick={() => {
+                trackFeatureInteraction('job_management', 'schedule_job_click', {
+                  source: 'empty_state',
+                  jobs_count: 0
+                });
+                navigate('/app/jobs/new');
+              }}
               variant="primary"
             />
           )}

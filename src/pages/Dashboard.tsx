@@ -3,6 +3,7 @@ import { DashboardStats, Job } from '@/types';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNotifications } from '@/hooks/useNotifications';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 import {
   DashboardHeader,
   NotificationsSection,
@@ -19,6 +20,7 @@ const Dashboard: React.FC = () => {
   const dataProvider = DataProviderFactory.getInstance();
   const { notifications, dismissNotification, clearAllNotifications } = useNotifications();
   const { t } = useLanguage();
+  const { trackPageView, trackFeatureInteraction } = useAnalytics();
 
   const breadcrumbItems = [
     { label: t('nav.home'), current: true }
@@ -38,9 +40,16 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     loadDashboardData();
-  }, [loadDashboardData]);
+    trackPageView('/dashboard');
+  }, [loadDashboardData, trackPageView]);
 
   const handleJobStatusChange = (jobId: string, status: 'scheduled' | 'in-progress' | 'completed') => {
+    trackFeatureInteraction('job_management', 'status_change', {
+      job_id: jobId,
+      new_status: status,
+      source: 'dashboard'
+    });
+    
     const updates: Partial<Job> = { status };
     if (status === 'completed') {
       updates.completedDate = new Date().toISOString();

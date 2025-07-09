@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { useDemo } from '@/contexts/DemoContext';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 import QrScanner from 'qr-scanner';
 import { 
   X, 
@@ -45,6 +46,7 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
   const { isDemoMode, triggerWaitlistCTA } = useDemo();
+  const { trackFeatureInteraction } = useAnalytics();
 
   const cleanup = () => {
     stopScanning();
@@ -139,6 +141,11 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
     setIsProcessing(true);
     
     try {
+      // Track QR scan attempt
+      trackFeatureInteraction('qr_code', 'qr_scan_attempt', {
+        demo_mode: isDemoMode
+      });
+      
       // Try to parse the QR code data
       let qrData: QRData;
       
@@ -178,6 +185,12 @@ const QRScanner: React.FC<QRScannerProps> = ({ onClose, onScanSuccess }) => {
         qrData.serviceType = job.serviceType;
         qrData.customerId = job.customerId;
       }
+
+      // Track successful QR scan
+      trackFeatureInteraction('qr_code', 'qr_scan_success', {
+        type: qrData.type,
+        demo_mode: isDemoMode
+      });
 
       setScanResult(qrData);
       stopScanning();

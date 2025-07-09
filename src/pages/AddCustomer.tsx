@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { useDemo } from '@/contexts/DemoContext';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 import { ArrowLeft, User, Phone, MapPin, Briefcase, Save, X, Info } from 'lucide-react';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 
@@ -20,6 +21,12 @@ const AddCustomer: React.FC = () => {
   DataProviderFactory.reset();
   const dataProvider = DataProviderFactory.getInstance();
   const { isDemoMode } = useDemo();
+  const { trackPageView, trackFeatureInteraction } = useAnalytics();
+
+  // Track page view on component mount
+  useEffect(() => {
+    trackPageView();
+  }, [trackPageView]);
 
   const serviceTypes = [
     'Lawn Care',
@@ -44,6 +51,11 @@ const AddCustomer: React.FC = () => {
     { label: 'Customers', href: '/app/customers' },
     { label: 'Add Customer', current: true }
   ];
+
+  // Track page view on mount
+  useEffect(() => {
+    trackPageView();
+  }, [trackPageView]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -85,6 +97,13 @@ const AddCustomer: React.FC = () => {
         phone: formData.phone.trim(),
         address: formData.address.trim(),
         serviceType: formData.serviceType.trim()
+      });
+
+      // Track successful customer creation
+      trackFeatureInteraction('customer_management', 'customer_created', {
+        service_type: formData.serviceType.trim(),
+        has_phone: !!formData.phone.trim(),
+        has_address: !!formData.address.trim()
       });
 
       // Navigate to customer detail or back to customers list

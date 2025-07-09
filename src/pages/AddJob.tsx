@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { useDemo } from '@/contexts/DemoContext';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 import { Customer } from '@/types';
 import { ArrowLeft, Calendar, User, Briefcase, DollarSign, FileText, Save, X, Plus, Info } from 'lucide-react';
 import { format } from 'date-fns';
@@ -22,6 +23,7 @@ const AddJob: React.FC = () => {
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
   const { isDemoMode } = useDemo();
+  const { trackPageView, trackFeatureInteraction } = useAnalytics();
 
   const commonServices = [
     'Lawn Mowing',
@@ -63,13 +65,16 @@ const AddJob: React.FC = () => {
   }, [dataProvider]);
 
   useEffect(() => {
+    // Track page view
+    trackPageView();
+    
     loadCustomers();
     // Set default date to today
     setFormData(prev => ({
       ...prev,
       scheduledDate: format(new Date(), 'yyyy-MM-dd')
     }));
-  }, [loadCustomers]);
+  }, [loadCustomers, trackPageView]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -119,6 +124,14 @@ const AddJob: React.FC = () => {
         paymentStatus: 'unpaid',
         paid: false,
         notes: formData.notes.trim()
+      });
+
+      // Track successful job creation
+      trackFeatureInteraction('job_management', 'job_created', {
+        service_type: formData.serviceType.trim(),
+        price: parseFloat(formData.price),
+        has_notes: !!formData.notes.trim(),
+        customer_id: formData.customerId
       });
 
       // Navigate to jobs list with success message

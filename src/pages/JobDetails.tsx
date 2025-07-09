@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Job, Customer } from '@/types';
 import { DataProviderFactory } from '@/data/providers/DataProviderFactory';
 import { useDemo } from '@/contexts/DemoContext';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import StatusBadge from '@/components/UI/StatusBadge';
 import QRCodeDisplay from '@/components/QR/QRCodeDisplay';
@@ -45,6 +46,7 @@ const JobDetails: React.FC = () => {
   const navigate = useNavigate();
   const dataProvider = DataProviderFactory.getInstance();
   const { isDemoMode } = useDemo();
+  const { trackPageView, trackFeatureInteraction } = useAnalytics();
 
   const breadcrumbItems = [
     { label: 'Home', href: '/app' },
@@ -58,8 +60,14 @@ const JobDetails: React.FC = () => {
       const jobData = dataProvider.getJob(id!);
       if (jobData) {
         setJob(jobData);
+        // Track page view
+        trackPageView();
+        
+        // Load customer details
         const customerData = dataProvider.getCustomer(jobData.customerId);
-        setCustomer(customerData || null);
+        if (customerData) {
+          setCustomer(customerData);
+        }
         
         // Initialize edit form
         setEditForm({

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Mail, Briefcase, ArrowRight, CheckCircle, Star, AlertCircle } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 import { waitlistService, WaitlistSubmission } from '@/services/waitlist';
 
 interface WaitlistModalProps {
@@ -10,17 +11,33 @@ interface WaitlistModalProps {
 
 const WaitlistModal: React.FC<WaitlistModalProps> = ({ isOpen, onClose }) => {
   const { t } = useLanguage();
+  const { trackFeatureInteraction, trackConversion } = useAnalytics();
   const [email, setEmail] = useState('');
   const [businessType, setBusinessType] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Track modal open on mount
+  useEffect(() => {
+    if (isOpen) {
+      trackFeatureInteraction('waitlist', 'modal_opened', {
+        source: 'demo_mode'
+      });
+    }
+  }, [isOpen, trackFeatureInteraction]);
+
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
+
+    // Track submission attempt
+    trackFeatureInteraction('waitlist', 'signup_attempt', {
+      has_business_type: !!businessType.trim(),
+      email_domain: email.trim().split('@')[1]
+    });
 
     setIsSubmitting(true);
     setError(null);
@@ -38,6 +55,9 @@ const WaitlistModal: React.FC<WaitlistModalProps> = ({ isOpen, onClose }) => {
       
       if (response.success) {
         setIsSuccess(true);
+        
+        // Track successful conversion
+        trackConversion('demo_mode', email.trim());
         
         // Auto-close after showing success
         setTimeout(() => {

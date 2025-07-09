@@ -9,6 +9,7 @@ import QRCodeDisplay from '@/components/QR/QRCodeDisplay';
 import Breadcrumbs from '@/components/UI/Breadcrumbs';
 import Pagination from '@/components/UI/Pagination';
 import { usePagination } from '@/hooks/usePagination';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 import { Plus, Users, CheckCircle, X } from 'lucide-react';
 
 export default function Customers() {
@@ -21,6 +22,7 @@ export default function Customers() {
   const navigate = useNavigate();
   const location = useLocation();
   const dataProvider = DataProviderFactory.getInstance();
+  const { trackPageView, trackFeatureInteraction } = useAnalytics();
 
   const breadcrumbItems = [
     { label: 'Home', href: '/app' },
@@ -54,6 +56,9 @@ export default function Customers() {
   }, [dataProvider]);
 
   useEffect(() => {
+    // Track page view
+    trackPageView();
+    
     loadCustomers();
     
     // Check for success message from navigation state
@@ -67,7 +72,7 @@ export default function Customers() {
         setSuccessMessage('');
       }, 5000);
     }
-  }, [location.state, loadCustomers]);
+  }, [location.state, loadCustomers, trackPageView]);
 
   useEffect(() => {
     if (!searchQuery.trim()) {
@@ -130,7 +135,13 @@ export default function Customers() {
         <QuickActionButton
           icon={Plus}
           label="Add Customer"
-          onClick={() => navigate('/app/customers/new')}
+          onClick={() => {
+            trackFeatureInteraction('customer_management', 'add_customer_click', {
+              source: 'customers_page_header',
+              customers_count: customers.length
+            });
+            navigate('/app/customers/new');
+          }}
           size="sm"
         />
       </div>
@@ -138,7 +149,15 @@ export default function Customers() {
       {/* Search */}
       <SearchBar
         value={searchQuery}
-        onChange={setSearchQuery}
+        onChange={(query) => {
+          setSearchQuery(query);
+          if (query.trim()) {
+            trackFeatureInteraction('customer_management', 'search_customers', {
+              search_query_length: query.length,
+              customers_total: customers.length
+            });
+          }
+        }}
         placeholder="Search customers by name, phone, or address..."
         className="mb-6"
       />
@@ -151,8 +170,20 @@ export default function Customers() {
               <CustomerCard
                 key={customer.id}
                 customer={customer}
-                onClick={() => navigate(`/app/customers/${customer.id}`)}
-                onQRCodeClick={() => setSelectedQRCustomer(customer)}
+                onClick={() => {
+                  trackFeatureInteraction('customer_management', 'view_customer_details', {
+                    customer_id: customer.id,
+                    service_type: customer.serviceType
+                  });
+                  navigate(`/app/customers/${customer.id}`);
+                }}
+                onQRCodeClick={() => {
+                  trackFeatureInteraction('qr_code', 'generate_customer_qr', {
+                    customer_id: customer.id,
+                    source: 'customers_page'
+                  });
+                  setSelectedQRCustomer(customer);
+                }}
               />
             ))}
           </div>
@@ -177,7 +208,13 @@ export default function Customers() {
             <QuickActionButton
               icon={Plus}
               label="Add Your First Customer"
-              onClick={() => navigate('/app/customers/new')}
+              onClick={() => {
+                trackFeatureInteraction('customer_management', 'add_customer_click', {
+                  source: 'empty_state',
+                  customers_count: 0
+                });
+                navigate('/app/customers/new');
+              }}
               variant="primary"
             />
           )}

@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { DemoProvider } from '@/contexts/DemoContext';
+import AnalyticsProvider from '@/contexts/AnalyticsContext';
 import App from '@/App.tsx';
 import './index.css';
 import { checkIconRefresh } from '@/utils/iconManager';
@@ -48,9 +49,11 @@ if ('serviceWorker' in navigator) {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <DemoProvider>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
+      <AnalyticsProvider>
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
+      </AnalyticsProvider>
     </DemoProvider>
   </StrictMode>
 );

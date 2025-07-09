@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDemo } from '@/contexts/DemoContext';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 import ShareButton from '@/components/UI/ShareButton';
 import {
   NavBar,
@@ -15,6 +16,12 @@ import {
 
 const Landing: React.FC = () => {
   const { isDemoMode } = useDemo();
+  const { trackPageView } = useAnalytics();
+  
+  // Track landing page view
+  useEffect(() => {
+    trackPageView('/');
+  }, [trackPageView]);
   
   return (
     <div className="min-h-screen bg-white dark:bg-dark-900 transition-colors duration-200">

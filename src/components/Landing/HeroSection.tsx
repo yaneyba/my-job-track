@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { ArrowRight, Smartphone, QrCode } from "lucide-react";
 import { useDemo } from "@/contexts/DemoContext";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAnalytics } from "@/contexts/AnalyticsContext";
 import Logo from "@/components/UI/Logo";
 
 // Hero section with balanced layout between text and interactive demo
@@ -10,6 +11,34 @@ const HeroSection: React.FC = () => {
   const navigate = useNavigate();
   const { isDemoMode } = useDemo();
   const { t } = useLanguage();
+  const { trackEvent } = useAnalytics();
+
+  const handleMainCTA = () => {
+    trackEvent('landing_cta_clicked', {
+      cta_type: isDemoMode ? 'login' : 'get_started',
+      location: 'hero_section',
+      demo_mode: isDemoMode
+    });
+    navigate(isDemoMode ? "/login" : "/app");
+  };
+
+  const handleDemoClick = () => {
+    trackEvent('demo_cta_clicked', {
+      cta_type: 'interactive_demo',
+      location: 'hero_section',
+      demo_mode: isDemoMode
+    });
+    document.getElementById("qr-demo")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleQRDemoClick = () => {
+    trackEvent('qr_demo_clicked', {
+      cta_type: 'qr_scanner',
+      location: 'hero_section_mobile',
+      demo_mode: isDemoMode
+    });
+    document.getElementById("qr-demo")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <header
@@ -60,7 +89,7 @@ const HeroSection: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start items-center">
               <button
-                onClick={() => navigate(isDemoMode ? "/login" : "/app")}
+                onClick={handleMainCTA}
                 className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg text-base font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center group"
               >
                 {isDemoMode
@@ -72,9 +101,7 @@ const HeroSection: React.FC = () => {
                 to="#qr-demo"
                 onClick={(e) => {
                   e.preventDefault();
-                  document
-                    .getElementById("qr-demo")
-                    ?.scrollIntoView({ behavior: "smooth" });
+                  handleDemoClick();
                 }}
                 className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-lg text-base font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center group border border-white/30 hover:border-white/50"
               >
@@ -87,9 +114,7 @@ const HeroSection: React.FC = () => {
                 to="#qr-demo"
                 onClick={(e) => {
                   e.preventDefault();
-                  document
-                    .getElementById("qr-demo")
-                    ?.scrollIntoView({ behavior: "smooth" });
+                  handleQRDemoClick();
                 }}
                 className="md:hidden bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg text-base font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center group"
               >

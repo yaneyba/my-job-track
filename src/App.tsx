@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { LanguageProvider } from '@/contexts/LanguageContext';
+import AnalyticsProvider from '@/contexts/AnalyticsContext';
 import { useDemo } from '@/contexts/DemoContext';
 import ProtectedRoute from '@/components/Auth/ProtectedRoute';
 import Layout from '@/components/Layout/Layout';
@@ -28,9 +29,11 @@ function App() {
     <LanguageProvider>
       <ThemeProvider>
         <AuthProvider>
-          <Router>
-            <AppContent />
-          </Router>
+          <AnalyticsProvider>
+            <Router>
+              <AppContent />
+            </Router>
+          </AnalyticsProvider>
         </AuthProvider>
       </ThemeProvider>
     </LanguageProvider>

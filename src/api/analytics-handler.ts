@@ -1,4 +1,5 @@
 import { Env } from './types';
+import { corsHeaders } from './utils/cors';
 
 interface AnalyticsEvent {
   event: string;
@@ -22,7 +23,10 @@ interface SessionInitData {
 
 export async function handleAnalyticsTrack(request: Request, env: Env): Promise<Response> {
   if (request.method !== 'POST') {
-    return new Response('Method not allowed', { status: 405 });
+    return new Response('Method not allowed', { 
+      status: 405,
+      headers: corsHeaders
+    });
   }
 
   try {
@@ -95,7 +99,10 @@ export async function handleAnalyticsTrack(request: Request, env: Env): Promise<
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders
+      }
     });
   } catch (error) {
     console.error('Analytics tracking error:', error);
@@ -104,14 +111,20 @@ export async function handleAnalyticsTrack(request: Request, env: Env): Promise<
       details: error instanceof Error ? error.message : 'Unknown error'
     }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders
+      }
     });
   }
 }
 
 export async function handleSessionInit(request: Request, env: Env): Promise<Response> {
   if (request.method !== 'POST') {
-    return new Response('Method not allowed', { status: 405 });
+    return new Response('Method not allowed', { 
+      status: 405,
+      headers: corsHeaders
+    });
   }
 
   try {
@@ -137,7 +150,10 @@ export async function handleSessionInit(request: Request, env: Env): Promise<Res
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders
+      }
     });
   } catch (error) {
     console.error('Session initialization error:', error);
@@ -146,14 +162,20 @@ export async function handleSessionInit(request: Request, env: Env): Promise<Res
       details: error instanceof Error ? error.message : 'Unknown error'
     }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders
+      }
     });
   }
 }
 
 export async function handleAnalyticsQuery(request: Request, env: Env): Promise<Response> {
   if (request.method !== 'GET') {
-    return new Response('Method not allowed', { status: 405 });
+    return new Response('Method not allowed', { 
+      status: 405,
+      headers: corsHeaders
+    });
   }
 
   try {
@@ -177,12 +199,18 @@ export async function handleAnalyticsQuery(request: Request, env: Env): Promise<
         results = await getDemoEngagement(env.DB, timeframe);
         break;
       default:
-        return new Response('Invalid query', { status: 400 });
+        return new Response('Invalid query', { 
+          status: 400,
+          headers: corsHeaders
+        });
     }
 
     return new Response(JSON.stringify(results), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders
+      }
     });
   } catch (error) {
     console.error('Analytics query error:', error);
@@ -191,7 +219,10 @@ export async function handleAnalyticsQuery(request: Request, env: Env): Promise<
       details: error instanceof Error ? error.message : 'Unknown error'
     }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders
+      }
     });
   }
 }

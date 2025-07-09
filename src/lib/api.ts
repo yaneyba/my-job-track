@@ -1,6 +1,7 @@
 // API client for connecting to the Cloudflare D1 backend
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8787';
+console.log('🔧 API_BASE_URL:', API_BASE_URL);
 
 export interface ApiResponse<T = any> {
   success: boolean;
@@ -287,6 +288,7 @@ class ApiClient {
 
   // Analytics endpoints
   async trackAnalyticsEvent(event: any): Promise<void> {
+    console.log('🚀 Tracking analytics event to API:', `${this.baseUrl}/api/analytics/track`, event);
     await this.request('/api/analytics/track', {
       method: 'POST',
       body: JSON.stringify(event),

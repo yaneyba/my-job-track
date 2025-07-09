@@ -13,6 +13,7 @@ import {
 } from '@/types';
 import { DemoData, getDemoCredentials, createDemoUser } from '@/hooks/useDemoData';
 import demoData from '@/data/demo.json';
+import apiClient from '@/lib/api';
 import QRCode from 'qrcode';
 import { parseISO, isWithinInterval } from 'date-fns';
 
@@ -431,7 +432,7 @@ export class DemoDataProvider implements IDataProvider {
     console.log('DemoDataProvider: User data cleared, demo data preserved');
   }
 
-  // Analytics methods - for demo mode, we'll store in localStorage for simulation
+  // Analytics methods - for demo mode, we'll store in localStorage for simulation AND in database for real tracking
   async trackEvent(event: AnalyticsEvent): Promise<void> {
     try {
       // In demo mode, store events in localStorage for simulation
@@ -445,6 +446,15 @@ export class DemoDataProvider implements IDataProvider {
       
       localStorage.setItem('demo_analytics_events', JSON.stringify(events));
       console.log('📊 Demo Analytics Event Tracked:', event);
+
+      // ALSO send to the database via API for real analytics tracking
+      try {
+        await apiClient.trackAnalyticsEvent(event);
+        console.log('📊 Analytics Event Stored in Database:', event.event);
+      } catch (apiError) {
+        console.warn('Failed to store analytics event in database:', apiError);
+        // Don't fail the whole function if API call fails
+      }
     } catch (error) {
       console.warn('Failed to track demo analytics event:', error);
     }
@@ -455,6 +465,15 @@ export class DemoDataProvider implements IDataProvider {
       // Store session data in localStorage for demo mode
       localStorage.setItem('demo_analytics_session', JSON.stringify(sessionData));
       console.log('📊 Demo Analytics Session Initialized:', sessionData);
+
+      // ALSO send to the database via API for real analytics tracking
+      try {
+        await apiClient.initializeAnalyticsSession(sessionData);
+        console.log('📊 Analytics Session Stored in Database:', sessionData.sessionId);
+      } catch (apiError) {
+        console.warn('Failed to store analytics session in database:', apiError);
+        // Don't fail the whole function if API call fails
+      }
     } catch (error) {
       console.warn('Failed to initialize demo analytics session:', error);
     }

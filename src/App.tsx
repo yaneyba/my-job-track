@@ -29,11 +29,11 @@ function App() {
     <LanguageProvider>
       <ThemeProvider>
         <AuthProvider>
-          <AnalyticsProvider>
-            <Router>
+          <Router>
+            <AnalyticsProvider>
               <AppContent />
-            </Router>
-          </AnalyticsProvider>
+            </AnalyticsProvider>
+          </Router>
         </AuthProvider>
       </ThemeProvider>
     </LanguageProvider>

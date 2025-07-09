@@ -1,10 +1,11 @@
 // Main Cloudflare Worker API entry point
-import { Env } from './types';
+import { Env, AnalyticsFilters } from './types';
 import { corsHeaders, handleCors } from './utils/cors';
 import { AuthService } from './services/auth';
 import { CustomerService } from './services/customers';
 import { JobService } from './services/jobs';
 import { DashboardService } from './services/dashboard';
+import { AnalyticsService } from './services/analytics';
 import { handleWaitlistRequest } from './services/waitlist-handler';
 import { handleSpamMonitoringRequest } from './services/spam-monitoring';
 import { handleAnalyticsTrack, handleSessionInit, handleAnalyticsQuery } from './analytics-handler';
@@ -25,6 +26,7 @@ export default {
       const customerService = new CustomerService(env.DB);
       const jobService = new JobService(env.DB);
       const dashboardService = new DashboardService(env.DB);
+      const analyticsService = new AnalyticsService(env.DB);
 
       // Route requests
       if (path.startsWith('/api/auth/')) {
@@ -35,12 +37,14 @@ export default {
         return await handleJobRoutes(request, jobService, authService, path);
       } else if (path.startsWith('/api/dashboard')) {
         return await handleDashboardRoutes(request, dashboardService, authService, path);
+      } else if (path.startsWith('/api/analytics/') && (path.includes('/dashboard') || path.includes('/overview') || path.includes('/sessions') || path.includes('/events') || path.includes('/features') || path.includes('/funnels') || path.includes('/ab-tests'))) {
+        return await handleAnalyticsDataRoutes(request, analyticsService, authService, path);
+      } else if (path.startsWith('/api/analytics/')) {
+        return await handleAnalyticsRoutes(request, path, env);
       } else if (path.startsWith('/api/waitlist')) {
         return await handleWaitlistRequest(request, env);
       } else if (path === '/api/admin/spam-stats') {
         return await handleSpamMonitoringRequest(request, env.DB);
-      } else if (path.startsWith('/api/analytics/')) {
-        return await handleAnalyticsRoutes(request, path, env);
       } else {
         return new Response('Not Found', { 
           status: 404,
@@ -361,4 +365,130 @@ async function handleAnalyticsRoutes(request: Request, path: string, env: Env): 
     status: 404,
     headers: corsHeaders
   });
+}
+
+// Analytics data route handler
+async function handleAnalyticsDataRoutes(request: Request, analyticsService: AnalyticsService, authService: AuthService, path: string): Promise<Response> {
+  // Authenticate user
+  const token = request.headers.get('Authorization')?.replace('Bearer ', '');
+  if (!token) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
+
+  const user = await authService.validateToken(token);
+  if (!user) {
+    return new Response(JSON.stringify({ error: 'Invalid token' }), {
+      status: 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
+
+  const method = request.method;
+  const url = new URL(request.url);
+  
+  // Parse filters from query parameters
+  const filters = parseAnalyticsFilters(url.searchParams);
+  
+  try {
+    if (path === '/api/analytics/dashboard' && method === 'GET') {
+      const data = await analyticsService.getAnalyticsDashboard(filters);
+      return new Response(JSON.stringify(data), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+    
+    if (path === '/api/analytics/overview' && method === 'GET') {
+      const data = await analyticsService.getAnalyticsOverview(filters);
+      return new Response(JSON.stringify(data), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+    
+    if (path === '/api/analytics/sessions' && method === 'GET') {
+      const data = await analyticsService.getSessionMetrics(filters);
+      return new Response(JSON.stringify(data), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+    
+    if (path === '/api/analytics/events' && method === 'GET') {
+      const data = await analyticsService.getEventMetrics(filters);
+      return new Response(JSON.stringify(data), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+    
+    if (path === '/api/analytics/features' && method === 'GET') {
+      const data = await analyticsService.getFeatureUsage(filters);
+      return new Response(JSON.stringify(data), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+    
+    if (path === '/api/analytics/funnels' && method === 'GET') {
+      const data = await analyticsService.getFunnelAnalytics(filters);
+      return new Response(JSON.stringify(data), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+    
+    if (path === '/api/analytics/ab-tests' && method === 'GET') {
+      const data = await analyticsService.getABTestResults(filters);
+      return new Response(JSON.stringify(data), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+    
+    return new Response('Not Found', { 
+      status: 404,
+      headers: corsHeaders
+    });
+  } catch (error) {
+    console.error('Analytics route error:', error);
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
+}
+
+function parseAnalyticsFilters(searchParams: URLSearchParams): AnalyticsFilters | undefined {
+  const startDate = searchParams.get('startDate');
+  const endDate = searchParams.get('endDate');
+  
+  if (!startDate || !endDate) {
+    return undefined;
+  }
+  
+  const filters: AnalyticsFilters = {
+    dateRange: {
+      start: startDate,
+      end: endDate
+    }
+  };
+  
+  const userType = searchParams.get('userType');
+  if (userType) {
+    filters.userType = userType.split(',');
+  }
+  
+  const demoMode = searchParams.get('demoMode');
+  if (demoMode !== null) {
+    filters.demoMode = demoMode === 'true';
+  }
+  
+  const country = searchParams.get('country');
+  if (country) {
+    filters.country = country.split(',');
+  }
+  
+  const eventCategory = searchParams.get('eventCategory');
+  if (eventCategory) {
+    filters.eventCategory = eventCategory.split(',');
+  }
+  
+  return filters;
 }

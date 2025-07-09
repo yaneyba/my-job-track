@@ -153,3 +153,162 @@ export interface PaginatedResponse<T> {
   limit: number;
   totalPages: number;
 }
+
+// Analytics Dashboard Data Types
+export interface AnalyticsDashboardData {
+  overview: AnalyticsOverview;
+  sessions: AnalyticsSessionMetrics;
+  events: AnalyticsEventMetrics;
+  features: FeatureUsageMetrics;
+  funnels: FunnelAnalytics;
+  abTests: ABTestResults[];
+}
+
+export interface AnalyticsOverview {
+  totalSessions: number;
+  totalEvents: number;
+  averageSessionDuration: number;
+  conversionRate: number;
+  demoModeUsage: number;
+  topLandingPages: PageMetric[];
+  topExitPages: PageMetric[];
+  userTypeBreakdown: UserTypeMetric[];
+}
+
+export interface AnalyticsSessionMetrics {
+  dailySessions: DailyMetric[];
+  sessionDuration: SessionDurationMetric[];
+  bounceRate: number;
+  returnVisitorRate: number;
+  geographicData: GeographicMetric[];
+  deviceData: DeviceMetric[];
+}
+
+export interface AnalyticsEventMetrics {
+  topEvents: EventMetric[];
+  eventCategories: CategoryMetric[];
+  conversionEvents: ConversionMetric[];
+  dailyEvents: DailyMetric[];
+}
+
+export interface FeatureUsageMetrics {
+  topFeatures: FeatureMetric[];
+  featureAdoption: FeatureAdoptionMetric[];
+  demoModeFeatures: FeatureMetric[];
+}
+
+export interface FunnelAnalytics {
+  conversionFunnel: FunnelStep[];
+  dropOffPoints: DropOffMetric[];
+  averageTimeToConvert: number;
+}
+
+export interface ABTestResults {
+  testName: string;
+  variants: ABTestVariant[];
+  conversionRates: Record<string, number>;
+  significance: number;
+  winner?: string;
+}
+
+// Metric Types
+export interface PageMetric {
+  page: string;
+  views: number;
+  percentage: number;
+}
+
+export interface UserTypeMetric {
+  userType: string;
+  count: number;
+  percentage: number;
+  conversionRate: number;
+}
+
+export interface DailyMetric {
+  date: string;
+  count: number;
+  value?: number;
+}
+
+export interface SessionDurationMetric {
+  range: string;
+  count: number;
+  percentage: number;
+}
+
+export interface GeographicMetric {
+  country: string;
+  sessions: number;
+  percentage: number;
+}
+
+export interface DeviceMetric {
+  device: string;
+  sessions: number;
+  percentage: number;
+}
+
+export interface EventMetric {
+  eventName: string;
+  count: number;
+  uniqueSessions: number;
+  conversionRate?: number;
+}
+
+export interface CategoryMetric {
+  category: string;
+  count: number;
+  percentage: number;
+}
+
+export interface ConversionMetric {
+  source: string;
+  conversions: number;
+  rate: number;
+}
+
+export interface FeatureMetric {
+  featureName: string;
+  usage: number;
+  uniqueUsers: number;
+  adoptionRate: number;
+}
+
+export interface FeatureAdoptionMetric {
+  feature: string;
+  weeklyUsage: DailyMetric[];
+  trend: 'up' | 'down' | 'stable';
+}
+
+export interface FunnelStep {
+  step: string;
+  users: number;
+  conversionRate: number;
+  dropOffRate: number;
+}
+
+export interface DropOffMetric {
+  step: string;
+  dropOffs: number;
+  percentage: number;
+}
+
+export interface ABTestVariant {
+  name: string;
+  users: number;
+  conversions: number;
+  conversionRate: number;
+}
+
+// Analytics Filters
+export interface AnalyticsFilters {
+  dateRange: {
+    start: string;
+    end: string;
+  };
+  userType?: string[];
+  demoMode?: boolean;
+  country?: string[];
+  eventCategory?: string[];
+}

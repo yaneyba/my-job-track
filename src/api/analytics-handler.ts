@@ -37,8 +37,8 @@ export async function handleAnalyticsTrack(request: Request, env: Env): Promise<
       INSERT INTO trk_events (
         id, session_id, user_id, event_name, event_category, page_path,
         properties, demo_mode, user_type, user_agent, ip_address, referrer,
-        session_duration, conversion_source, converted, timestamp
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        session_duration, page_views_in_session, conversion_source, converted, timestamp
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       crypto.randomUUID(),
       eventData.sessionId,
@@ -53,6 +53,7 @@ export async function handleAnalyticsTrack(request: Request, env: Env): Promise<
       request.headers.get('CF-Connecting-IP') || null,
       eventData.properties.referrer || null,
       eventData.properties.sessionDuration || 0,
+      eventData.properties.pageViews || 1,
       eventData.properties.source || null,
       eventData.event === 'waitlist_signup_completed',
       eventData.timestamp

@@ -222,7 +222,7 @@ export class AnalyticsService {
   }
 
   async getEventMetrics(filters?: AnalyticsFilters): Promise<AnalyticsEventMetrics> {
-    const whereClause = this.buildWhereClause(filters, 'e');
+    const whereClause = this.buildWhereClause(filters, 'e', 'timestamp');
     
     // Top events
     const topEventsQuery = `
@@ -291,7 +291,7 @@ export class AnalyticsService {
   }
 
   async getFeatureUsage(filters?: AnalyticsFilters): Promise<FeatureUsageMetrics> {
-    const whereClause = this.buildWhereClause(filters, 'f');
+    const whereClause = this.buildWhereClause(filters, 'f', 'timestamp');
     
     // Top features
     const topFeaturesQuery = `
@@ -355,60 +355,75 @@ export class AnalyticsService {
   }
 
   async getFunnelAnalytics(filters?: AnalyticsFilters): Promise<FunnelAnalytics> {
-    const whereClause = this.buildWhereClause(filters, 'f');
+    const whereClause = this.buildWhereClause(filters, 'f', 'timestamp');
     
-    // Funnel steps
-    const funnelQuery = `
-      SELECT 
-        funnel_step as step,
-        COUNT(DISTINCT session_id) as users,
-        step_order
-      FROM trk_funnels f
-      ${whereClause}
-      GROUP BY funnel_step, step_order
-      ORDER BY step_order
-    `;
-    
-    const funnelData = await executeQuery(this.db, funnelQuery);
-    const conversionFunnel = this.calculateFunnelConversions(funnelData.results);
+    try {
+      // Funnel steps
+      const funnelQuery = `
+        SELECT 
+          funnel_step as step,
+          COUNT(DISTINCT session_id) as users,
+          step_order
+        FROM trk_funnels f
+        ${whereClause}
+        GROUP BY funnel_step, step_order
+        ORDER BY step_order
+      `;
+      
+      const funnelData = await executeQuery(this.db, funnelQuery);
+      const conversionFunnel = this.calculateFunnelConversions(funnelData.results || []);
 
-    // Drop-off points
-    const dropOffQuery = `
-      SELECT 
-        funnel_step as step,
-        COUNT(*) as drop_offs,
-        ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM trk_funnels ${whereClause}), 2) as percentage
-      FROM trk_funnels f
-      ${whereClause}
-      GROUP BY funnel_step
-      ORDER BY drop_offs DESC
-    `;
-    
-    const dropOffs = await executeQuery(this.db, dropOffQuery);
+      // Drop-off points
+      const dropOffQuery = `
+        SELECT 
+          funnel_step as step,
+          COUNT(*) as drop_offs,
+          ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM trk_funnels ${whereClause || 'WHERE 1=1'}), 2) as percentage
+        FROM trk_funnels f
+        ${whereClause}
+        GROUP BY funnel_step
+        ORDER BY drop_offs DESC
+      `;
+      
+      const dropOffs = await executeQuery(this.db, dropOffQuery);
 
-    // Average time to convert
-    const conversionTimeQuery = `
-      SELECT AVG(
-        (SELECT MAX(timestamp) FROM trk_funnels f2 WHERE f2.session_id = f1.session_id) -
-        (SELECT MIN(timestamp) FROM trk_funnels f3 WHERE f3.session_id = f1.session_id)
-      ) as avg_time_to_convert
-      FROM trk_funnels f1
-      ${whereClause ? whereClause + ' AND' : 'WHERE'} session_id IN (
-        SELECT session_id FROM trk_sessions WHERE converted = 1
-      )
-    `;
-    
-    const conversionTime = await getFirstRow(this.db, conversionTimeQuery);
+      // Skip the complex conversion time query if there's no funnel data
+      let averageTimeToConvert = 0;
+      if (funnelData.results && funnelData.results.length > 0) {
+        // Average time to convert
+        const conversionTimeQuery = `
+          SELECT AVG(
+            (SELECT MAX(timestamp) FROM trk_funnels f2 WHERE f2.session_id = f1.session_id) -
+            (SELECT MIN(timestamp) FROM trk_funnels f3 WHERE f3.session_id = f1.session_id)
+          ) as avg_time_to_convert
+          FROM trk_funnels f1
+          ${whereClause ? whereClause + ' AND' : 'WHERE'} f1.session_id IN (
+            SELECT session_id FROM trk_sessions WHERE converted = 1
+          )
+        `;
+        
+        const conversionTime = await getFirstRow(this.db, conversionTimeQuery);
+        averageTimeToConvert = Number(conversionTime?.avg_time_to_convert || 0);
+      }
 
-    return {
-      conversionFunnel,
-      dropOffPoints: dropOffs.results.map(this.mapToDropOffMetric),
-      averageTimeToConvert: Number(conversionTime?.avg_time_to_convert || 0)
-    };
+      return {
+        conversionFunnel,
+        dropOffPoints: (dropOffs.results || []).map(this.mapToDropOffMetric),
+        averageTimeToConvert
+      };
+    } catch (error) {
+      console.error('Error in getFunnelAnalytics:', error);
+      // Return empty data structure on error
+      return {
+        conversionFunnel: [],
+        dropOffPoints: [],
+        averageTimeToConvert: 0
+      };
+    }
   }
 
   async getABTestResults(filters?: AnalyticsFilters): Promise<ABTestResults[]> {
-    const whereClause = this.buildWhereClause(filters, 'a');
+    const whereClause = this.buildWhereClause(filters, 'a', 'assigned_at');
     
     const abTestQuery = `
       SELECT 
@@ -430,14 +445,14 @@ export class AnalyticsService {
   }
 
   // Helper methods
-  private buildWhereClause(filters?: AnalyticsFilters, alias = 's'): string {
+  private buildWhereClause(filters?: AnalyticsFilters, alias = 's', dateField = 'started_at'): string {
     if (!filters) return '';
     
     const conditions: string[] = [];
     
     if (filters.dateRange) {
-      conditions.push(`${alias}.started_at >= '${filters.dateRange.start}'`);
-      conditions.push(`${alias}.started_at <= '${filters.dateRange.end}'`);
+      conditions.push(`${alias}.${dateField} >= '${filters.dateRange.start}'`);
+      conditions.push(`${alias}.${dateField} <= '${filters.dateRange.end}'`);
     }
     
     if (filters.userType && filters.userType.length > 0) {

@@ -451,8 +451,13 @@ export class AnalyticsService {
     const conditions: string[] = [];
     
     if (filters.dateRange) {
+      // Convert end date to include the full day (23:59:59.999)
+      const endDate = new Date(filters.dateRange.end);
+      endDate.setHours(23, 59, 59, 999);
+      const endDateString = endDate.toISOString();
+      
       conditions.push(`${alias}.${dateField} >= '${filters.dateRange.start}'`);
-      conditions.push(`${alias}.${dateField} <= '${filters.dateRange.end}'`);
+      conditions.push(`${alias}.${dateField} <= '${endDateString}'`);
     }
     
     if (filters.userType && filters.userType.length > 0) {
@@ -477,8 +482,13 @@ export class AnalyticsService {
     const conditions: string[] = [];
     
     if (filters.dateRange) {
+      // Convert end date to include the full day (23:59:59.999)
+      const endDate = new Date(filters.dateRange.end);
+      endDate.setHours(23, 59, 59, 999);
+      const endDateString = endDate.toISOString();
+      
       conditions.push(`${prefix}timestamp >= '${filters.dateRange.start}'`);
-      conditions.push(`${prefix}timestamp <= '${filters.dateRange.end}'`);
+      conditions.push(`${prefix}timestamp <= '${endDateString}'`);
     }
     
     return conditions.join(' AND ');

@@ -495,7 +495,7 @@ export class DemoDataProvider implements IDataProvider {
     }
   }
 
-  async getConversionRates(timeframe: string): Promise<ConversionRate[]> {
+  async getConversionRates(_timeframe: string): Promise<ConversionRate[]> {
     // Return mock conversion data for demo
     return [
       {
@@ -519,7 +519,7 @@ export class DemoDataProvider implements IDataProvider {
     ];
   }
 
-  async getPopularFeatures(timeframe: string): Promise<FeatureUsage[]> {
+  async getPopularFeatures(_timeframe: string): Promise<FeatureUsage[]> {
     // Return mock feature usage data
     return [
       {
@@ -549,7 +549,7 @@ export class DemoDataProvider implements IDataProvider {
     ];
   }
 
-  async getDemoEngagement(timeframe: string): Promise<DemoEngagement[]> {
+  async getDemoEngagement(_timeframe: string): Promise<DemoEngagement[]> {
     // Return mock demo engagement data
     const today = new Date();
     const mockData: DemoEngagement[] = [];
@@ -571,7 +571,7 @@ export class DemoDataProvider implements IDataProvider {
     return mockData;
   }
 
-  async getUserJourneys(timeframe: string): Promise<UserJourney[]> {
+  async getUserJourneys(_timeframe: string): Promise<UserJourney[]> {
     // Return mock user journey data
     return [
       {

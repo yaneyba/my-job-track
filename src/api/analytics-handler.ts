@@ -32,6 +32,34 @@ export async function handleAnalyticsTrack(request: Request, env: Env): Promise<
   try {
     const eventData: AnalyticsEvent = await request.json();
     
+    // Ensure session exists before tracking events
+    if (eventData.sessionId) {
+      // First check if session exists
+      const existingSession = await env.DB.prepare(`
+        SELECT session_id FROM trk_sessions WHERE session_id = ?
+      `).bind(eventData.sessionId).first();
+      
+      // If session doesn't exist, create it
+      if (!existingSession) {
+        await env.DB.prepare(`
+          INSERT INTO trk_sessions (
+            session_id, user_id, demo_mode, user_type, user_agent,
+            ip_address, referrer, country, landing_page, started_at
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+        `).bind(
+          eventData.sessionId,
+          eventData.userId || null,
+          eventData.demoMode,
+          eventData.userType,
+          request.headers.get('User-Agent') || null,
+          request.headers.get('CF-Connecting-IP') || null,
+          eventData.properties.referrer || null,
+          request.headers.get('CF-IPCountry') || null,
+          eventData.properties.page || null
+        ).run();
+      }
+    }
+    
     // Insert event into trk_events table
     await env.DB.prepare(`
       INSERT INTO trk_events (

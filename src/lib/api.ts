@@ -1,7 +1,10 @@
 // API client for connecting to the Cloudflare D1 backend
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8787';
-console.log('🔧 API_BASE_URL:', API_BASE_URL);
+// Always use the environment variable for API URL
+// This ensures consistency between development and production
+const isProd = import.meta.env.PROD;
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+console.log(`🔧 API_BASE_URL: ${API_BASE_URL} (${isProd ? 'Production' : 'Development'})`);
 
 export interface ApiResponse<T = any> {
   success: boolean;

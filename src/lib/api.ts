@@ -2,8 +2,16 @@
 
 // Always use the environment variable for API URL
 // This ensures consistency between development and production
-const isProd = import.meta.env.PROD;
+const isProd = import.meta.env.VITE_IS_PROD === 'true';
 const API_BASE_URL = import.meta.env.VITE_API_URL;
+
+// Add validation and fallback
+if (!API_BASE_URL) {
+  console.error('❌ VITE_API_URL environment variable is not set!');
+  console.error('📋 Available environment variables:', import.meta.env);
+  throw new Error('API URL not configured. Please set VITE_API_URL in your environment variables.');
+}
+
 console.log(`🔧 API_BASE_URL: ${API_BASE_URL} (${isProd ? 'Production' : 'Development'})`);
 
 export interface ApiResponse<T = any> {

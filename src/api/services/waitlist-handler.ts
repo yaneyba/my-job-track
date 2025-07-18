@@ -75,12 +75,15 @@ export async function handleWaitlistRequest(request: Request, env: any): Promise
     
     // Send Slack notification (don't fail the request if this fails)
     try {
-      const webhookUrl = env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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';
-      await notifySlackOnWaitlistSignup({
-        email: result.email,
-        businessType: result.businessType,
-        source: result.source
-      }, webhookUrl);
+      if (env.SLACK_WEBHOOK_URL) {
+        await notifySlackOnWaitlistSignup({
+          email: result.email,
+          businessType: result.businessType,
+          source: result.source
+        }, env.SLACK_WEBHOOK_URL);
+      } else {
+        console.warn('SLACK_WEBHOOK_URL not configured, skipping Slack notification');
+      }
     } catch (slackError) {
       console.error('Failed to send Slack notification:', slackError);
       // Don't fail the request if Slack notification fails

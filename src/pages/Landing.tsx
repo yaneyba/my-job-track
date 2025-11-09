@@ -9,6 +9,7 @@ import {
   QRCodeDemo,
   BenefitsSection,
   TestimonialsSection,
+  FAQSection,
   CTASection,
   Footer,
   SchemaSEO
@@ -64,6 +65,9 @@ const Landing: React.FC = () => {
 
       {/* Testimonials */}
       <TestimonialsSection />
+
+      {/* FAQ Section */}
+      <FAQSection />
 
       {/* CTA Section */}
       <CTASection />

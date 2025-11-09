@@ -114,9 +114,25 @@ export default function WaitlistSignup({ onSuccess, onError, className = '' }: W
         </h3>
       </div>
       
-      <p className="text-gray-600 dark:text-gray-400 mb-6">
+      <p className="text-gray-600 dark:text-gray-400 mb-4">
         Get early access and start testing the app immediately with sample data stored locally in your browser.
       </p>
+
+      {/* Demo Limitations - Shown Upfront */}
+      <div className="mb-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+        <div className="flex items-start">
+          <AlertCircle className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-2 mt-0.5 flex-shrink-0" />
+          <div className="text-sm text-blue-700 dark:text-blue-300">
+            <strong>Test Mode Limitations:</strong>
+            <ul className="mt-2 space-y-1 list-disc list-inside">
+              <li>Data stored locally only (browser storage)</li>
+              <li>QR scanner disabled (coming in full version)</li>
+              <li>No cross-device sync</li>
+              <li>All core features available for testing</li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
       {error && (
         <div className="mb-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 flex items-center">

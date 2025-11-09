@@ -19,15 +19,11 @@ import {
 
 const Signup: React.FC = () => {
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
-    password: '',
-    confirmPassword: '',
-    businessName: ''
+    password: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [signupError, setSignupError] = useState('');
 
@@ -47,10 +43,6 @@ const Signup: React.FC = () => {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = t('auth.fullNameRequired');
-    }
-
     if (!formData.email.trim()) {
       newErrors.email = t('auth.emailRequired');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
@@ -61,12 +53,6 @@ const Signup: React.FC = () => {
       newErrors.password = t('auth.passwordRequired');
     } else if (formData.password.length < 6) {
       newErrors.password = t('auth.passwordMinLength');
-    }
-
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = t('auth.confirmPasswordRequired');
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = t('auth.passwordsDoNotMatch');
     }
 
     setErrors(newErrors);
@@ -82,11 +68,12 @@ const Signup: React.FC = () => {
     setSignupError('');
 
     try {
+      // Use email as name for now - can be updated in profile later
       const result = await signup(
         formData.email,
         formData.password,
-        formData.name,
-        formData.businessName || undefined
+        formData.email.split('@')[0], // Use email username as default name
+        undefined
       );
       
       if (result.success) {
@@ -206,39 +193,6 @@ const Signup: React.FC = () => {
 
             {/* Signup Form */}
             <form onSubmit={handleSubmit} autoComplete="off" className="space-y-6">
-              {/* Full Name */}
-              <div>
-                <label htmlFor="name" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  {t('auth.fullName')} *
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <User className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    autoComplete="off"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    placeholder={t('auth.fullNamePlaceholder')}
-                    className={`
-                      block w-full pl-12 pr-4 py-4 text-lg border rounded-xl
-                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                      transition-colors bg-white dark:bg-dark-700 dark:text-white dark:border-dark-600
-                      ${errors.name ? 'border-red-300 bg-red-50 dark:border-red-600 dark:bg-red-900/20' : 'border-gray-300 hover:border-gray-400 dark:hover:border-dark-500'}
-                    `}
-                  />
-                </div>
-                {errors.name && (
-                  <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center">
-                    <AlertCircle className="h-4 w-4 mr-1" />
-                    {errors.name}
-                  </p>
-                )}
-              </div>
-
               {/* Email */}
               <div>
                 <label htmlFor="email" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -270,32 +224,6 @@ const Signup: React.FC = () => {
                     {errors.email}
                   </p>
                 )}
-              </div>
-
-              {/* Business Name (Optional) */}
-              <div>
-                <label htmlFor="businessName" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  {t('auth.businessName')} <span className="text-gray-500 dark:text-gray-400 font-normal">(Optional)</span>
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Building2 className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input
-                    type="text"
-                    id="businessName"
-                    name="businessName"
-                    autoComplete="off"
-                    value={formData.businessName}
-                    onChange={(e) => handleInputChange('businessName', e.target.value)}
-                    placeholder={t('auth.businessNamePlaceholder')}
-                    className="
-                      block w-full pl-12 pr-4 py-4 text-lg border border-gray-300 dark:border-dark-600 rounded-xl
-                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                      transition-colors bg-white dark:bg-dark-700 dark:text-white hover:border-gray-400 dark:hover:border-dark-500
-                    "
-                  />
-                </div>
               </div>
 
               {/* Password */}
@@ -340,50 +268,9 @@ const Signup: React.FC = () => {
                     {errors.password}
                   </p>
                 )}
-              </div>
-
-              {/* Confirm Password */}
-              <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  {t('auth.confirmPassword')} *
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    autoComplete="new-password"
-                    value={formData.confirmPassword}
-                    onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                    placeholder={t('auth.confirmPasswordPlaceholder')}
-                    className={`
-                      block w-full pl-12 pr-12 py-4 text-lg border rounded-xl
-                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                      transition-colors bg-white dark:bg-dark-700 dark:text-white dark:border-dark-600
-                      ${errors.confirmPassword ? 'border-red-300 bg-red-50 dark:border-red-600 dark:bg-red-900/20' : 'border-gray-300 hover:border-gray-400 dark:hover:border-dark-500'}
-                    `}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute inset-y-0 right-0 pr-4 flex items-center"
-                  >
-                    {showConfirmPassword ? (
-                      <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
-                    )}
-                  </button>
-                </div>
-                {errors.confirmPassword && (
-                  <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center">
-                    <AlertCircle className="h-4 w-4 mr-1" />
-                    {errors.confirmPassword}
-                  </p>
-                )}
+                <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                  Minimum 6 characters
+                </p>
               </div>
 
               {/* Submit Button */}

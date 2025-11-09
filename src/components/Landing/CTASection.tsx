@@ -24,64 +24,27 @@ const CTASection: React.FC = () => {
   return (
     <section className="py-20 bg-gradient-to-r from-gray-900 to-gray-800 dark:from-dark-950 dark:to-dark-900">
       <div className="max-w-4xl mx-auto px-4">
-        {!showWaitlist ? (
-          <div className="text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-              {t('landing.cta.title')}
-            </h2>
-            <p className="text-xl text-gray-300 dark:text-gray-400 mb-8 leading-relaxed">
-              {t('landing.cta.description')}
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button
-                onClick={() => navigate(isDemoMode ? '/login' : '/app')}
-                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center group"
-              >
-                {isDemoMode ? t('landing.cta.demo') : t('landing.cta.start')}
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-              
-              {!isDemoMode && (
-                <button
-                  onClick={() => setShowWaitlist(true)}
-                  className="bg-gray-700 hover:bg-gray-600 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
-                >
-                  {t('landing.cta.waitlist')}
-                </button>
-              )}
-            </div>
-            
-            <p className="text-gray-400 dark:text-gray-500 mt-4">
-              {isDemoMode ? t('landing.cta.demoNote') : 'Get early access and test the app with local data storage'}
-            </p>
-          </div>
-        ) : (
-          <div className="max-w-2xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                Ready to Test Job Track?
-              </h2>
-              <p className="text-xl text-gray-300 dark:text-gray-400">
-                Join our waitlist and start testing immediately with local data storage.
-              </p>
-            </div>
-            
-            <WaitlistSignup
-              onSuccess={handleWaitlistSuccess}
-              onError={handleWaitlistError}
-            />
-            
-            <div className="text-center mt-6">
-              <button
-                onClick={() => setShowWaitlist(false)}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                ← Back to main page
-              </button>
-            </div>
-          </div>
-        )}
+        <div className="text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+            {t('landing.cta.title')}
+          </h2>
+          <p className="text-xl text-gray-300 dark:text-gray-400 mb-8 leading-relaxed">
+            Start managing your jobs, customers, and payments today - completely free.
+          </p>
+
+          {/* Single Primary CTA */}
+          <button
+            onClick={() => navigate('/app')}
+            className="bg-green-600 hover:bg-green-700 text-white px-10 py-5 rounded-xl text-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center mx-auto group"
+          >
+            Get Started Free
+            <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+          </button>
+
+          <p className="text-gray-400 dark:text-gray-500 mt-6 text-sm">
+            No credit card required • Free forever • Get started in 30 seconds
+          </p>
+        </div>
       </div>
     </section>
   );

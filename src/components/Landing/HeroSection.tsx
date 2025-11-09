@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { ArrowRight, Smartphone, QrCode } from "lucide-react";
+import { ArrowRight, Smartphone, QrCode, CheckCircle } from "lucide-react";
 import { useDemo } from "@/contexts/DemoContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAnalytics } from "@/contexts/AnalyticsContext";
@@ -74,6 +74,15 @@ const HeroSection: React.FC = () => {
                 className="backdrop-blur-sm"
               />
             </div>
+
+            {/* Free Forever Badge */}
+            <div className="inline-flex items-center bg-green-500/20 backdrop-blur-sm border-2 border-green-400 rounded-full px-4 py-2 mb-4">
+              <CheckCircle className="h-5 w-5 text-green-300 mr-2" />
+              <span className="text-green-100 font-semibold text-sm md:text-base">
+                100% Free Forever • No Credit Card Required
+              </span>
+            </div>
+
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
               <span itemProp="name">Simple CRM for Service Pros</span>
               <span className="sr-only">
@@ -87,39 +96,28 @@ const HeroSection: React.FC = () => {
             <p className="text-lg text-blue-50 mb-6 drop-shadow-md">
               {t("landing.subtitle")}
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start items-center">
+            <div className="flex flex-col gap-4 justify-center md:justify-start items-center md:items-start">
+              {/* Primary CTA */}
               <button
                 onClick={handleMainCTA}
-                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg text-base font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center group"
+                className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group"
               >
-                {isDemoMode
-                  ? t("landing.cta.secondary")
-                  : t("landing.cta.primary")}
+                Get Started Free
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </button>
+
+              {/* Secondary Action - Less Prominent */}
               <Link
                 to="#qr-demo"
                 onClick={(e) => {
                   e.preventDefault();
                   handleDemoClick();
                 }}
-                className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-lg text-base font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center group border border-white/30 hover:border-white/50"
+                className="text-white/90 hover:text-white text-sm font-medium flex items-center group"
               >
-                <Smartphone className="mr-2 h-5 w-5" />
-                Try Interactive Demo
-              </Link>
-              
-              {/* Mobile QR Scanner Button */}
-              <Link
-                to="#qr-demo"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleQRDemoClick();
-                }}
-                className="md:hidden bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg text-base font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center group"
-              >
-                <QrCode className="mr-2 h-5 w-5" />
-                QR Code Scanner
+                <Smartphone className="mr-2 h-4 w-4" />
+                Watch Interactive Demo
+                <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>
